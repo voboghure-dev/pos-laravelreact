@@ -17,7 +17,12 @@ const Login = () => {
         axios
             .post("https://pos-laravelreact.local/api/login", input)
             .then((res) => {
-                console.log(res.data);
+                localStorage.email = res.data.email;
+                localStorage.name = res.data.name;
+                localStorage.phone = res.data.phone;
+                localStorage.photo = res.data.photo;
+                localStorage.token = res.data.token;
+                window.location.reload();
             });
     };
 

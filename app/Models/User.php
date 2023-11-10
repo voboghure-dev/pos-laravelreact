@@ -42,4 +42,11 @@ class User extends Authenticatable {
 		'email_verified_at' => 'datetime',
 		'password'          => 'hashed',
 	];
+
+	/**
+	 * Get User
+	 */
+	public function getUserByEmailOrPhone( array $input ) {
+		return $this->query()->where( 'email', $input['email'] )->orWhere( 'phone', $input['email'] )->first();
+	}
 }
