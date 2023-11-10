@@ -5,6 +5,7 @@ import axios from "axios";
 
 const Login = () => {
     const [input, setInput] = useState({});
+    const [errors, setErrors] = useState([]);
 
     const handleInput = (e) => {
         setInput((prevState) => ({
@@ -23,6 +24,11 @@ const Login = () => {
                 localStorage.photo = res.data.photo;
                 localStorage.token = res.data.token;
                 window.location.reload();
+            })
+            .catch((errors) => {
+                if (errors.response.status == 422) {
+                    setErrors(errors.response.data.errors);
+                }
             });
     };
 
@@ -54,7 +60,12 @@ const Login = () => {
                                             <form>
                                                 <div className="form-floating mb-3">
                                                     <input
-                                                        className="form-control"
+                                                        className={
+                                                            errors.email !=
+                                                            undefined
+                                                                ? "form-control is-invalid"
+                                                                : "form-control"
+                                                        }
                                                         id="inputEmail"
                                                         type="email"
                                                         name="email"
@@ -67,10 +78,21 @@ const Login = () => {
                                                     <label htmlFor="inputEmail">
                                                         Email address
                                                     </label>
+                                                    <div className="invalid-feedback">
+                                                        {errors.email !=
+                                                        undefined
+                                                            ? errors.email[0]
+                                                            : null}
+                                                    </div>
                                                 </div>
                                                 <div className="form-floating mb-3">
                                                     <input
-                                                        className="form-control"
+                                                        className={
+                                                            errors.password !=
+                                                            undefined
+                                                                ? "form-control is-invalid"
+                                                                : "form-control"
+                                                        }
                                                         id="inputPassword"
                                                         type="password"
                                                         name="password"
@@ -83,6 +105,12 @@ const Login = () => {
                                                     <label htmlFor="inputPassword">
                                                         Password
                                                     </label>
+                                                    <div className="invalid-feedback">
+                                                        {errors.password !=
+                                                        undefined
+                                                            ? errors.password[0]
+                                                            : null}
+                                                    </div>
                                                 </div>
                                                 <div className="form-check mb-3">
                                                     <input
