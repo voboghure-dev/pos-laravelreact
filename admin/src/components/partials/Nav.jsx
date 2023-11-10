@@ -1,9 +1,39 @@
 import $ from "jquery";
 import logo from "./../../assets/img/logo.png";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 const Nav = () => {
     const handleSidebar = () => {
         $("body").toggleClass("sb-sidenav-toggled");
+    };
+
+    const handleLogout = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will be logged out!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, logout!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios
+                    .post("https://pos-laravelreact.local/api/logout")
+                    .then((res) => {
+                        localStorage.removeItem("email");
+                        localStorage.removeItem("name");
+                        localStorage.removeItem("phone");
+                        localStorage.removeItem("photo");
+                        localStorage.removeItem("token");
+                        window.location.reload();
+                    })
+                    .catch((errors) => {
+
+                    });
+            }
+        });
     };
 
     return (
@@ -52,9 +82,12 @@ const Nav = () => {
                             <hr className="dropdown-divider" />
                         </li>
                         <li>
-                            <a className="dropdown-item" href="#!">
+                            <button
+                                onClick={handleLogout}
+                                className="dropdown-item"
+                            >
                                 Logout
-                            </a>
+                            </button>
                         </li>
                     </ul>
                 </li>
