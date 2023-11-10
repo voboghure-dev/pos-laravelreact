@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet";
 import logo from "../../assets/img/logo.png";
 import { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
     const [input, setInput] = useState({});
@@ -10,6 +11,14 @@ const Login = () => {
             ...prevState,
             [e.target.name]: e.target.value,
         }));
+    };
+
+    const handleLogin = () => {
+        axios
+            .post("https://pos-laravelreact.local/api/login", input)
+            .then((res) => {
+                console.log(res.data);
+            });
     };
 
     return (
@@ -94,12 +103,13 @@ const Login = () => {
                                                 >
                                                     Forgot Password?
                                                 </a>
-                                                <a
+                                                <button
+                                                    onClick={handleLogin}
                                                     className="btn btn-primary"
                                                     href="index.html"
                                                 >
                                                     Login
-                                                </a>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
