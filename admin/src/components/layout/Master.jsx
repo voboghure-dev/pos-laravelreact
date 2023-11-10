@@ -1,19 +1,19 @@
-import Nav from '../partials/Nav';
-import Sidebar from '../partials/Sidebar';
-import Footer from '../partials/Footer';
-import { Outlet } from 'react-router-dom';
+import Nav from "../partials/Nav";
+import Sidebar from "../partials/Sidebar";
+import Footer from "../partials/Footer";
+import { Outlet } from "react-router-dom";
 
 const Master = () => {
     return (
         <>
             <Nav />
 
-            <div id='layoutSidenav'>
+            <div id="layoutSidenav">
                 <Sidebar />
 
-                <div id='layoutSidenav_content'>
+                <div id="layoutSidenav_content">
                     <main>
-                        <div className='container-fluid px-4'>
+                        <div className="container-fluid px-4">
                             <Outlet />
                         </div>
                     </main>
