@@ -6,6 +6,7 @@ import axios from "axios";
 const Login = () => {
     const [input, setInput] = useState({});
     const [errors, setErrors] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleInput = (e) => {
         setInput((prevState) => ({
@@ -15,6 +16,7 @@ const Login = () => {
     };
 
     const handleLogin = () => {
+        setIsLoading(true);
         axios
             .post("https://pos-laravelreact.local/api/login", input)
             .then((res) => {
@@ -23,9 +25,11 @@ const Login = () => {
                 localStorage.phone = res.data.phone;
                 localStorage.photo = res.data.photo;
                 localStorage.token = res.data.token;
+                setIsLoading(false);
                 window.location.reload();
             })
             .catch((errors) => {
+                setIsLoading(false);
                 if (errors.response.status == 422) {
                     setErrors(errors.response.data.errors);
                 }
@@ -139,10 +143,12 @@ const Login = () => {
                                                 <button
                                                     onClick={handleLogin}
                                                     className="btn btn-primary"
-                                                    href="index.html"
-                                                >
-                                                    Login
-                                                </button>
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: isLoading
+                                                            ? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Login...'
+                                                            : "Login",
+                                                    }}
+                                                />
                                             </div>
                                         </div>
                                     </div>
