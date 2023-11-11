@@ -3,6 +3,7 @@ import logo from "./../../assets/img/logo.png";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Constants from "../../Constants";
+import GlobalFunctions from "../../GlobalFunctions";
 
 const Nav = () => {
     const handleSidebar = () => {
@@ -23,14 +24,11 @@ const Nav = () => {
                 axios
                     .post(`${Constants.BASE_URL}/logout`)
                     .then((res) => {
-                        localStorage.removeItem("email");
-                        localStorage.removeItem("name");
-                        localStorage.removeItem("phone");
-                        localStorage.removeItem("photo");
-                        localStorage.removeItem("token");
-                        window.location.reload();
+                        GlobalFunctions.logOut();
                     })
-                    .catch((errors) => {});
+                    .catch((errors) => {
+                        GlobalFunctions.logOut();
+                    });
             }
         });
     };
@@ -49,7 +47,7 @@ const Nav = () => {
                 <i className="fas fa-bars"></i>
             </button>
             <span className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 text-white">
-                Admin
+                {localStorage.name != undefined ? localStorage.name : null}
             </span>
             <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li className="nav-item dropdown">

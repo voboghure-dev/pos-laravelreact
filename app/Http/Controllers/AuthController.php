@@ -22,6 +22,7 @@ class AuthController extends Controller {
 			$user_data['email'] = $user->email;
 			$user_data['phone'] = $user->phone;
 			$user_data['photo'] = $user->photo;
+			$user_data['role_id'] = $user->role_id;
 
 			return response()->json( $user_data );
 		}
@@ -36,6 +37,7 @@ class AuthController extends Controller {
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	final public function logout() {
+        // abort(500);
 		auth()->user()->tokens()->delete();
 
 		return response()->json( ['message' => 'You have successfully logged out!'] );

@@ -25,6 +25,7 @@ const Login = () => {
                 localStorage.name = res.data.name;
                 localStorage.phone = res.data.phone;
                 localStorage.photo = res.data.photo;
+                localStorage.role_id = res.data.role_id;
                 localStorage.token = res.data.token;
                 setIsLoading(false);
                 window.location.reload();
