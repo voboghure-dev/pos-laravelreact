@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet";
 import logo from "../../assets/img/logo.png";
 import { useState } from "react";
 import axios from "axios";
+import Constants from "../../Constants";
 
 const Login = () => {
     const [input, setInput] = useState({});
@@ -18,7 +19,7 @@ const Login = () => {
     const handleLogin = () => {
         setIsLoading(true);
         axios
-            .post("https://pos-laravelreact.local/api/login", input)
+            .post(`${Constants.BASE_URL}/login`, input)
             .then((res) => {
                 localStorage.email = res.data.email;
                 localStorage.name = res.data.name;

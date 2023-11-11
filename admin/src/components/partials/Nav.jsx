@@ -2,6 +2,7 @@ import $ from "jquery";
 import logo from "./../../assets/img/logo.png";
 import Swal from "sweetalert2";
 import axios from "axios";
+import Constants from "../../Constants";
 
 const Nav = () => {
     const handleSidebar = () => {
@@ -20,7 +21,7 @@ const Nav = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 axios
-                    .post("https://pos-laravelreact.local/api/logout")
+                    .post(`${Constants.BASE_URL}/logout`)
                     .then((res) => {
                         localStorage.removeItem("email");
                         localStorage.removeItem("name");
@@ -29,9 +30,7 @@ const Nav = () => {
                         localStorage.removeItem("token");
                         window.location.reload();
                     })
-                    .catch((errors) => {
-
-                    });
+                    .catch((errors) => {});
             }
         });
     };
