@@ -6,8 +6,8 @@ import "./AxiosInterceptors";
 
 import { useEffect, useState } from "react";
 import { RouterProvider } from "react-router-dom";
-import ProtectedRouter from "./components/router/ProtectedRouter";
-import PublicRouter from "./components/router/PublicRouter";
+import PrivateRoute from "./components/router/PrivateRoute";
+import PublicRoute from "./components/router/PublicRoute";
 
 function App() {
     const [auth, setAuth] = useState(false);
@@ -17,13 +17,14 @@ function App() {
             setAuth(true);
         }
     }, []);
+    console.log(auth);
 
     return (
         <>
             {auth ? (
-                <RouterProvider router={ProtectedRouter} />
+                <RouterProvider router={PrivateRoute} />
             ) : (
-                <RouterProvider router={PublicRouter} />
+                <RouterProvider router={PublicRoute} />
             )}
         </>
     );

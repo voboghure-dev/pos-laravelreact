@@ -1,6 +1,7 @@
 import Nav from "../partials/Nav";
 import Sidebar from "../partials/Sidebar";
 import Footer from "../partials/Footer";
+import { HelmetProvider } from "react-helmet-async";
 import { Outlet } from "react-router-dom";
 
 const Master = () => {
@@ -14,7 +15,9 @@ const Master = () => {
                 <div id="layoutSidenav_content">
                     <main>
                         <div className="container-fluid px-4">
-                            <Outlet />
+                            <HelmetProvider>
+                                <Outlet />
+                            </HelmetProvider>
                         </div>
                     </main>
 
