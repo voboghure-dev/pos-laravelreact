@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import logo from "./../../assets/img/logo.png";
 import Swal from "sweetalert2";
@@ -6,6 +7,8 @@ import Constants from "../../Constants";
 import GlobalFunctions from "../../GlobalFunctions";
 
 const Nav = () => {
+    const navigate = useNavigate();
+
     const handleSidebar = () => {
         $("body").toggleClass("sb-sidenav-toggled");
     };
@@ -29,6 +32,7 @@ const Nav = () => {
                     .catch((errors) => {
                         GlobalFunctions.logOut();
                     });
+                navigate("/");
             }
         });
     };

@@ -4,30 +4,20 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import "./assets/css/style.scss";
 import "./AxiosInterceptors";
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { RouterProvider } from "react-router-dom";
-import PrivateRoute from "./components/router/PrivateRoute";
-import PublicRoute from "./components/router/PublicRoute";
+import Router from "./components/router/Router";
 
 function App() {
-    const [auth, setAuth] = useState(false);
+    // const [auth, setAuth] = useState(false);
 
-    useEffect(() => {
-        if (localStorage.token != undefined) {
-            setAuth(true);
-        }
-    }, []);
-    console.log(auth);
+    // useEffect(() => {
+    //     if (localStorage.token != undefined) {
+    //         setAuth(true);
+    //     }
+    // }, []);
 
-    return (
-        <>
-            {auth ? (
-                <RouterProvider router={PrivateRoute} />
-            ) : (
-                <RouterProvider router={PublicRoute} />
-            )}
-        </>
-    );
+    return <RouterProvider router={Router} />;
 }
 
 export default App;

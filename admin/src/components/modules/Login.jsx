@@ -1,10 +1,12 @@
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
 import { useState } from "react";
 import axios from "axios";
 import Constants from "../../Constants";
 
 const Login = () => {
+    const navigate = useNavigate();
     const [input, setInput] = useState({});
     const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +30,7 @@ const Login = () => {
                 localStorage.role_id = res.data.role_id;
                 localStorage.token = res.data.token;
                 setIsLoading(false);
-                window.location.reload();
+                navigate("/dashboard");
             })
             .catch((errors) => {
                 setIsLoading(false);
