@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Sidebar = () => {
     return (
         <div id="layoutSidenav_nav">
@@ -14,7 +16,9 @@ const Sidebar = () => {
                             </div>
                             Dashboard
                         </a>
-                        <div className="sb-sidenav-menu-heading">Interface</div>
+                        <div className="sb-sidenav-menu-heading">
+                            Management
+                        </div>
                         <a
                             className="nav-link collapsed"
                             href="#"
@@ -26,7 +30,7 @@ const Sidebar = () => {
                             <div className="sb-nav-link-icon">
                                 <i className="fas fa-columns"></i>
                             </div>
-                            Layouts
+                            Category
                             <div className="sb-sidenav-collapse-arrow">
                                 <i className="fas fa-angle-down"></i>
                             </div>
@@ -38,18 +42,18 @@ const Sidebar = () => {
                             data-bs-parent="#sidenavAccordion"
                         >
                             <nav className="sb-sidenav-menu-nested nav">
-                                <a
+                                <Link
                                     className="nav-link"
-                                    href="layout-static.html"
+                                    to="/dashboard/category/create"
                                 >
-                                    Static Navigation
-                                </a>
-                                <a
+                                    Add Category
+                                </Link>
+                                <Link
                                     className="nav-link"
-                                    href="layout-sidenav-light.html"
+                                    to="/dashboard/category"
                                 >
-                                    Light Sidenav
-                                </a>
+                                    Category List
+                                </Link>
                             </nav>
                         </div>
                         <a

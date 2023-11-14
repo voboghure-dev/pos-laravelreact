@@ -8,6 +8,7 @@ import Error500 from "../modules/Error500";
 import Test from "../modules/Test";
 import Public from "./Public";
 import Protected from "./Protected";
+import CategoryAdd from "../modules/CategoryAdd";
 
 const Router = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ const Router = createBrowserRouter([
             {
                 path: "/dashboard",
                 element: <Dashboard />,
+            },
+            {
+                path: "/dashboard/category/create",
+                element: <CategoryAdd />,
             },
             {
                 path: "/dashboard/category",

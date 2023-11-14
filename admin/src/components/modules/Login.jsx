@@ -11,6 +11,12 @@ const Login = () => {
     const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleLogin();
+        }
+    }
+
     const handleInput = (e) => {
         setInput((prevState) => ({
             ...prevState,
@@ -108,6 +114,7 @@ const Login = () => {
                                                             input.password || ""
                                                         }
                                                         onChange={handleInput}
+                                                        onKeyDown={handleKeyPress}
                                                         placeholder="Password"
                                                     />
                                                     <label htmlFor="inputPassword">
