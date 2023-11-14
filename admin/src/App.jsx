@@ -6,7 +6,7 @@ import "./AxiosInterceptors";
 
 // import { useEffect, useState } from "react";
 import { RouterProvider } from "react-router-dom";
-import Router from "./components/router/Router";
+import Router from "./components/routes/Router";
 
 function App() {
     // const [auth, setAuth] = useState(false);
