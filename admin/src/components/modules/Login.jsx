@@ -12,10 +12,10 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === "Enter") {
             handleLogin();
         }
-    }
+    };
 
     const handleInput = (e) => {
         setInput((prevState) => ({
@@ -71,77 +71,70 @@ const Login = () => {
                                             </h3>
                                         </div>
                                         <div className="card-body">
-                                            <form>
-                                                <div className="form-floating mb-3">
-                                                    <input
-                                                        className={
-                                                            errors.email !=
-                                                            undefined
-                                                                ? "form-control is-invalid"
-                                                                : "form-control"
-                                                        }
-                                                        id="inputEmail"
-                                                        type="email"
-                                                        name="email"
-                                                        value={
-                                                            input.email || ""
-                                                        }
-                                                        onChange={handleInput}
-                                                        placeholder="name@example.com"
-                                                    />
-                                                    <label htmlFor="inputEmail">
-                                                        Email address
-                                                    </label>
-                                                    <div className="invalid-feedback">
-                                                        {errors.email !=
+                                            <div className="form-floating mb-3">
+                                                <input
+                                                    className={
+                                                        errors.email !=
                                                         undefined
-                                                            ? errors.email[0]
-                                                            : null}
-                                                    </div>
+                                                            ? "form-control is-invalid"
+                                                            : "form-control"
+                                                    }
+                                                    id="inputEmail"
+                                                    type="email"
+                                                    name="email"
+                                                    value={input.email || ""}
+                                                    onChange={handleInput}
+                                                    placeholder="name@example.com"
+                                                />
+                                                <label htmlFor="inputEmail">
+                                                    Email address
+                                                </label>
+                                                <div className="invalid-feedback">
+                                                    {errors.email != undefined
+                                                        ? errors.email[0]
+                                                        : null}
                                                 </div>
-                                                <div className="form-floating mb-3">
-                                                    <input
-                                                        className={
-                                                            errors.password !=
-                                                            undefined
-                                                                ? "form-control is-invalid"
-                                                                : "form-control"
-                                                        }
-                                                        id="inputPassword"
-                                                        type="password"
-                                                        name="password"
-                                                        value={
-                                                            input.password || ""
-                                                        }
-                                                        onChange={handleInput}
-                                                        onKeyDown={handleKeyPress}
-                                                        placeholder="Password"
-                                                    />
-                                                    <label htmlFor="inputPassword">
-                                                        Password
-                                                    </label>
-                                                    <div className="invalid-feedback">
-                                                        {errors.password !=
+                                            </div>
+                                            <div className="form-floating mb-3">
+                                                <input
+                                                    className={
+                                                        errors.password !=
                                                         undefined
-                                                            ? errors.password[0]
-                                                            : null}
-                                                    </div>
+                                                            ? "form-control is-invalid"
+                                                            : "form-control"
+                                                    }
+                                                    id="inputPassword"
+                                                    type="password"
+                                                    name="password"
+                                                    value={input.password || ""}
+                                                    onChange={handleInput}
+                                                    onKeyDown={handleKeyPress}
+                                                    placeholder="Password"
+                                                />
+                                                <label htmlFor="inputPassword">
+                                                    Password
+                                                </label>
+                                                <div className="invalid-feedback">
+                                                    {errors.password !=
+                                                    undefined
+                                                        ? errors.password[0]
+                                                        : null}
                                                 </div>
-                                                <div className="form-check mb-3">
-                                                    <input
-                                                        className="form-check-input"
-                                                        id="inputRememberPassword"
-                                                        type="checkbox"
-                                                        value=""
-                                                    />
-                                                    <label
-                                                        className="form-check-label"
-                                                        htmlFor="inputRememberPassword"
-                                                    >
-                                                        Remember Password
-                                                    </label>
-                                                </div>
-                                            </form>
+                                            </div>
+                                            <div className="form-check mb-3">
+                                                <input
+                                                    className="form-check-input"
+                                                    id="inputRememberPassword"
+                                                    type="checkbox"
+                                                    value=""
+                                                />
+                                                <label
+                                                    className="form-check-label"
+                                                    htmlFor="inputRememberPassword"
+                                                >
+                                                    Remember Password
+                                                </label>
+                                            </div>
                                         </div>
                                         <div className="card-footer text-center py-3">
                                             <div className="d-flex align-items-center justify-content-between my-1">
