@@ -3,8 +3,10 @@ import Breadcrumb from "../partials/Breadcrumb";
 import Constants from "../../Constants";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const CategoryAdd = () => {
+    const navigate = useNavigate();
     const [input, setInput] = useState({ status: 1 });
     const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +54,7 @@ const CategoryAdd = () => {
                     toast: true,
                     timer: 1500,
                 });
+                navigate("/dashboard/category");
             })
             .catch((errors) => {
                 setIsLoading(false);
