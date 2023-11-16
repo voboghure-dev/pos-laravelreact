@@ -27,7 +27,7 @@ axios.interceptors.response.use(
         if (error.response.status == 401) {
             GlobalFunctions.logOut();
         } else if (error.response.status == 500) {
-            window.location.href = window.location.origin + "/error-500";
+            window.location.href = window.location.origin + "dashboard/error-500";
         }
         return Promise.reject(error);
     }

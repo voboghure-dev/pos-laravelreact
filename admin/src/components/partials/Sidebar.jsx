@@ -10,12 +10,12 @@ const Sidebar = () => {
                 <div className="sb-sidenav-menu">
                     <div className="nav">
                         <div className="sb-sidenav-menu-heading">Core</div>
-                        <a className="nav-link" href="index.html">
+                        <Link className="nav-link" to="/dashboard">
                             <div className="sb-nav-link-icon">
                                 <i className="fas fa-tachometer-alt"></i>
                             </div>
                             Dashboard
-                        </a>
+                        </Link>
                         <div className="sb-sidenav-menu-heading">
                             Management
                         </div>

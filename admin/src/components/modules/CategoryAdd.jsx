@@ -1,5 +1,8 @@
 import { useState } from "react";
 import Breadcrumb from "../partials/Breadcrumb";
+import Constants from "../../Constants";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const CategoryAdd = () => {
     const [input, setInput] = useState({ status: 1 });
@@ -7,6 +10,16 @@ const CategoryAdd = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleInput = (e) => {
+        if (e.target.name == "name") {
+            let slug = e.target.value;
+            slug = slug.toLowerCase();
+            slug = slug.replaceAll(" ", "-");
+            setInput((prevState) => ({
+                ...prevState,
+                slug: slug,
+            }));
+        }
+
         setInput((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
@@ -26,7 +39,26 @@ const CategoryAdd = () => {
     };
 
     const handleCategoryAdd = () => {
-        console.log(input);
+        setIsLoading(true);
+        axios
+            .post(`${Constants.BASE_URL}/category`, input)
+            .then((res) => {
+                setIsLoading(false);
+                Swal.fire({
+                    position: "top-end",
+                    icon: res.data.cls,
+                    title: res.data.msg,
+                    showConfirmButton: false,
+                    toast: true,
+                    timer: 1500,
+                });
+            })
+            .catch((errors) => {
+                setIsLoading(false);
+                if (errors.response.status == 422) {
+                    setErrors(errors.response.data.errors);
+                }
+            });
     };
 
     return (
@@ -191,8 +223,6 @@ const CategoryAdd = () => {
                                         id="photo"
                                         onChange={handlePhoto}
                                         type="file"
-                                        placeholder="Enter category photo"
-                                        rows="3"
                                     />
                                     {input.photo != undefined ? (
                                         <div className="row">
@@ -213,9 +243,12 @@ const CategoryAdd = () => {
                                 className="btn btn-primary"
                                 type="button"
                                 onClick={handleCategoryAdd}
-                            >
-                                Save changes
-                            </button>
+                                dangerouslySetInnerHTML={{
+                                    __html: isLoading
+                                        ? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Loading...'
+                                        : "Save changes",
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
