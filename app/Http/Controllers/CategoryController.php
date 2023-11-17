@@ -3,7 +3,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use App\Manager\ImageUploadManager;
+use App\Http\Resources\CategoryListResource;
+use App\Manager\ImageManager;
 use App\Models\Category;
 use Illuminate\Support\Str;
 
@@ -12,7 +13,9 @@ class CategoryController extends Controller {
 	 * Display a listing of the resource.
 	 */
 	public function index() {
-		//
+		$categories = ( new Category() )->getAllCategories();
+
+		return CategoryListResource::collection( $categories );
 	}
 
 	/**
@@ -29,12 +32,12 @@ class CategoryController extends Controller {
 			$width_thumb       = 150;
 			$height_thumb      = 150;
 			$name              = Str::slug( $request->input( 'slug' ) );
-			$path              = 'images/uploads/category/';
-			$path_thumb        = 'images/uploads/category_thumb/';
-			$category['photo'] = ImageUploadManager::uploadImage( $name, $width, $height, $path, $file );
-			ImageUploadManager::uploadImage( $name, $width_thumb, $height_thumb, $path_thumb, $file );
+			$path              = Category::IMAGE_IMAGE_PATH;
+			$path_thumb        = Category::THUMB_IMAGE_IMAGE_PATH;
+			$category['photo'] = ImageManager::uploadImage( $name, $width, $height, $path, $file );
+			ImageManager::uploadImage( $name, $width_thumb, $height_thumb, $path_thumb, $file );
 		}
-		( new Category )->storeCategory( $category );
+		( new Category() )->storeCategory( $category );
 
 		return response()->json( ['msg' => 'Category created successfully', 'cls' => 'success'] );
 	}

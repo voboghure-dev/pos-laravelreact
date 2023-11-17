@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model {
 	use HasFactory;
 
+	public const IMAGE_IMAGE_PATH       = 'images/uploads/category/';
+	public const THUMB_IMAGE_IMAGE_PATH = 'images/uploads/category_thumb/';
+
 	protected $fillable = [
 		'name',
 		'slug',
@@ -19,5 +22,13 @@ class Category extends Model {
 
 	public function storeCategory( array $input ) {
 		return self::query()->create( $input );
+	}
+
+	final public function getAllCategories() {
+		return self::query()->with( 'user:id,name' )->orderBy( 'serial' )->get();
+	}
+
+	public function user() {
+		return $this->belongsTo( User::class );
 	}
 }

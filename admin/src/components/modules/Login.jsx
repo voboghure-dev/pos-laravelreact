@@ -52,7 +52,7 @@ const Login = () => {
                 <title>Login | My POS</title>
             </Helmet>
 
-            <div id="layoutAuthentication" className="bg-gray-300">
+            <div id="layoutAuthentication" className="bg-gray">
                 <div id="layoutAuthentication_content">
                     <main>
                         <div className="container mt-5">
