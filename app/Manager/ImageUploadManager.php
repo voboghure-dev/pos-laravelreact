@@ -6,7 +6,12 @@ use Intervention\Image\Facades\Image;
 class ImageUploadManager {
 	final public static function uploadImage( string $name, int $width, int $height, string $path, string $file ) {
 		$image_file_name = $name . ".webp";
-		Image::make( $file )->fit( $width, $height )->save( public_path( $path ) . $image_file_name, '50', 'webp' );
+		$img             = Image::make( $file );
+		$img->resize( $width, $height, function ( $constraint ) {
+			$constraint->aspectRatio();
+			$constraint->upsize();
+		} );
+		$img->save( public_path( $path ) . $image_file_name, '50', 'webp' );
 
 		return $image_file_name;
 	}
