@@ -25,7 +25,7 @@ class Category extends Model {
 	}
 
 	final public function getAllCategories() {
-		return self::query()->with( 'user:id,name' )->orderBy( 'serial' )->get();
+		return self::query()->with( 'user:id,name' )->orderBy( 'serial' )->paginate(2);
 	}
 
 	public function user() {

@@ -3,16 +3,28 @@ import Breadcrumb from "../partials/Breadcrumb";
 import Constants from "../../Constants";
 import axios from "axios";
 import CategoryPhotoModals from "../partials/CategoryPhotoModals";
+import Pagination from "react-js-pagination";
 
 const CategoryList = () => {
     const [modalShow, setModalShow] = useState(false);
     const [modalPhoto, setModalPhoto] = useState("");
     const [categories, setCategories] = useState([]);
 
-    const getCategories = () => {
-        axios.get(`${Constants.BASE_URL}/category`).then((res) => {
-            setCategories(res.data.data);
-        });
+    const [itemsCountPerPage, setItemsCountPerPage] = useState(0);
+    const [totalItemsCount, setTotalItemsCount] = useState(1);
+    const [startFrom, setStartFrom] = useState(1);
+    const [activePage, setActivePage] = useState(1);
+
+    const getCategories = (pageNumber) => {
+        axios
+            .get(`${Constants.BASE_URL}/category?page=${pageNumber}`)
+            .then((res) => {
+                setCategories(res.data.data);
+                setItemsCountPerPage(res.data.meta.per_page);
+                setTotalItemsCount(res.data.meta.total);
+                setStartFrom(res.data.meta.from);
+                setActivePage(res.data.meta.current_page);
+            });
     };
 
     const handlePhotoModal = (photo) => {
@@ -30,7 +42,7 @@ const CategoryList = () => {
 
             <div className="row">
                 <div className="col-md-12">
-                    <div className="card">
+                    <div className="card mb-4">
                         <div className="card-header">
                             <h4>Add Category</h4>
                         </div>
@@ -51,7 +63,7 @@ const CategoryList = () => {
                                     <tbody>
                                         {categories.map((category, index) => (
                                             <tr key={index}>
-                                                <td>{++index}</td>
+                                                <td>{startFrom + index}</td>
                                                 <td>
                                                     <p className="text-primary">
                                                         Name: {category.name}
@@ -108,6 +120,23 @@ const CategoryList = () => {
                                     photo={modalPhoto}
                                 />
                             </div>
+                        </div>
+                        <div className="card-footer">
+                            <nav className="paginate mt-3">
+                                <Pagination
+                                    activePage={activePage}
+                                    itemsCountPerPage={itemsCountPerPage}
+                                    totalItemsCount={totalItemsCount}
+                                    pageRangeDisplayed={5}
+                                    itemClass={"page-item"}
+                                    linkClass={"page-link"}
+                                    prevPageText={"Previous"}
+                                    firstPageText={"First"}
+                                    lastPageText={"Last"}
+                                    nextPageText={"Next"}
+                                    onChange={getCategories}
+                                />
+                            </nav>
                         </div>
                     </div>
                 </div>
