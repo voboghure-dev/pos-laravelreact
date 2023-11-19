@@ -20,10 +20,22 @@ class Category extends Model {
 		'user_id',
 	];
 
+	/**
+	 * Store category data
+	 *
+	 * @param array $input
+	 * @return void
+	 */
 	public function storeCategory( array $input ) {
 		return self::query()->create( $input );
 	}
 
+	/**
+	 * Get all category data
+	 *
+	 * @param array $input
+	 * @return void
+	 */
 	final public function getAllCategories( array $input ) {
 		$query = self::query();
 		if ( $input['search'] ) {
@@ -37,6 +49,11 @@ class Category extends Model {
 		return $query->with( 'user:id,name' )->paginate( $per_page );
 	}
 
+	/**
+	 * Relation with user table
+	 *
+	 * @return void
+	 */
 	public function user() {
 		return $this->belongsTo( User::class );
 	}

@@ -12,6 +12,9 @@ use Illuminate\Support\Str;
 class CategoryController extends Controller {
 	/**
 	 * Display a listing of the resource.
+	 *
+	 * @param Request $request
+	 * @return void
 	 */
 	public function index( Request $request ) {
 		$categories = ( new Category() )->getAllCategories( $request->all() );
@@ -21,6 +24,9 @@ class CategoryController extends Controller {
 
 	/**
 	 * Store a newly created resource in storage.
+     *
+	 * @param StoreCategoryRequest $request
+	 * @return void
 	 */
 	public function store( StoreCategoryRequest $request ) {
 		$category            = $request->except( 'photo' );
