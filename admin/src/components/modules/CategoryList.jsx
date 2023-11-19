@@ -7,6 +7,7 @@ import CategoryPhotoModals from "../partials/CategoryPhotoModals";
 import Pagination from "react-js-pagination";
 import CategoryDetailsModals from "../partials/CategoryDetailsModals";
 import Swal from "sweetalert2";
+import NoDataFound from "../partials/NoDataFound";
 
 const CategoryList = () => {
     const [input, setInput] = useState({
@@ -219,100 +220,110 @@ const CategoryList = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {categories.map(
-                                                (category, index) => (
-                                                    <tr key={index}>
-                                                        <td>
-                                                            {startFrom + index}
-                                                        </td>
-                                                        <td>
-                                                            <p className="text-primary">
-                                                                Name:{" "}
-                                                                {category.name}
-                                                            </p>
-                                                            <p className="text-success">
-                                                                Slug:{" "}
-                                                                {category.slug}
-                                                            </p>
-                                                        </td>
-                                                        <td>
-                                                            <p className="text-primary">
-                                                                Serial:{" "}
-                                                                {
-                                                                    category.serial
-                                                                }
-                                                            </p>
-                                                            <p className="text-success">
-                                                                Status:{" "}
-                                                                {
-                                                                    category.status
-                                                                }
-                                                            </p>
-                                                        </td>
-                                                        <td>
-                                                            <img
-                                                                onClick={() =>
-                                                                    handlePhotoModal(
-                                                                        category.photo
-                                                                    )
-                                                                }
-                                                                src={
-                                                                    category.photo_thumb
-                                                                }
-                                                                alt={
-                                                                    category.name
-                                                                }
-                                                                className="img-thumbnail mx-auto d-block category-photo"
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <p>
-                                                                {
-                                                                    category.created_by
-                                                                }
-                                                            </p>
-                                                        </td>
-                                                        <td>
-                                                            <p className="text-primary">
-                                                                {
-                                                                    category.created_at
-                                                                }
-                                                            </p>
-                                                            <p className="text-success">
-                                                                {
-                                                                    category.updated_at
-                                                                }
-                                                            </p>
-                                                        </td>
-                                                        <td className="text-center">
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleDetailsModal(
-                                                                        category
-                                                                    )
-                                                                }
-                                                                className="btn btn-sm btn-info"
-                                                            >
-                                                                <i className="fa-solid fa-eye" />
-                                                            </button>
-                                                            <Link to={"#"}>
-                                                                <button className="btn btn-sm btn-warning mx-1">
-                                                                    <i className="fa-solid fa-edit" />
+                                            {Object.keys(categories).length >
+                                            0 ? (
+                                                categories.map(
+                                                    (category, index) => (
+                                                        <tr key={index}>
+                                                            <td>
+                                                                {startFrom +
+                                                                    index}
+                                                            </td>
+                                                            <td>
+                                                                <p className="text-primary">
+                                                                    Name:{" "}
+                                                                    {
+                                                                        category.name
+                                                                    }
+                                                                </p>
+                                                                <p className="text-success">
+                                                                    Slug:{" "}
+                                                                    {
+                                                                        category.slug
+                                                                    }
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <p className="text-primary">
+                                                                    Serial:{" "}
+                                                                    {
+                                                                        category.serial
+                                                                    }
+                                                                </p>
+                                                                <p className="text-success">
+                                                                    Status:{" "}
+                                                                    {
+                                                                        category.status
+                                                                    }
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <img
+                                                                    onClick={() =>
+                                                                        handlePhotoModal(
+                                                                            category.photo
+                                                                        )
+                                                                    }
+                                                                    src={
+                                                                        category.photo_thumb
+                                                                    }
+                                                                    alt={
+                                                                        category.name
+                                                                    }
+                                                                    className="img-thumbnail mx-auto d-block category-photo"
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <p>
+                                                                    {
+                                                                        category.created_by
+                                                                    }
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <p className="text-primary">
+                                                                    {
+                                                                        category.created_at
+                                                                    }
+                                                                </p>
+                                                                <p className="text-success">
+                                                                    {
+                                                                        category.updated_at
+                                                                    }
+                                                                </p>
+                                                            </td>
+                                                            <td className="text-center">
+                                                                <button
+                                                                    onClick={() =>
+                                                                        handleDetailsModal(
+                                                                            category
+                                                                        )
+                                                                    }
+                                                                    className="btn btn-sm btn-info"
+                                                                >
+                                                                    <i className="fa-solid fa-eye" />
                                                                 </button>
-                                                            </Link>
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleCategoryDelete(
-                                                                        category.id
-                                                                    )
-                                                                }
-                                                                className="btn btn-sm btn-danger"
-                                                            >
-                                                                <i className="fa-solid fa-trash" />
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                                                                <Link to={"#"}>
+                                                                    <button className="btn btn-sm btn-warning mx-1">
+                                                                        <i className="fa-solid fa-edit" />
+                                                                    </button>
+                                                                </Link>
+                                                                <button
+                                                                    onClick={() =>
+                                                                        handleCategoryDelete(
+                                                                            category.id
+                                                                        )
+                                                                    }
+                                                                    className="btn btn-sm btn-danger"
+                                                                >
+                                                                    <i className="fa-solid fa-trash" />
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    )
                                                 )
+                                            ) : (
+                                                <NoDataFound />
                                             )}
                                         </tbody>
                                     </table>
