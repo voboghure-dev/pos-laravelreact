@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Breadcrumb from "../partials/Breadcrumb";
 import Constants from "../../Constants";
 import axios from "axios";
 import CategoryPhotoModals from "../partials/CategoryPhotoModals";
 import Pagination from "react-js-pagination";
+import CategoryDetailsModals from "../partials/CategoryDetailsModals";
 
 const CategoryList = () => {
     const [input, setInput] = useState({
@@ -14,8 +16,12 @@ const CategoryList = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
 
-    const [modalShow, setModalShow] = useState(false);
+    const [photoModalShow, setPhotoModalShow] = useState(false);
     const [modalPhoto, setModalPhoto] = useState("");
+
+    const [categoryModalShow, setCategoryModalShow] = useState(false);
+    const [modalDetails, setModalDetails] = useState("");
+
     const [categories, setCategories] = useState([]);
 
     const [itemsCountPerPage, setItemsCountPerPage] = useState(0);
@@ -40,8 +46,14 @@ const CategoryList = () => {
     };
 
     const handlePhotoModal = (photo) => {
-        setModalShow(true);
+        setPhotoModalShow(true);
         setModalPhoto(photo);
+    };
+
+    const handleDetailsModal = (category) => {
+        console.log(category);
+        setCategoryModalShow(true);
+        setModalDetails(category);
     };
 
     const handleInput = (e) => {
@@ -63,7 +75,7 @@ const CategoryList = () => {
                 <div className="col-md-12">
                     <div className="card mb-4">
                         <div className="card-header">
-                            <h4>Add Category</h4>
+                            <h4>Category List</h4>
                         </div>
                         <div className="card-body">
                             <div className="search-area mb-4">
@@ -213,17 +225,43 @@ const CategoryList = () => {
                                                         {category.updated_at}
                                                     </p>
                                                 </td>
-                                                <td>Action</td>
+                                                <td className="text-center">
+                                                    <button
+                                                        onClick={() =>
+                                                            handleDetailsModal(
+                                                                category
+                                                            )
+                                                        }
+                                                        className="btn btn-sm btn-info"
+                                                    >
+                                                        <i className="fa-solid fa-eye" />
+                                                    </button>
+                                                    <Link to={"#"}>
+                                                        <button className="btn btn-sm btn-warning mx-1">
+                                                            <i className="fa-solid fa-edit" />
+                                                        </button>
+                                                    </Link>
+                                                    <button className="btn btn-sm btn-danger">
+                                                        <i className="fa-solid fa-trash" />
+                                                    </button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                                 <CategoryPhotoModals
-                                    show={modalShow}
-                                    onHide={() => setModalShow(false)}
+                                    show={photoModalShow}
+                                    onHide={() => setPhotoModalShow(false)}
                                     title="Category Photo"
                                     size=""
                                     photo={modalPhoto}
+                                />
+                                <CategoryDetailsModals
+                                    show={categoryModalShow}
+                                    onHide={() => setCategoryModalShow(false)}
+                                    title="Category Details"
+                                    size=""
+                                    details={modalDetails}
                                 />
                             </div>
                         </div>

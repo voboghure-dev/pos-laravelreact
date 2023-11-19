@@ -16,6 +16,7 @@ class CategoryListResource extends JsonResource {
 		return [
 			'id'          => $this->id,
 			'name'        => $this->name,
+			'description' => $this->description,
 			'slug'        => $this->slug,
 			'serial'      => $this->serial,
 			'status'      => $this->serial == 1 ? 'Active' : 'Inactive',
