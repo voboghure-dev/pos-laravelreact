@@ -41,16 +41,6 @@ const CategoryDetailsModals = (props) => {
                             <td>{props.details.status}</td>
                         </tr>
                         <tr>
-                            <th>Photo</th>
-                            <td>
-                                <img
-                                    src={props.details.photo_thumb}
-                                    alt={props.details.name}
-                                    className="img-thumbnail category-photo"
-                                />
-                            </td>
-                        </tr>
-                        <tr>
                             <th>Created By</th>
                             <td>{props.details.created_by}</td>
                         </tr>
@@ -61,6 +51,16 @@ const CategoryDetailsModals = (props) => {
                         <tr>
                             <th>Updated at</th>
                             <td>{props.details.updated_at}</td>
+                        </tr>
+                        <tr>
+                            <th>Photo</th>
+                            <td>
+                                <img
+                                    src={props.details.photo_thumb}
+                                    alt={props.details.name}
+                                    className="img-thumbnail category-photo"
+                                />
+                            </td>
                         </tr>
                     </tbody>
                 </table>

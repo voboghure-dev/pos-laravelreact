@@ -24,7 +24,7 @@ class CategoryController extends Controller {
 
 	/**
 	 * Store a newly created resource in storage.
-     *
+	 *
 	 * @param StoreCategoryRequest $request
 	 * @return void
 	 */
@@ -65,8 +65,17 @@ class CategoryController extends Controller {
 
 	/**
 	 * Remove the specified resource from storage.
+	 *
+	 * @param Category $category
+	 * @return void
 	 */
 	public function destroy( Category $category ) {
-		//
+		if (  ! empty( $category->photo ) ) {
+			ImageManager::deleteImage( Category::IMAGE_IMAGE_PATH, $category->photo );
+			ImageManager::deleteImage( Category::THUMB_IMAGE_IMAGE_PATH, $category->photo );
+		}
+		$category->delete();
+
+		return response()->json( ['msg' => 'Category deleted successfully', 'cls' => 'warning'] );
 	}
 }
