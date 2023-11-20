@@ -21,13 +21,23 @@ class Category extends Model {
 	];
 
 	/**
-	 * Store category data
+	 * Create category data
 	 *
 	 * @param array $input
 	 * @return void
 	 */
-	public function storeCategory( array $input ) {
+	public function createCategory( array $input ) {
 		return self::query()->create( $input );
+	}
+
+	/**
+	 * Update category data
+	 *
+	 * @param array $input
+	 * @return void
+	 */
+	public function updateCategory( array $input ) {
+		return self::query()->update( $input );
 	}
 
 	/**

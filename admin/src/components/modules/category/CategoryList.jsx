@@ -248,7 +248,11 @@ const CategoryList = () => {
 													</tr>
 												))
 											) : (
-												<NoDataFound />
+												<tr>
+													<td colSpan={7}>
+														<NoDataFound />
+													</td>
+												</tr>
 											)}
 										</tbody>
 									</table>

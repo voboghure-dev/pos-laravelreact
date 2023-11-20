@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../partials/Breadcrumb';
 import Constants from '../../../Constants';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
 
 const CategoryAdd = () => {
 	const navigate = useNavigate();
@@ -75,7 +75,6 @@ const CategoryAdd = () => {
 							<h4>Add Category</h4>
 						</div>
 						<div className='card-body'>
-							{/** name, slug, description, serial, photo, status */}
 							<div className='row'>
 								<div className='col-md-6 mb-3'>
 									<label className='small mb-1' htmlFor='name'>
