@@ -60,6 +60,15 @@ class Category extends Model {
 	}
 
 	/**
+	 * Get category id and name for populate select category dropdown
+	 *
+	 * @return collection
+	 */
+	public function getCategoryIdAndName() {
+		return self::query()->select( 'id', 'name' )->get();
+	}
+
+	/**
 	 * Relation with user table
 	 *
 	 * @return void

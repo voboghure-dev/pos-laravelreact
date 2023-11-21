@@ -9,6 +9,8 @@ import Protected from './Protected';
 import CategoryList from '../modules/category/CategoryList';
 import CategoryAdd from '../modules/category/CategoryAdd';
 import CategoryEdit from '../modules/category/CategoryEdit';
+import SubCategoryList from '../modules/subCategory/SubCategoryList';
+import SubCategoryAdd from '../modules/subCategory/SubCategoryAdd';
 
 const Router = createBrowserRouter([
 	{
@@ -34,6 +36,18 @@ const Router = createBrowserRouter([
 			{
 				path: '/dashboard/category',
 				element: <CategoryList />,
+			},
+			{
+				path: '/dashboard/sub-category/create',
+				element: <SubCategoryAdd />,
+			},
+			{
+				path: '/dashboard/sub-category/edit/:id',
+				element: <CategoryEdit />,
+			},
+			{
+				path: '/dashboard/sub-category',
+				element: <SubCategoryList />,
 			},
 			{
 				path: '/dashboard/error-500',

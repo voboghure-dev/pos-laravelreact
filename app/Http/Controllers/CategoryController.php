@@ -33,7 +33,9 @@ class CategoryController extends Controller {
 		$category            = $request->except( 'photo' );
 		$category['slug']    = Str::slug( $request->input( 'slug' ) );
 		$category['user_id'] = auth()->id();
-		$category['photo']   = $this->imageUpload( $request->input( 'photo' ), $category['slug'] );
+		if ( $request->has( 'photo' ) ) {
+			$category['photo'] = $this->imageUpload( $request->input( 'photo' ), $category['slug'] );
+		}
 		( new Category() )->createCategory( $category );
 
 		return response()->json( ['msg' => 'Category created successfully', 'cls' => 'success'] );
@@ -100,5 +102,16 @@ class CategoryController extends Controller {
 		ImageManager::uploadImage( $name, $width_thumb, $height_thumb, $path_thumb, $file );
 
 		return $photo_name;
+	}
+
+	/**
+	 * Get category list with id and name
+	 *
+	 * @return JsonResponse
+	 */
+	public function get_category_list() {
+		$categories = ( new Category() )->getCategoryIdAndName();
+
+		return response()->json( $categories );
 	}
 }
