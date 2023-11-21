@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import Breadcrumb from '../../partials/Breadcrumb';
 import Constants from '../../../Constants';
 import axios from 'axios';
-import CategoryPhotoModals from '../../partials/CategoryPhotoModals';
 import Pagination from 'react-js-pagination';
-import CategoryDetailsModals from '../../partials/CategoryDetailsModals';
 import Swal from 'sweetalert2';
 import NoDataFound from '../../partials/NoDataFound';
+import SubCategoryDetailsModals from './SubCategoryDetailsModals';
+import PhotoModals from '../../partials/PhotoModals';
 
 const SubCategoryList = () => {
 	const [input, setInput] = useState({
@@ -21,24 +21,24 @@ const SubCategoryList = () => {
 	const [photoModalShow, setPhotoModalShow] = useState(false);
 	const [modalPhoto, setModalPhoto] = useState('');
 
-	const [categoryModalShow, setCategoryModalShow] = useState(false);
+	const [subCategoryModalShow, setSubCategoryModalShow] = useState(false);
 	const [modalDetails, setModalDetails] = useState('');
 
-	const [categories, setCategories] = useState([]);
+	const [subCategories, setSubCategories] = useState([]);
 
 	const [itemsCountPerPage, setItemsCountPerPage] = useState(0);
 	const [totalItemsCount, setTotalItemsCount] = useState(1);
 	const [startFrom, setStartFrom] = useState(1);
 	const [activePage, setActivePage] = useState(1);
 
-	const getCategories = (pageNumber = 1) => {
+	const getSubCategories = (pageNumber = 1) => {
 		setIsLoading(true);
 		axios
 			.get(
-				`${Constants.BASE_URL}/category?page=${pageNumber}&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
+				`${Constants.BASE_URL}/sub-category?page=${pageNumber}&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
 			)
 			.then((res) => {
-				setCategories(res.data.data);
+				setSubCategories(res.data.data);
 				setItemsCountPerPage(res.data.meta.per_page);
 				setTotalItemsCount(res.data.meta.total);
 				setStartFrom(res.data.meta.from);
@@ -53,7 +53,7 @@ const SubCategoryList = () => {
 	};
 
 	const handleDetailsModal = (category) => {
-		setCategoryModalShow(true);
+		setSubCategoryModalShow(true);
 		setModalDetails(category);
 	};
 
@@ -64,10 +64,10 @@ const SubCategoryList = () => {
 		}));
 	};
 
-	const handleCategoryDelete = (id) => {
+	const handleSubCategoryDelete = (id) => {
 		Swal.fire({
 			title: 'Are you sure?',
-			text: 'Category will be deleted!',
+			text: 'Sub Category will be deleted!',
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
@@ -75,8 +75,8 @@ const SubCategoryList = () => {
 			confirmButtonText: 'Yes, delete!',
 		}).then((result) => {
 			if (result.isConfirmed) {
-				axios.delete(`${Constants.BASE_URL}/category/${id}`).then((res) => {
-					getCategories();
+				axios.delete(`${Constants.BASE_URL}/sub-category/${id}`).then((res) => {
+					getSubCategories();
 					Swal.fire({
 						position: 'top-end',
 						icon: res.data.cls,
@@ -91,7 +91,7 @@ const SubCategoryList = () => {
 	};
 
 	useEffect(() => {
-		getCategories();
+		getSubCategories();
 	}, []);
 
 	return (
@@ -165,7 +165,7 @@ const SubCategoryList = () => {
 									<div className='col-md-2'>
 										<div className='d-grid mt-4'>
 											<button
-												onClick={() => getCategories(1)}
+												onClick={() => getSubCategories(1)}
 												className='btn btn-sm btn-primary'
 												dangerouslySetInnerHTML={{
 													__html: isLoading
@@ -191,6 +191,7 @@ const SubCategoryList = () => {
 											<tr>
 												<th>Sl</th>
 												<th>Name / Slug</th>
+												<th>Category</th>
 												<th>Serial / Status</th>
 												<th>Photo</th>
 												<th>Created By</th>
@@ -199,47 +200,48 @@ const SubCategoryList = () => {
 											</tr>
 										</thead>
 										<tbody>
-											{Object.keys(categories).length > 0 ? (
-												categories.map((category, index) => (
+											{Object.keys(subCategories).length > 0 ? (
+												subCategories.map((subCategory, index) => (
 													<tr key={index}>
 														<td>{startFrom + index}</td>
 														<td>
-															<p className='text-primary'>Name: {category.name}</p>
-															<p className='text-success'>Slug: {category.slug}</p>
+															<p className='text-primary'>Name: {subCategory.name}</p>
+															<p className='text-success'>Slug: {subCategory.slug}</p>
 														</td>
+														<td>{subCategory.category}</td>
 														<td>
-															<p className='text-primary'>Serial: {category.serial}</p>
-															<p className='text-success'>Status: {category.status}</p>
+															<p className='text-primary'>Serial: {subCategory.serial}</p>
+															<p className='text-success'>Status: {subCategory.status}</p>
 														</td>
 														<td>
 															<img
-																onClick={() => handlePhotoModal(category.photo)}
-																src={category.photo_thumb}
-																alt={category.name}
+																onClick={() => handlePhotoModal(subCategory.photo)}
+																src={subCategory.photo_thumb}
+																alt={subCategory.name}
 																className='img-thumbnail mx-auto d-block category-photo'
 															/>
 														</td>
 														<td>
-															<p>{category.created_by}</p>
+															<p>{subCategory.created_by}</p>
 														</td>
 														<td>
-															<p className='text-primary'>{category.created_at}</p>
-															<p className='text-success'>{category.updated_at}</p>
+															<p className='text-primary'>{subCategory.created_at}</p>
+															<p className='text-success'>{subCategory.updated_at}</p>
 														</td>
 														<td className='text-center'>
 															<button
-																onClick={() => handleDetailsModal(category)}
+																onClick={() => handleDetailsModal(subCategory)}
 																className='btn btn-sm btn-info'
 															>
 																<i className='fa-solid fa-eye' />
 															</button>
-															<Link to={`/dashboard/category/edit/${category.id}`}>
+															<Link to={`/dashboard/sub-category/edit/${subCategory.id}`}>
 																<button className='btn btn-sm btn-warning mx-1'>
 																	<i className='fa-solid fa-edit' />
 																</button>
 															</Link>
 															<button
-																onClick={() => handleCategoryDelete(category.id)}
+																onClick={() => handleSubCategoryDelete(subCategory.id)}
 																className='btn btn-sm btn-danger'
 															>
 																<i className='fa-solid fa-trash' />
@@ -256,16 +258,16 @@ const SubCategoryList = () => {
 											)}
 										</tbody>
 									</table>
-									<CategoryPhotoModals
+									<PhotoModals
 										show={photoModalShow}
 										onHide={() => setPhotoModalShow(false)}
-										title='Category Photo'
+										title='Sub Category Photo'
 										size=''
 										photo={modalPhoto}
 									/>
-									<CategoryDetailsModals
-										show={categoryModalShow}
-										onHide={() => setCategoryModalShow(false)}
+									<SubCategoryDetailsModals
+										show={subCategoryModalShow}
+										onHide={() => setSubCategoryModalShow(false)}
 										title='Category Details'
 										size=''
 										details={modalDetails}
@@ -286,7 +288,7 @@ const SubCategoryList = () => {
 									firstPageText={'First'}
 									lastPageText={'Last'}
 									nextPageText={'Next'}
-									onChange={getCategories}
+									onChange={getSubCategories}
 								/>
 							</nav>
 						</div>

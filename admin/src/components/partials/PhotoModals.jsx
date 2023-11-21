@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal';
 
-const CategoryPhotoModals = (props) => {
+const PhotoModals = (props) => {
     return (
         <Modal
             {...props}
@@ -20,4 +20,4 @@ const CategoryPhotoModals = (props) => {
     );
 };
 
-export default CategoryPhotoModals;
+export default PhotoModals;

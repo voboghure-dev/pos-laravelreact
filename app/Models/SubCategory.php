@@ -22,12 +22,49 @@ class SubCategory extends Model {
 	];
 
 	/**
-	 * Create category data
+	 * Create sub category data
 	 *
 	 * @param array $input
 	 * @return void
 	 */
 	public function createSubCategory( array $input ) {
 		return self::query()->create( $input );
+	}
+
+	/**
+	 * Get all sub category data
+	 *
+	 * @param array $input
+	 * @return void
+	 */
+	final public function getAllSubCategories( array $input ) {
+		$query = self::query();
+		if ( $input['search'] ) {
+			$query->where( 'name', 'LIKE', '%' . $input['search'] . '%' );
+		}
+		if ( $input['order_by'] ) {
+			$query->orderBy( $input['order_by'], $input['direction'] ?? 'asc' );
+		}
+		$per_page = $input['per_page'] ?? 10;
+
+		return $query->with( ['user:id,name', 'category:id,name'] )->paginate( $per_page );
+	}
+
+	/**
+	 * Relation with user table
+	 *
+	 * @return void
+	 */
+	public function user() {
+		return $this->belongsTo( User::class );
+	}
+
+	/**
+	 * Relation with category table
+	 *
+	 * @return void
+	 */
+	public function category() {
+		return $this->belongsTo( Category::class );
 	}
 }

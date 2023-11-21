@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import Breadcrumb from '../../partials/Breadcrumb';
 import Constants from '../../../Constants';
 import axios from 'axios';
-import CategoryPhotoModals from '../../partials/CategoryPhotoModals';
 import Pagination from 'react-js-pagination';
-import CategoryDetailsModals from '../../partials/CategoryDetailsModals';
 import Swal from 'sweetalert2';
 import NoDataFound from '../../partials/NoDataFound';
+import CategoryDetailsModals from './CategoryDetailsModals';
+import PhotoModals from '../../partials/PhotoModals';
 
 const CategoryList = () => {
 	const [input, setInput] = useState({
@@ -256,7 +256,7 @@ const CategoryList = () => {
 											)}
 										</tbody>
 									</table>
-									<CategoryPhotoModals
+									<PhotoModals
 										show={photoModalShow}
 										onHide={() => setPhotoModalShow(false)}
 										title='Category Photo'

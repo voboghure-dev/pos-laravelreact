@@ -3,16 +3,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSubCategoryRequest;
 use App\Http\Requests\UpdateSubCategoryRequest;
+use App\Http\Resources\SubCategoryListResource;
 use App\Manager\ImageManager;
 use App\Models\SubCategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class SubCategoryController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
-		//
+	public function index( Request $request ) {
+		$categories = ( new SubCategory() )->getAllSubCategories( $request->all() );
+
+		return SubCategoryListResource::collection( $categories );
 	}
 
 	/**
