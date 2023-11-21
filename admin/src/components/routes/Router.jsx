@@ -11,6 +11,7 @@ import CategoryAdd from '../modules/category/CategoryAdd';
 import CategoryEdit from '../modules/category/CategoryEdit';
 import SubCategoryList from '../modules/subCategory/SubCategoryList';
 import SubCategoryAdd from '../modules/subCategory/SubCategoryAdd';
+import SubCategoryEdit from '../modules/subCategory/SubCategoryEdit';
 
 const Router = createBrowserRouter([
 	{
@@ -43,7 +44,7 @@ const Router = createBrowserRouter([
 			},
 			{
 				path: '/dashboard/sub-category/edit/:id',
-				element: <CategoryEdit />,
+				element: <SubCategoryEdit />,
 			},
 			{
 				path: '/dashboard/sub-category',

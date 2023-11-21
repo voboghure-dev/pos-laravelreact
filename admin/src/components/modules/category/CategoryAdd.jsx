@@ -145,7 +145,6 @@ const CategoryAdd = () => {
 										id='status'
 										value={input.status}
 										onChange={handleInput}
-										type='number'
 										placeholder='Enter category status'
 									>
 										<option value={1}>Active</option>

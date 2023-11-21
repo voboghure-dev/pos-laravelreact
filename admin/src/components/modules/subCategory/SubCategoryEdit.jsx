@@ -12,6 +12,26 @@ const SubCategoryEdit = () => {
 	const [input, setInput] = useState({});
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [categories, setCategories] = useState([]);
+
+	const getCategory = () => {
+		axios.get(`${Constants.BASE_URL}/sub-category/${params.id}`).then((res) => {
+			setInput(res.data.data);
+		});
+	};
+
+	const getCategories = () => {
+		axios
+			.get(`${Constants.BASE_URL}/get-category-list`)
+			.then((res) => {
+				setCategories(res.data);
+			})
+			.catch((errors) => {
+				if (errors.response.status == 422) {
+					setErrors(errors.response.data.errors);
+				}
+			});
+	};
 
 	const handleInput = (e) => {
 		if (e.target.name == 'name') {
@@ -42,10 +62,10 @@ const SubCategoryEdit = () => {
 		reader.readAsDataURL(file);
 	};
 
-	const handleCategoryEdit = () => {
+	const handleSubCategoryEdit = () => {
 		setIsLoading(true);
 		axios
-			.put(`${Constants.BASE_URL}/category/${params.id}`, input)
+			.put(`${Constants.BASE_URL}/sub-category/${params.id}`, input)
 			.then((res) => {
 				setIsLoading(false);
 				Swal.fire({
@@ -56,7 +76,7 @@ const SubCategoryEdit = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate('/dashboard/category');
+				navigate('/dashboard/sub-category');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -67,14 +87,13 @@ const SubCategoryEdit = () => {
 	};
 
 	useEffect(() => {
-		axios.get(`${Constants.BASE_URL}/category/${params.id}`).then((res) => {
-			setInput(res.data.data);
-		});
+		getCategory();
+		getCategories();
 	}, []);
 
 	return (
 		<>
-			<Breadcrumb title={'Edit Category'} />
+			<Breadcrumb title={'Edit Sub Category'} />
 
 			<div className='row'>
 				<div className='col-md-12'>
@@ -84,6 +103,31 @@ const SubCategoryEdit = () => {
 						</div>
 						<div className='card-body'>
 							<div className='row'>
+								<div className='col-md-6 mb-3'>
+									<label className='small mb-1' htmlFor='status'>
+										Select Category
+									</label>
+									<select
+										className={
+											errors.category_id != undefined ? 'form-control is-invalid' : 'form-control'
+										}
+										name='category_id'
+										id='category_id'
+										value={input.category_id}
+										onChange={handleInput}
+										placeholder='Select category name'
+									>
+										<option value=''>Select Category</option>
+										{categories.map((category, index) => (
+											<option key={index} value={category.id}>
+												{category.name}
+											</option>
+										))}
+									</select>
+									<div className='invalid-feedback'>
+										{errors.category_id != undefined ? errors.category_id[0] : null}
+									</div>
+								</div>
 								<div className='col-md-6 mb-3'>
 									<label className='small mb-1' htmlFor='name'>
 										Name
@@ -97,7 +141,7 @@ const SubCategoryEdit = () => {
 										value={input.name || ''}
 										onChange={handleInput}
 										type='text'
-										placeholder='Enter category name'
+										placeholder='Enter sub category name'
 									/>
 									<div className='invalid-feedback'>
 										{errors.name != undefined ? errors.name[0] : null}
@@ -116,7 +160,7 @@ const SubCategoryEdit = () => {
 										value={input.slug || ''}
 										onChange={handleInput}
 										type='text'
-										placeholder='Enter category slug'
+										placeholder='Enter sub category slug'
 									/>
 									<div className='invalid-feedback'>
 										{errors.slug != undefined ? errors.slug[0] : null}
@@ -135,7 +179,7 @@ const SubCategoryEdit = () => {
 										value={input.serial || ''}
 										onChange={handleInput}
 										type='number'
-										placeholder='Enter category serial'
+										placeholder='Enter sub category serial'
 									/>
 									<div className='invalid-feedback'>
 										{errors.serial != undefined ? errors.serial[0] : null}
@@ -153,8 +197,7 @@ const SubCategoryEdit = () => {
 										id='status'
 										value={input.status || 0}
 										onChange={handleInput}
-										type='number'
-										placeholder='Enter category status'
+										placeholder='Enter sub category status'
 									>
 										<option value={1}>Active</option>
 										<option value={0}>Inactive</option>
@@ -175,7 +218,7 @@ const SubCategoryEdit = () => {
 										id='description'
 										value={input.description || ''}
 										onChange={handleInput}
-										placeholder='Enter category description'
+										placeholder='Enter sub category description'
 										rows='3'
 									/>
 									<div className='invalid-feedback'>
@@ -199,7 +242,7 @@ const SubCategoryEdit = () => {
 											<div className='col-md-6'>
 												<img
 													src={input.photo != undefined ? input.photo : input.existing_photo}
-													alt='Category photo'
+													alt='Sub category photo'
 													className='img-thumbnail'
 												/>
 											</div>
@@ -212,7 +255,7 @@ const SubCategoryEdit = () => {
 							<button
 								className='btn btn-primary'
 								type='button'
-								onClick={handleCategoryEdit}
+								onClick={handleSubCategoryEdit}
 								dangerouslySetInnerHTML={{
 									__html: isLoading
 										? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Loading...'

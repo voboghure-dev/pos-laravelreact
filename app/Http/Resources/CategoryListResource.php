@@ -24,7 +24,7 @@ class CategoryListResource extends JsonResource {
 			'photo_thumb' => ImageManager::prepareImage( Category::THUMB_IMAGE_IMAGE_PATH, $this->photo ),
 			'created_by'  => $this->user?->name,
 			'created_at'  => $this->created_at->toDayDateTimeString(),
-			'updated_at'  => $this->created_at != $this->updated_at ? $this->created_at->toDayDateTimeString() : 'Not yet updated',
+			'updated_at'  => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not yet updated',
 		];
 	}
 }

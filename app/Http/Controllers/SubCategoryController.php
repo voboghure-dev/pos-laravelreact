@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSubCategoryRequest;
 use App\Http\Requests\UpdateSubCategoryRequest;
+use App\Http\Resources\SubCategoryEditResource;
 use App\Http\Resources\SubCategoryListResource;
 use App\Manager\ImageManager;
 use App\Models\SubCategory;
@@ -12,6 +13,9 @@ use Illuminate\Support\Str;
 class SubCategoryController extends Controller {
 	/**
 	 * Display a listing of the resource.
+	 *
+	 * @param Request $request
+	 * @return void
 	 */
 	public function index( Request $request ) {
 		$categories = ( new SubCategory() )->getAllSubCategories( $request->all() );
@@ -21,6 +25,9 @@ class SubCategoryController extends Controller {
 
 	/**
 	 * Store a newly created resource in storage.
+	 *
+	 * @param StoreSubCategoryRequest $request
+	 * @return void
 	 */
 	public function store( StoreSubCategoryRequest $request ) {
 		$sub_category            = $request->except( 'photo' );
@@ -36,20 +43,38 @@ class SubCategoryController extends Controller {
 
 	/**
 	 * Display the specified resource.
+	 *
+	 * @param SubCategory $subCategory
+	 * @return void
 	 */
 	public function show( SubCategory $subCategory ) {
-		//
+		return new SubCategoryEditResource( $subCategory );
 	}
 
 	/**
 	 * Update the specified resource in storage.
+	 *
+	 * @param UpdateSubCategoryRequest $request
+	 * @param SubCategory $subCategory
+	 * @return void
 	 */
 	public function update( UpdateSubCategoryRequest $request, SubCategory $subCategory ) {
-		//
+		$sub_category_data            = $request->except( 'photo' );
+		$sub_category_data['slug']    = Str::slug( $request->input( 'slug' ) );
+		$sub_category_data['user_id'] = auth()->id();
+		if (  ! empty( $request->photo ) ) {
+			$sub_category_data['photo'] = $this->imageUpload( $request->input( 'photo' ), $sub_category_data['slug'], $subCategory->photo );
+		}
+		$subCategory->update( $sub_category_data );
+
+		return response()->json( ['msg' => 'Sub category updated successfully', 'cls' => 'success'] );
 	}
 
 	/**
 	 * Remove the specified resource from storage.
+	 *
+	 * @param SubCategory $subCategory
+	 * @return void
 	 */
 	public function destroy( SubCategory $subCategory ) {
 		if (  ! empty( $subCategory->photo ) ) {

@@ -27,7 +27,7 @@ class CategoryController extends Controller {
 	 * Store a newly created resource in storage.
 	 *
 	 * @param StoreCategoryRequest $request
-	 * @return void
+	 * @return JsonResponse
 	 */
 	public function store( StoreCategoryRequest $request ) {
 		$category            = $request->except( 'photo' );
@@ -43,6 +43,9 @@ class CategoryController extends Controller {
 
 	/**
 	 * Display the specified resource.
+	 *
+	 * @param Category $category
+	 * @return void
 	 */
 	public function show( Category $category ) {
 		return new CategoryEditResource( $category );
@@ -50,23 +53,28 @@ class CategoryController extends Controller {
 
 	/**
 	 * Update the specified resource in storage.
+	 *
+	 * @param UpdateCategoryRequest $request
+	 * @param Category $category
+	 * @return JsonResponse
 	 */
 	public function update( UpdateCategoryRequest $request, Category $category ) {
 		$category_data            = $request->except( 'photo' );
 		$category_data['slug']    = Str::slug( $request->input( 'slug' ) );
 		$category_data['user_id'] = auth()->id();
-		$category_data['photo']   = $this->imageUpload( $request->input( 'photo' ), $category_data['slug'], $category->photo );
+		if (  ! empty( $request->photo ) ) {
+			$category_data['photo'] = $this->imageUpload( $request->input( 'photo' ), $category_data['slug'], $category->photo );
+		}
 		$category->update( $category_data );
-		// ( new Category() )->updateCategory( $category_data );
 
-		return response()->json( ['msg' => 'Category created successfully', 'cls' => 'success'] );
+		return response()->json( ['msg' => 'Category updated successfully', 'cls' => 'success'] );
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 *
 	 * @param Category $category
-	 * @return void
+	 * @return JsonResponse
 	 */
 	public function destroy( Category $category ) {
 		if (  ! empty( $category->photo ) ) {

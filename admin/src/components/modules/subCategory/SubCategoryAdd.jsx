@@ -233,7 +233,7 @@ const SubCategoryAdd = () => {
 											<div className='col-md-6'>
 												<img
 													src={input.photo}
-													alt='Sub Category photo'
+													alt='Sub category photo'
 													className='img-thumbnail'
 												/>
 											</div>

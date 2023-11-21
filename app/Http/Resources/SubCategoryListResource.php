@@ -15,8 +15,8 @@ class SubCategoryListResource extends JsonResource {
 	public function toArray( Request $request ): array {
 		return [
 			'id'          => $this->id,
-			'name'        => $this->name,
 			'category'    => $this->category?->name,
+			'name'        => $this->name,
 			'description' => $this->description,
 			'slug'        => $this->slug,
 			'serial'      => $this->serial,
@@ -25,7 +25,7 @@ class SubCategoryListResource extends JsonResource {
 			'photo_thumb' => ImageManager::prepareImage( SubCategory::THUMB_IMAGE_IMAGE_PATH, $this->photo ),
 			'created_by'  => $this->user?->name,
 			'created_at'  => $this->created_at->toDayDateTimeString(),
-			'updated_at'  => $this->created_at != $this->updated_at ? $this->created_at->toDayDateTimeString() : 'Not yet updated',
+			'updated_at'  => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not yet updated',
 		];
 	}
 }
