@@ -52,7 +52,13 @@ class SubCategoryController extends Controller {
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy( SubCategory $subCategory ) {
-		//
+		if (  ! empty( $subCategory->photo ) ) {
+			ImageManager::deleteImage( SubCategory::IMAGE_IMAGE_PATH, $subCategory->photo );
+			ImageManager::deleteImage( SubCategory::THUMB_IMAGE_IMAGE_PATH, $subCategory->photo );
+		}
+		$subCategory->delete();
+
+		return response()->json( ['msg' => 'Sub category deleted successfully', 'cls' => 'warning'] );
 	}
 
 	/**

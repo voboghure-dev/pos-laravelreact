@@ -68,7 +68,7 @@ const SubCategoryAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate('/dashboard/category');
+				navigate('/dashboard/sub-category');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
