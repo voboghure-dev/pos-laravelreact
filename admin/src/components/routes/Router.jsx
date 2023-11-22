@@ -12,8 +12,9 @@ import CategoryEdit from '../modules/category/CategoryEdit';
 import SubCategoryList from '../modules/subCategory/SubCategoryList';
 import SubCategoryAdd from '../modules/subCategory/SubCategoryAdd';
 import SubCategoryEdit from '../modules/subCategory/SubCategoryEdit';
-import BrandAdd from '../modules/brand/BrandAdd';
 import BrandList from '../modules/brand/BrandList';
+import BrandAdd from '../modules/brand/BrandAdd';
+import BrandEdit from '../modules/brand/BrandEdit';
 
 const Router = createBrowserRouter([
 	{
@@ -58,7 +59,7 @@ const Router = createBrowserRouter([
 			},
 			{
 				path: '/dashboard/brand/edit/:id',
-				element: <SubCategoryEdit />,
+				element: <BrandEdit />,
 			},
 			{
 				path: '/dashboard/brand',

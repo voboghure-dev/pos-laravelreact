@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
+use App\Http\Resources\BrandEditResource;
 use App\Http\Resources\BrandListResource;
 use App\Manager\ImageManager;
 use App\Models\Brand;
@@ -12,6 +13,9 @@ use Illuminate\Support\Str;
 class BrandController extends Controller {
 	/**
 	 * Display a listing of the resource.
+	 *
+	 * @param Request $request
+	 * @return void
 	 */
 	public function index( Request $request ) {
 		$brands = ( new Brand() )->getAllBrands( $request->all() );
@@ -39,20 +43,38 @@ class BrandController extends Controller {
 
 	/**
 	 * Display the specified resource.
+	 *
+	 * @param Brand $brand
+	 * @return void
 	 */
 	public function show( Brand $brand ) {
-		//
+		return new BrandEditResource( $brand );
 	}
 
 	/**
 	 * Update the specified resource in storage.
+	 *
+	 * @param UpdateBrandRequest $request
+	 * @param Brand $brand
+	 * @return void
 	 */
 	public function update( UpdateBrandRequest $request, Brand $brand ) {
-		//
+		$brand_data            = $request->except( 'logo' );
+		$brand_data['slug']    = Str::slug( $request->input( 'slug' ) );
+		$brand_data['user_id'] = auth()->id();
+		if (  ! empty( $request->logo ) ) {
+			$brand_data['logo'] = $this->imageUpload( $request->input( 'logo' ), $brand_data['slug'], $brand->logo );
+		}
+		$brand->update( $brand_data );
+
+		return response()->json( ['msg' => 'Category updated successfully', 'cls' => 'success'] );
 	}
 
 	/**
 	 * Remove the specified resource from storage.
+	 *
+	 * @param Brand $brand
+	 * @return void
 	 */
 	public function destroy( Brand $brand ) {
 		if (  ! empty( $brand->logo ) ) {
@@ -84,9 +106,9 @@ class BrandController extends Controller {
 		$height_thumb = 150;
 		$path         = Brand::IMAGE_IMAGE_PATH;
 		$path_thumb   = Brand::THUMB_IMAGE_IMAGE_PATH;
-		$photo_name   = ImageManager::uploadImage( $name, $width, $height, $path, $file );
+		$logo_name    = ImageManager::uploadImage( $name, $width, $height, $path, $file );
 		ImageManager::uploadImage( $name, $width_thumb, $height_thumb, $path_thumb, $file );
 
-		return $photo_name;
+		return $logo_name;
 	}
 }

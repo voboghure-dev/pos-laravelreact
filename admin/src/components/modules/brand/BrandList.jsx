@@ -259,7 +259,7 @@ const BrandList = () => {
 									<PhotoModals
 										show={photoModalShow}
 										onHide={() => setPhotoModalShow(false)}
-										title='Brands Photo'
+										title='Brands Logo'
 										size=''
 										photo={modalPhoto}
 									/>

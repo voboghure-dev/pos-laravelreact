@@ -5,7 +5,7 @@ import Constants from '../../../Constants';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const CategoryEdit = () => {
+const BrandEdit = () => {
 	const params = useParams();
 	const navigate = useNavigate();
 
@@ -30,22 +30,22 @@ const CategoryEdit = () => {
 		}));
 	};
 
-	const handlePhoto = (e) => {
+	const handleLogo = (e) => {
 		let file = e.target.files[0];
 		let reader = new FileReader();
 		reader.onloadend = () => {
 			setInput((prevState) => ({
 				...prevState,
-				photo: reader.result,
+				logo: reader.result,
 			}));
 		};
 		reader.readAsDataURL(file);
 	};
 
-	const handleCategoryEdit = () => {
+	const handleBrandEdit = () => {
 		setIsLoading(true);
 		axios
-			.put(`${Constants.BASE_URL}/category/${params.id}`, input)
+			.put(`${Constants.BASE_URL}/brand/${params.id}`, input)
 			.then((res) => {
 				setIsLoading(false);
 				Swal.fire({
@@ -56,7 +56,7 @@ const CategoryEdit = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate('/dashboard/category');
+				navigate('/dashboard/brand');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -67,20 +67,20 @@ const CategoryEdit = () => {
 	};
 
 	useEffect(() => {
-		axios.get(`${Constants.BASE_URL}/category/${params.id}`).then((res) => {
+		axios.get(`${Constants.BASE_URL}/brand/${params.id}`).then((res) => {
 			setInput(res.data.data);
 		});
 	}, []);
 
 	return (
 		<>
-			<Breadcrumb title={'Edit Category'} />
+			<Breadcrumb title={'Edit Brand'} />
 
 			<div className='row'>
 				<div className='col-md-12'>
 					<div className='card'>
 						<div className='card-header'>
-							<h4>Edit Category</h4>
+							<h4>Edit Brand</h4>
 						</div>
 						<div className='card-body'>
 							<div className='row'>
@@ -97,7 +97,7 @@ const CategoryEdit = () => {
 										value={input.name || ""}
 										onChange={handleInput}
 										type='text'
-										placeholder='Enter category name'
+										placeholder='Enter brand name'
 									/>
 									<div className='invalid-feedback'>
 										{errors.name != undefined ? errors.name[0] : null}
@@ -116,7 +116,7 @@ const CategoryEdit = () => {
 										value={input.slug || ""}
 										onChange={handleInput}
 										type='text'
-										placeholder='Enter category slug'
+										placeholder='Enter brand slug'
 									/>
 									<div className='invalid-feedback'>
 										{errors.slug != undefined ? errors.slug[0] : null}
@@ -135,7 +135,7 @@ const CategoryEdit = () => {
 										value={input.serial || ""}
 										onChange={handleInput}
 										type='number'
-										placeholder='Enter category serial'
+										placeholder='Enter brand serial'
 									/>
 									<div className='invalid-feedback'>
 										{errors.serial != undefined ? errors.serial[0] : null}
@@ -153,7 +153,7 @@ const CategoryEdit = () => {
 										id='status'
 										value={input.status || 0}
 										onChange={handleInput}
-										placeholder='Enter category status'
+										placeholder='Enter brand status'
 									>
 										<option value={1}>Active</option>
 										<option value={0}>Inactive</option>
@@ -174,7 +174,7 @@ const CategoryEdit = () => {
 										id='description'
 										value={input.description || ""}
 										onChange={handleInput}
-										placeholder='Enter category description'
+										placeholder='Enter brand description'
 										rows='3'
 									/>
 									<div className='invalid-feedback'>
@@ -182,23 +182,23 @@ const CategoryEdit = () => {
 									</div>
 								</div>
 								<div className='col-md-6 mb-3'>
-									<label className='small mb-1' htmlFor='photo'>
-										Photo
+									<label className='small mb-1' htmlFor='logo'>
+										Logo
 									</label>
 									<input
 										className={
-											errors.photo != undefined ? 'form-control is-invalid' : 'form-control'
+											errors.logo != undefined ? 'form-control is-invalid' : 'form-control'
 										}
-										id='photo'
-										onChange={handlePhoto}
+										id='logo'
+										onChange={handleLogo}
 										type='file'
 									/>
-									{input.photo != undefined || input.existing_photo ? (
+									{input.logo != undefined || input.existing_logo ? (
 										<div className='row'>
 											<div className='col-md-6'>
 												<img
-													src={input.photo != undefined ? input.photo : input.existing_photo}
-													alt='Category photo'
+													src={input.logo != undefined ? input.logo : input.existing_logo}
+													alt='Brand logo'
 													className='img-thumbnail'
 												/>
 											</div>
@@ -211,7 +211,7 @@ const CategoryEdit = () => {
 							<button
 								className='btn btn-primary'
 								type='button'
-								onClick={handleCategoryEdit}
+								onClick={handleBrandEdit}
 								dangerouslySetInnerHTML={{
 									__html: isLoading
 										? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Loading...'
@@ -226,4 +226,4 @@ const CategoryEdit = () => {
 	);
 };
 
-export default CategoryEdit;
+export default BrandEdit;
