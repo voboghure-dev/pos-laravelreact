@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
 use Illuminate\Http\Request;
@@ -28,4 +29,5 @@ Route::group( ['middleware' => 'auth:sanctum'], static function () {
 	Route::get( 'get-category-list', [CategoryController::class, 'get_category_list'] );
 	Route::apiResource( 'category', CategoryController::class );
 	Route::apiResource( 'sub-category', SubCategoryController::class );
+	Route::apiResource( 'brand', BrandController::class );
 } );

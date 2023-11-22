@@ -182,6 +182,7 @@ const CategoryAdd = () => {
 											errors.photo != undefined ? 'form-control is-invalid' : 'form-control'
 										}
 										id='photo'
+										name='photo'
 										onChange={handlePhoto}
 										type='file'
 									/>
