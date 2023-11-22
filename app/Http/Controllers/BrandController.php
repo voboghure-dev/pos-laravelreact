@@ -55,7 +55,13 @@ class BrandController extends Controller {
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy( Brand $brand ) {
-		//
+		if (  ! empty( $brand->logo ) ) {
+			ImageManager::deleteImage( Brand::IMAGE_IMAGE_PATH, $brand->logo );
+			ImageManager::deleteImage( Brand::THUMB_IMAGE_IMAGE_PATH, $brand->logo );
+		}
+		$brand->delete();
+
+		return response()->json( ['msg' => 'Brand deleted successfully', 'cls' => 'warning'] );
 	}
 
 	/**
