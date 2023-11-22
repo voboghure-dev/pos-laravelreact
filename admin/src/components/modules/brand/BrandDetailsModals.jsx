@@ -56,7 +56,7 @@ const BrandDetailsModals = (props) => {
                             <th>Photo</th>
                             <td>
                                 <img
-                                    src={props.details.photo_thumb}
+                                    src={props.details.logo_thumb}
                                     alt={props.details.name}
                                     className="img-thumbnail category-photo"
                                 />

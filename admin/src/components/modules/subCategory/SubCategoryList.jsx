@@ -251,7 +251,7 @@ const SubCategoryList = () => {
 												))
 											) : (
 												<tr>
-													<td colSpan={7}>
+													<td colSpan={8}>
 														<NoDataFound />
 													</td>
 												</tr>
