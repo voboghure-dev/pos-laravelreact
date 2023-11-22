@@ -19,7 +19,7 @@ class CategoryListResource extends JsonResource {
 			'description' => $this->description,
 			'slug'        => $this->slug,
 			'serial'      => $this->serial,
-			'status'      => $this->serial == 1 ? 'Active' : 'Inactive',
+			'status'      => $this->status == 1 ? 'Active' : 'Inactive',
 			'photo'       => ImageManager::prepareImage( Category::IMAGE_IMAGE_PATH, $this->photo ),
 			'photo_thumb' => ImageManager::prepareImage( Category::THUMB_IMAGE_IMAGE_PATH, $this->photo ),
 			'created_by'  => $this->user?->name,

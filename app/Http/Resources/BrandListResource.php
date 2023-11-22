@@ -2,11 +2,11 @@
 namespace App\Http\Resources;
 
 use App\Manager\ImageManager;
-use App\Models\SubCategory;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SubCategoryListResource extends JsonResource {
+class BrandListResource extends JsonResource {
 	/**
 	 * Transform the resource into an array.
 	 *
@@ -15,14 +15,13 @@ class SubCategoryListResource extends JsonResource {
 	public function toArray( Request $request ): array {
 		return [
 			'id'          => $this->id,
-			'category'    => $this->category?->name,
 			'name'        => $this->name,
 			'description' => $this->description,
 			'slug'        => $this->slug,
 			'serial'      => $this->serial,
 			'status'      => $this->status == 1 ? 'Active' : 'Inactive',
-			'photo'       => ImageManager::prepareImage( SubCategory::IMAGE_IMAGE_PATH, $this->photo ),
-			'photo_thumb' => ImageManager::prepareImage( SubCategory::THUMB_IMAGE_IMAGE_PATH, $this->photo ),
+			'logo'        => ImageManager::prepareImage( Brand::IMAGE_IMAGE_PATH, $this->logo ),
+			'logo_thumb'  => ImageManager::prepareImage( Brand::THUMB_IMAGE_IMAGE_PATH, $this->logo ),
 			'created_by'  => $this->user?->name,
 			'created_at'  => $this->created_at->toDayDateTimeString(),
 			'updated_at'  => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not yet updated',

@@ -1,15 +1,15 @@
 import Modal from "react-bootstrap/Modal";
 
-const CategoryDetailsModals = (props) => {
+const BrandDetailsModals = (props) => {
     return (
         <Modal
             {...props}
             size={props.size}
-            aria-labelledby="category-details-modal"
+            aria-labelledby="brand-details-modal"
             centered
         >
             <Modal.Header closeButton>
-                <Modal.Title id="category-details-modal">
+                <Modal.Title id="brand-details-modal">
                     {props.title}
                 </Modal.Title>
             </Modal.Header>
@@ -69,4 +69,4 @@ const CategoryDetailsModals = (props) => {
     );
 };
 
-export default CategoryDetailsModals;
+export default BrandDetailsModals;

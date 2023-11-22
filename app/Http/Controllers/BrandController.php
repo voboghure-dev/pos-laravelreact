@@ -3,16 +3,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
+use App\Http\Resources\BrandListResource;
 use App\Manager\ImageManager;
 use App\Models\Brand;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class BrandController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
-		//
+	public function index( Request $request ) {
+		$brands = ( new Brand() )->getAllBrands( $request->all() );
+
+		return BrandListResource::collection( $brands );
 	}
 
 	/**

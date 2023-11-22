@@ -13,6 +13,7 @@ import SubCategoryList from '../modules/subCategory/SubCategoryList';
 import SubCategoryAdd from '../modules/subCategory/SubCategoryAdd';
 import SubCategoryEdit from '../modules/subCategory/SubCategoryEdit';
 import BrandAdd from '../modules/brand/BrandAdd';
+import BrandList from '../modules/brand/BrandList';
 
 const Router = createBrowserRouter([
 	{
@@ -61,7 +62,7 @@ const Router = createBrowserRouter([
 			},
 			{
 				path: '/dashboard/brand',
-				element: <SubCategoryList />,
+				element: <BrandList />,
 			},
 			{
 				path: '/dashboard/error-500',

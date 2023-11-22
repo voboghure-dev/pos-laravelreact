@@ -29,4 +29,32 @@ class Brand extends Model {
 	public function createBrand( array $input ) {
 		return self::query()->create( $input );
 	}
+
+	/**
+	 * Get all brand data
+	 *
+	 * @param array $input
+	 * @return void
+	 */
+	final public function getAllBrands( array $input ) {
+		$query = self::query();
+		if ( $input['search'] ) {
+			$query->where( 'name', 'LIKE', '%' . $input['search'] . '%' );
+		}
+		if ( $input['order_by'] ) {
+			$query->orderBy( $input['order_by'], $input['direction'] ?? 'asc' );
+		}
+		$per_page = $input['per_page'] ?? 10;
+
+		return $query->with( 'user:id,name' )->paginate( $per_page );
+	}
+
+	/**
+	 * Relation with user table
+	 *
+	 * @return void
+	 */
+	public function user() {
+		return $this->belongsTo( User::class );
+	}
 }
