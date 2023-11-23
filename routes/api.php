@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,4 +31,5 @@ Route::group( ['middleware' => 'auth:sanctum'], static function () {
 	Route::apiResource( 'category', CategoryController::class );
 	Route::apiResource( 'sub-category', SubCategoryController::class );
 	Route::apiResource( 'brand', BrandController::class );
+	Route::apiResource( 'supplier', SupplierController::class );
 } );

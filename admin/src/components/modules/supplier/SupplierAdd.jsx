@@ -43,7 +43,7 @@ const SupplierAdd = () => {
 	const handleSupplierAdd = () => {
 		setIsLoading(true);
 		axios
-			.post(`${Constants.BASE_URL}/brand`, input)
+			.post(`${Constants.BASE_URL}/supplier`, input)
 			.then((res) => {
 				setIsLoading(false);
 				Swal.fire({
@@ -54,7 +54,7 @@ const SupplierAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate('/dashboard/brand');
+				// navigate('/dashboard/supplier');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -62,6 +62,22 @@ const SupplierAdd = () => {
 					setErrors(errors.response.data.errors);
 				}
 			});
+	};
+
+	const handleSupplierReset = () => {
+		setInput({
+			company_name: '',
+			phone_number: '',
+			email_address: '',
+			status: '',
+			description: '',
+			logo: undefined,
+			address: '',
+			division: '',
+			district: '',
+			area: '',
+			land_mark: '',
+		});
 	};
 
 	return (
@@ -210,7 +226,7 @@ const SupplierAdd = () => {
 														type='file'
 														onChange={handleLogo}
 													/>
-													{input.logo != undefined ? (
+													{input.logo != undefined || input.logo == '' ? (
 														<div className='row'>
 															<div className='col-md-6'>
 																<img
@@ -272,9 +288,7 @@ const SupplierAdd = () => {
 														placeholder='Enter supplier division name'
 													/>
 													<div className='invalid-feedback'>
-														{errors.division != undefined
-															? errors.division[0]
-															: null}
+														{errors.division != undefined ? errors.division[0] : null}
 													</div>
 												</div>
 												<div className='col-md-12'>
@@ -295,9 +309,7 @@ const SupplierAdd = () => {
 														placeholder='Enter supplier district name'
 													/>
 													<div className='invalid-feedback'>
-														{errors.district != undefined
-															? errors.district[0]
-															: null}
+														{errors.district != undefined ? errors.district[0] : null}
 													</div>
 												</div>
 												<div className='col-md-12'>
@@ -318,9 +330,28 @@ const SupplierAdd = () => {
 														placeholder='Enter supplier area name'
 													/>
 													<div className='invalid-feedback'>
-														{errors.area != undefined
-															? errors.area[0]
-															: null}
+														{errors.area != undefined ? errors.area[0] : null}
+													</div>
+												</div>
+												<div className='col-md-12'>
+													<label className='small mb-1' htmlFor='land_mark'>
+														Land Mark
+													</label>
+													<input
+														className={
+															errors.land_mark != undefined
+																? 'form-control is-invalid'
+																: 'form-control'
+														}
+														name='land_mark'
+														id='land_mark'
+														value={input.land_mark}
+														onChange={handleInput}
+														type='text'
+														placeholder='Enter supplier land mark'
+													/>
+													<div className='invalid-feedback'>
+														{errors.land_mark != undefined ? errors.land_mark[0] : null}
 													</div>
 												</div>
 											</div>
@@ -329,7 +360,7 @@ const SupplierAdd = () => {
 								</div>
 							</div>
 						</div>
-						<div className='card-footer'>
+						<div className='card-footer d-flex justify-content-between'>
 							<button
 								className='btn btn-primary'
 								type='button'
@@ -338,6 +369,16 @@ const SupplierAdd = () => {
 									__html: isLoading
 										? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Loading...'
 										: 'Save changes',
+								}}
+							/>
+							<button
+								className='btn btn-danger'
+								type='button'
+								onClick={handleSupplierReset}
+								dangerouslySetInnerHTML={{
+									__html: isLoading
+										? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Loading...'
+										: 'Reset',
 								}}
 							/>
 						</div>
