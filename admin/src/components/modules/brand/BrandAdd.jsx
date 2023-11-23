@@ -139,7 +139,7 @@ const BrandAdd = () => {
 									</label>
 									<select
 										className={
-											errors.status != undefined ? 'form-control is-invalid' : 'form-control'
+											errors.status != undefined ? 'form-select is-invalid' : 'form-select'
 										}
 										name='status'
 										id='status'

@@ -115,6 +115,38 @@ const Sidebar = () => {
 							className='nav-link collapsed'
 							href='#'
 							data-bs-toggle='collapse'
+							data-bs-target='#supplierMenu'
+							aria-expanded='false'
+							aria-controls='supplierMenu'
+						>
+							<div className='sb-nav-link-icon'>
+								<i className='fas fa-columns'></i>
+							</div>
+							Supplier
+							<div className='sb-sidenav-collapse-arrow'>
+								<i className='fas fa-angle-down'></i>
+							</div>
+						</a>
+						<div
+							className='collapse'
+							id='supplierMenu'
+							aria-labelledby='headingOne'
+							data-bs-parent='#sidenavAccordion'
+						>
+							<nav className='sb-sidenav-menu-nested nav'>
+								<Link className='nav-link' to='/dashboard/supplier/create'>
+									Add Supplier
+								</Link>
+								<Link className='nav-link' to='/dashboard/supplier'>
+									Supplier List
+								</Link>
+							</nav>
+						</div>
+
+						<a
+							className='nav-link collapsed'
+							href='#'
+							data-bs-toggle='collapse'
 							data-bs-target='#collapsePages'
 							aria-expanded='false'
 							aria-controls='collapsePages'
