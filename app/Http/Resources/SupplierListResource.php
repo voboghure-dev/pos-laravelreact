@@ -14,16 +14,18 @@ class SupplierListResource extends JsonResource {
 	 */
 	public function toArray( Request $request ): array {
 		return [
-			'id'           => $this->id,
-			'company_name' => $this->company_name,
-			'description'  => $this->description,
-			'status'       => $this->status == 1 ? 'Active' : 'Inactive',
-			'logo'         => ImageManager::prepareImage( Supplier::IMAGE_IMAGE_PATH, $this->logo ),
-			'logo_thumb'   => ImageManager::prepareImage( Supplier::THUMB_IMAGE_IMAGE_PATH, $this->logo ),
-			'created_by'   => $this->user?->name,
-			'created_at'   => $this->created_at->toDayDateTimeString(),
-			'updated_at'   => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not yet updated',
-			'address'      => new AddressListResource( $this->address ),
+			'id'            => $this->id,
+			'company_name'  => $this->company_name,
+			'phone_number'  => $this->phone_number,
+			'email_address' => $this->email_address,
+			'description'   => $this->description,
+			'status'        => $this->status == 1 ? 'Active' : 'Inactive',
+			'logo'          => ImageManager::prepareImage( Supplier::IMAGE_IMAGE_PATH, $this->logo ),
+			'logo_thumb'    => ImageManager::prepareImage( Supplier::THUMB_IMAGE_IMAGE_PATH, $this->logo ),
+			'created_by'    => $this->user?->name,
+			'created_at'    => $this->created_at->toDayDateTimeString(),
+			'updated_at'    => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not yet updated',
+			'address'       => new AddressListResource( $this->address ),
 		];
 	}
 }

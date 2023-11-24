@@ -121,22 +121,24 @@ const SupplierList = () => {
 									<div className='col-md-3'>
 										<label htmlFor='order_by'>Order By</label>
 										<select
-											className='form-control form-control-sm'
+											className='form-select form-select-sm'
 											id='order_by'
 											name='order_by'
 											value={input.order_by}
 											onChange={handleInput}
 										>
-											<option value={'company_name'}>Name</option>
+											<option value={'company_name'}>Company Name</option>
+											<option value={'phone_email'}>Phone Number</option>
+											<option value={'email_address'}>Email Address</option>
+											<option value={'status'}>Status</option>
 											<option value={'created_at'}>Created at</option>
 											<option value={'updated_at'}>Updated at</option>
-											<option value={'status'}>Status</option>
 										</select>
 									</div>
 									<div className='col-md-2'>
 										<label htmlFor='direction'>Order Direction</label>
 										<select
-											className='form-control form-control-sm'
+											className='form-select form-select-sm'
 											id='direction'
 											name='direction'
 											value={input.direction}
@@ -149,7 +151,7 @@ const SupplierList = () => {
 									<div className='col-md-2'>
 										<label htmlFor='per_page'>Per Page</label>
 										<select
-											className='form-control form-control-sm'
+											className='form-select form-select-sm'
 											id='per_page'
 											name='per_page'
 											value={input.per_page}
