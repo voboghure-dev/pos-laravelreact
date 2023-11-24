@@ -8,6 +8,7 @@ use App\Manager\ImageManager;
 use App\Models\Address;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class SupplierController extends Controller {
@@ -28,16 +29,26 @@ class SupplierController extends Controller {
 		$address_data  = ( new Address() )->prepareData( $request->all() );
 
 		if ( $request->has( 'logo' ) ) {
-			$name                  = Str::slug( $supplier_data['company_name'] );
+			$name                  = Str::slug( $supplier_data['company_name'] ) . now();
 			$path                  = Supplier::IMAGE_IMAGE_PATH;
 			$path_thumb            = Supplier::THUMB_IMAGE_IMAGE_PATH;
 			$supplier_data['logo'] = ImageManager::imageUpload( $request->input( 'logo' ), $name, $path, $path_thumb );
 		}
 
-		$supplier = Supplier::create( $supplier_data );
-		$supplier->address()->create( $address_data );
+		try {
+			DB::beginTransaction();
+			$supplier = Supplier::create( $supplier_data );
+			$supplier->address()->create( $address_data );
+			DB::commit();
+		} catch ( \Throwable $th ) {
+			ImageManager::deleteImage( Supplier::IMAGE_IMAGE_PATH, $supplier_data['logo'] );
+			ImageManager::deleteImage( Supplier::THUMB_IMAGE_IMAGE_PATH, $supplier_data['logo'] );
+			DB::rollBack();
 
-		return response()->json( ['msg' => 'Supplier created successfully', 'cls' => 'success'] );
+			return response()->json( ['msg' => 'Unable to create Supplier!', 'cls' => 'error'] );
+		}
+
+		return response()->json( ['msg' => 'Supplier created successfully!', 'cls' => 'success'] );
 	}
 
 	/**
