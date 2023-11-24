@@ -16,6 +16,7 @@ import BrandList from '../modules/brand/BrandList';
 import BrandAdd from '../modules/brand/BrandAdd';
 import BrandEdit from '../modules/brand/BrandEdit';
 import SupplierAdd from '../modules/supplier/SupplierAdd';
+import SupplierList from '../modules/supplier/SupplierList';
 
 const Router = createBrowserRouter([
 	{
@@ -76,7 +77,7 @@ const Router = createBrowserRouter([
 			},
 			{
 				path: '/dashboard/supplier',
-				element: <BrandList />,
+				element: <SupplierList />,
 			},
 			{
 				path: '/dashboard/error-500',

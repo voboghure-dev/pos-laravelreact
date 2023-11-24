@@ -54,7 +54,7 @@ const SupplierAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				// navigate('/dashboard/supplier');
+				navigate('/dashboard/supplier');
 			})
 			.catch((errors) => {
 				setIsLoading(false);

@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 class Supplier extends Model {
 	use HasFactory;
 
+	public const IMAGE_IMAGE_PATH       = 'images/uploads/supplier/';
+	public const THUMB_IMAGE_IMAGE_PATH = 'images/uploads/supplier_thumb/';
+
 	protected $fillable = [
 		'company_name',
 		'phone_number',
@@ -34,6 +37,34 @@ class Supplier extends Model {
 		$supplier['user_id']       = $auth->id();
 
 		return $supplier;
+	}
+
+	/**
+	 * Get all suppliers data
+	 *
+	 * @param array $input
+	 * @return void
+	 */
+	final public function getAllSuppliers( array $input ) {
+		$query = self::query();
+		if ( $input['search'] ) {
+			$query->where( 'name', 'LIKE', '%' . $input['search'] . '%' );
+		}
+		if ( $input['order_by'] ) {
+			$query->orderBy( $input['order_by'], $input['direction'] ?? 'asc' );
+		}
+		$per_page = $input['per_page'] ?? 10;
+
+		return $query->with( 'user:id,name' )->paginate( $per_page );
+	}
+
+	/**
+	 * Relation with user table
+	 *
+	 * @return void
+	 */
+	public function user() {
+		return $this->belongsTo( User::class );
 	}
 
 	/**
