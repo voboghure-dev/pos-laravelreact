@@ -48,14 +48,16 @@ class Supplier extends Model {
 	final public function getAllSuppliers( array $input ) {
 		$query = self::query();
 		if ( $input['search'] ) {
-			$query->where( 'name', 'LIKE', '%' . $input['search'] . '%' );
+			$query->where( 'company_name', 'LIKE', '%' . $input['search'] . '%' )
+				->orWhere( 'phone_number', 'LIKE', '%' . $input['search'] . '%' )
+				->orWhere( 'email_address', 'LIKE', '%' . $input['search'] . '%' );
 		}
 		if ( $input['order_by'] ) {
 			$query->orderBy( $input['order_by'], $input['direction'] ?? 'asc' );
 		}
 		$per_page = $input['per_page'] ?? 10;
 
-		return $query->with( 'user:id,name' )->paginate( $per_page );
+		return $query->with( ['user:id,name', 'address'] )->paginate( $per_page );
 	}
 
 	/**

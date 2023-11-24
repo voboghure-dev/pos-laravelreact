@@ -189,8 +189,10 @@ const SupplierList = () => {
 										<thead>
 											<tr>
 												<th>Sl</th>
-												<th>Name / Slug</th>
-												<th>Serial / Status</th>
+												<th>Company Name / Status</th>
+												<th>Phone / Email</th>
+												<th>Address / Division</th>
+												<th>District / Area</th>
 												<th>Logo</th>
 												<th>Created By</th>
 												<th>Date & Time</th>
@@ -203,10 +205,34 @@ const SupplierList = () => {
 													<tr key={index}>
 														<td>{startFrom + index}</td>
 														<td>
-															<p className='text-primary'>Name: {supplier.company_name}</p>
+															<p className='text-primary'>
+																Name: {supplier.company_name}
+															</p>
+															<p className='text-success'>Status: {supplier.status}</p>
 														</td>
 														<td>
-															<p className='text-success'>Status: {supplier.status}</p>
+															<p className='text-primary'>
+																Phone: {supplier.phone_number}
+															</p>
+															<p className='text-success'>
+																Email: {supplier.email_address}
+															</p>
+														</td>
+														<td>
+															<p className='text-primary'>
+																Address: {supplier.address.address}
+															</p>
+															<p className='text-success'>
+																Division: {supplier.address.division}
+															</p>
+														</td>
+														<td>
+															<p className='text-primary'>
+																District: {supplier.address.district}
+															</p>
+															<p className='text-success'>
+																Area: {supplier.address.area}
+															</p>
 														</td>
 														<td>
 															<img
@@ -246,7 +272,7 @@ const SupplierList = () => {
 												))
 											) : (
 												<tr>
-													<td colSpan={7}>
+													<td colSpan={9}>
 														<NoDataFound />
 													</td>
 												</tr>

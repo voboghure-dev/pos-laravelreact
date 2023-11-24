@@ -23,6 +23,7 @@ class SupplierListResource extends JsonResource {
 			'created_by'   => $this->user?->name,
 			'created_at'   => $this->created_at->toDayDateTimeString(),
 			'updated_at'   => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not yet updated',
+			'address'      => new AddressListResource( $this->address ),
 		];
 	}
 }
