@@ -58,10 +58,7 @@ const SupplierList = () => {
 	};
 
 	const handleInput = (e) => {
-		setInput((prevState) => ({
-			...prevState,
-			[e.target.name]: e.target.value,
-		}));
+		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
 
 	const handleSupplierDelete = (id) => {
@@ -222,18 +219,18 @@ const SupplierList = () => {
 														</td>
 														<td>
 															<p className='text-primary'>
-																Address: {supplier.address.address}
+																Address: {supplier.address?.address}
 															</p>
 															<p className='text-success'>
-																Division: {supplier.address.division}
+																Division: {supplier.address?.division}
 															</p>
 														</td>
 														<td>
 															<p className='text-primary'>
-																District: {supplier.address.district}
+																District: {supplier.address?.district}
 															</p>
 															<p className='text-success'>
-																Area: {supplier.address.area}
+																Area: {supplier.address?.area}
 															</p>
 														</td>
 														<td>

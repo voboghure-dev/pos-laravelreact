@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
+use App\Http\Resources\SupplierEditResource;
 use App\Http\Resources\SupplierListResource;
 use App\Manager\ImageManager;
 use App\Models\Address;
@@ -55,14 +56,22 @@ class SupplierController extends Controller {
 	 * Display the specified resource.
 	 */
 	public function show( Supplier $supplier ) {
-		//
+		return new SupplierEditResource( $supplier );
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
 	public function update( UpdateSupplierRequest $request, Supplier $supplier ) {
-		//
+		$supplier_data            = $request->except( 'logo' );
+		$supplier_data['slug']    = Str::slug( $request->input( 'slug' ) );
+		$supplier_data['user_id'] = auth()->id();
+		if (  ! empty( $request->logo ) ) {
+			$supplier_data['logo'] = $this->imageUpload( $request->input( 'logo' ), $supplier_data['slug'], $supplier->logo );
+		}
+		$supplier->update( $supplier_data );
+
+		return response()->json( ['msg' => 'Category updated successfully', 'cls' => 'success'] );
 	}
 
 	/**

@@ -17,6 +17,7 @@ import BrandAdd from '../modules/brand/BrandAdd';
 import BrandEdit from '../modules/brand/BrandEdit';
 import SupplierAdd from '../modules/supplier/SupplierAdd';
 import SupplierList from '../modules/supplier/SupplierList';
+import SupplierEdit from '../modules/supplier/SupplierEdit';
 
 const Router = createBrowserRouter([
 	{
@@ -73,7 +74,7 @@ const Router = createBrowserRouter([
 			},
 			{
 				path: '/dashboard/supplier/edit/:id',
-				element: <BrandEdit />,
+				element: <SupplierEdit />,
 			},
 			{
 				path: '/dashboard/supplier',
