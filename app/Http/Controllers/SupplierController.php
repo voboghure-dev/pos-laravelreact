@@ -15,6 +15,9 @@ use Illuminate\Support\Str;
 class SupplierController extends Controller {
 	/**
 	 * Display a listing of the resource.
+	 *
+	 * @param Request $request
+	 * @return void
 	 */
 	public function index( Request $request ) {
 		$suppliers = ( new Supplier() )->getAllSuppliers( $request->all() );
@@ -24,6 +27,9 @@ class SupplierController extends Controller {
 
 	/**
 	 * Store a newly created resource in storage.
+	 *
+	 * @param StoreSupplierRequest $request
+	 * @return void
 	 */
 	public function store( StoreSupplierRequest $request ) {
 		$supplier_data = ( new Supplier() )->prepareData( $request->all(), auth() );
@@ -54,6 +60,9 @@ class SupplierController extends Controller {
 
 	/**
 	 * Display the specified resource.
+	 *
+	 * @param Supplier $supplier
+	 * @return void
 	 */
 	public function show( Supplier $supplier ) {
 		$supplier->load( 'address' );
@@ -63,6 +72,10 @@ class SupplierController extends Controller {
 
 	/**
 	 * Update the specified resource in storage.
+	 *
+	 * @param UpdateSupplierRequest $request
+	 * @param Supplier $supplier
+	 * @return void
 	 */
 	public function update( UpdateSupplierRequest $request, Supplier $supplier ) {
 		$supplier_data = ( new Supplier() )->prepareData( $request->all(), auth() );
@@ -93,6 +106,9 @@ class SupplierController extends Controller {
 
 	/**
 	 * Remove the specified resource from storage.
+	 *
+	 * @param Supplier $supplier
+	 * @return void
 	 */
 	public function destroy( Supplier $supplier ) {
 		if (  ! empty( $supplier->logo ) ) {

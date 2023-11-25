@@ -38,6 +38,12 @@ class Address extends Model {
 		return $address;
 	}
 
+	/**
+	 * Delete supplier address
+	 *
+	 * @param object $supplier
+	 * @return void
+	 */
 	final public function deleteBySupplier( $supplier ) {
 		return $supplier->address()->delete();
 	}

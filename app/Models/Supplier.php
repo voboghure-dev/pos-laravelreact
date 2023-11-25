@@ -25,7 +25,7 @@ class Supplier extends Model {
 	 * Prepare data for supplier
 	 *
 	 * @param array $input
-	 * @param [type] $auth
+	 * @param object $auth
 	 * @return array
 	 */
 	final public function prepareData( array $input, $auth ): array {
