@@ -38,6 +38,10 @@ class Address extends Model {
 		return $address;
 	}
 
+	final public function deleteBySupplier( $supplier ) {
+		return $supplier->address()->delete();
+	}
+
 	/**
 	 * Get the parent addressable model
 	 *

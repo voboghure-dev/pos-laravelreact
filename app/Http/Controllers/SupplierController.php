@@ -95,6 +95,13 @@ class SupplierController extends Controller {
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy( Supplier $supplier ) {
-		//
+		if (  ! empty( $supplier->logo ) ) {
+			ImageManager::deleteImage( Supplier::IMAGE_IMAGE_PATH, $supplier->logo );
+			ImageManager::deleteImage( Supplier::THUMB_IMAGE_IMAGE_PATH, $supplier->logo );
+		}
+		( new Address() )->deleteBySupplier( $supplier );
+		$supplier->delete();
+
+		return response()->json( ['msg' => 'Supplier deleted successfully', 'cls' => 'warning'] );
 	}
 }
