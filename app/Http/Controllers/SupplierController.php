@@ -30,7 +30,7 @@ class SupplierController extends Controller {
 		$address_data  = ( new Address() )->prepareData( $request->all() );
 
 		if ( $request->has( 'logo' ) ) {
-			$name                  = Str::slug( $supplier_data['company_name'] ) . now();
+			$name                  = Str::slug( $supplier_data['company_name'] ) . '-' . time();
 			$path                  = Supplier::IMAGE_IMAGE_PATH;
 			$path_thumb            = Supplier::THUMB_IMAGE_IMAGE_PATH;
 			$supplier_data['logo'] = ImageManager::imageUpload( $request->input( 'logo' ), $name, $path, $path_thumb );
@@ -56,6 +56,8 @@ class SupplierController extends Controller {
 	 * Display the specified resource.
 	 */
 	public function show( Supplier $supplier ) {
+		$supplier->load( 'address' );
+
 		return new SupplierEditResource( $supplier );
 	}
 
@@ -63,15 +65,30 @@ class SupplierController extends Controller {
 	 * Update the specified resource in storage.
 	 */
 	public function update( UpdateSupplierRequest $request, Supplier $supplier ) {
-		$supplier_data            = $request->except( 'logo' );
-		$supplier_data['slug']    = Str::slug( $request->input( 'slug' ) );
-		$supplier_data['user_id'] = auth()->id();
-		if (  ! empty( $request->logo ) ) {
-			$supplier_data['logo'] = $this->imageUpload( $request->input( 'logo' ), $supplier_data['slug'], $supplier->logo );
-		}
-		$supplier->update( $supplier_data );
+		$supplier_data = ( new Supplier() )->prepareData( $request->all(), auth() );
+		$address_data  = ( new Address() )->prepareData( $request->all() );
 
-		return response()->json( ['msg' => 'Category updated successfully', 'cls' => 'success'] );
+		if ( $request->has( 'logo' ) ) {
+			$name                  = Str::slug( $supplier_data['company_name'] ) . '-' . time();
+			$path                  = Supplier::IMAGE_IMAGE_PATH;
+			$path_thumb            = Supplier::THUMB_IMAGE_IMAGE_PATH;
+			$supplier_data['logo'] = ImageManager::imageUpload( $request->input( 'logo' ), $name, $path, $path_thumb, $supplier->logo );
+		}
+
+		try {
+			DB::beginTransaction();
+			$supplier_data = $supplier->update( $supplier_data );
+			$supplier->address()->update( $address_data );
+			DB::commit();
+		} catch ( \Throwable $th ) {
+			ImageManager::deleteImage( Supplier::IMAGE_IMAGE_PATH, $supplier_data['logo'] );
+			ImageManager::deleteImage( Supplier::THUMB_IMAGE_IMAGE_PATH, $supplier_data['logo'] );
+			DB::rollBack();
+
+			return response()->json( ['msg' => 'Unable to update Supplier!', 'cls' => 'error'] );
+		}
+
+		return response()->json( ['msg' => 'Supplier updated successfully!', 'cls' => 'success'] );
 	}
 
 	/**

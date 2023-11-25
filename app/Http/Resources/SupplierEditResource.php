@@ -21,7 +21,12 @@ class SupplierEditResource extends JsonResource {
 			'description'   => $this->description,
 			'status'        => $this->status,
 			'existing_logo' => ImageManager::prepareImage( Supplier::THUMB_IMAGE_IMAGE_PATH, $this->logo ),
-			'address'       => new AddressListResource( $this->address ),
+			'address'       => $this->address?->address,
+			'division'      => $this->address?->division,
+			'district'      => $this->address?->district,
+			'area'          => $this->address?->area,
+			'land_mark'     => $this->address?->land_mark,
+
 		];
 	}
 }

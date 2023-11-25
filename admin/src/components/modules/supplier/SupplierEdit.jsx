@@ -90,7 +90,7 @@ const SupplierEdit = () => {
 														}
 														name='company_name'
 														id='company_name'
-														value={input.company_name}
+														value={input.company_name || ''}
 														onChange={handleInput}
 														type='text'
 														placeholder='Enter supplier company name'
@@ -113,7 +113,7 @@ const SupplierEdit = () => {
 														}
 														name='phone_number'
 														id='phone_number'
-														value={input.phone_number}
+														value={input.phone_number || ''}
 														onChange={handleInput}
 														type='text'
 														placeholder='Enter supplier phone number'
@@ -136,7 +136,7 @@ const SupplierEdit = () => {
 														}
 														name='email_address'
 														id='email_address'
-														value={input.email_address}
+														value={input.email_address || ''}
 														onChange={handleInput}
 														type='text'
 														placeholder='Enter supplier email address'
@@ -159,7 +159,7 @@ const SupplierEdit = () => {
 														}
 														name='status'
 														id='status'
-														value={input.status}
+														value={input.status || 0}
 														onChange={handleInput}
 													>
 														<option value={1}>Active</option>
@@ -181,7 +181,7 @@ const SupplierEdit = () => {
 														}
 														name='description'
 														id='description'
-														value={input.description}
+														value={input.description || ''}
 														onChange={handleInput}
 														placeholder='Enter supplier description'
 														rows='3'
@@ -246,7 +246,7 @@ const SupplierEdit = () => {
 														}
 														name='address'
 														id='address'
-														value={input.address?.address}
+														value={input.address || ''}
 														onChange={handleInput}
 														placeholder='Enter supplier address'
 														rows='3'
@@ -267,7 +267,7 @@ const SupplierEdit = () => {
 														}
 														name='division'
 														id='division'
-														value={input.address?.division}
+														value={input.division || ''}
 														onChange={handleInput}
 														type='text'
 														placeholder='Enter supplier division name'
@@ -288,7 +288,7 @@ const SupplierEdit = () => {
 														}
 														name='district'
 														id='district'
-														value={input.address?.district}
+														value={input.district || ''}
 														onChange={handleInput}
 														type='text'
 														placeholder='Enter supplier district name'
@@ -309,7 +309,7 @@ const SupplierEdit = () => {
 														}
 														name='area'
 														id='area'
-														value={input.address?.area}
+														value={input.area || ''}
 														onChange={handleInput}
 														type='text'
 														placeholder='Enter supplier area name'
@@ -330,7 +330,7 @@ const SupplierEdit = () => {
 														}
 														name='land_mark'
 														id='land_mark'
-														value={input.address?.land_mark}
+														value={input.land_mark || ''}
 														onChange={handleInput}
 														type='text'
 														placeholder='Enter supplier land mark'
