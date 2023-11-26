@@ -143,6 +143,13 @@ const Sidebar = () => {
 							</nav>
 						</div>
 
+						<Link className='nav-link' to='/dashboard/attribute'>
+							<div className='sb-nav-link-icon'>
+								<i className='fas fa-chart-area'></i>
+							</div>
+							Attributes
+						</Link>
+
 						<a
 							className='nav-link collapsed'
 							href='#'
