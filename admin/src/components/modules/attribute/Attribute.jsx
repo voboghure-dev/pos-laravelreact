@@ -7,7 +7,6 @@ import Pagination from 'react-js-pagination';
 import Swal from 'sweetalert2';
 import NoDataFound from '../../partials/NoDataFound';
 import AttributeModal from './AttributeModal';
-import PhotoModals from '../../partials/PhotoModals';
 
 const Attribute = () => {
 	const [input, setInput] = useState({
@@ -18,7 +17,7 @@ const Attribute = () => {
 	});
 	const [isLoading, setIsLoading] = useState(false);
 
-	const [supplierModalShow, setSupplierModalShow] = useState(false);
+	const [attributeModalShow, setAttributeModalShow] = useState(false);
 	const [modalDetails, setModalDetails] = useState('');
 
 	const [attributes, setSuppliers] = useState([]);
@@ -28,25 +27,25 @@ const Attribute = () => {
 	const [startFrom, setStartFrom] = useState(1);
 	const [activePage, setActivePage] = useState(1);
 
-	const getSuppliers = (pageNumber = 1) => {
-		setIsLoading(true);
-		axios
-			.get(
-				`${Constants.BASE_URL}/supplier?page=${pageNumber}&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
-			)
-			.then((res) => {
-				setSuppliers(res.data.data);
-				setItemsCountPerPage(res.data.meta.per_page);
-				setTotalItemsCount(res.data.meta.total);
-				setStartFrom(res.data.meta.from);
-				setActivePage(res.data.meta.current_page);
-				setIsLoading(false);
-			});
-	};
+	// const getSuppliers = (pageNumber = 1) => {
+	// 	setIsLoading(true);
+	// 	axios
+	// 		.get(
+	// 			`${Constants.BASE_URL}/supplier?page=${pageNumber}&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
+	// 		)
+	// 		.then((res) => {
+	// 			setSuppliers(res.data.data);
+	// 			setItemsCountPerPage(res.data.meta.per_page);
+	// 			setTotalItemsCount(res.data.meta.total);
+	// 			setStartFrom(res.data.meta.from);
+	// 			setActivePage(res.data.meta.current_page);
+	// 			setIsLoading(false);
+	// 		});
+	// };
 
 	const handleAttributeAdd = () => {
-		setSupplierModalShow(true);
-		setModalDetails(supplier);
+		setAttributeModalShow(true);
+		// setModalDetails(supplier);
 	};
 
 	const handleInput = (e) => {
@@ -92,12 +91,12 @@ const Attribute = () => {
 					<div className='card mb-4'>
 						<div className='card-header d-flex justify-content-between align-items-center'>
 							<h4>Attribute List</h4>
-							<button onClick={() => getSuppliers(1)} className='btn btn-primary'>
+							<button onClick={() => handleAttributeAdd()} className='btn btn-primary'>
 								<i className='fa-solid fa-plus'></i> Add Attribute
 							</button>
 						</div>
 						<div className='card-body'>
-							<div className='search-area mb-4'>
+							{/* <div className='search-area mb-4'>
 								<div className='row'>
 									<div className='col-md-3'>
 										<label htmlFor='search'>Search</label>
@@ -169,9 +168,9 @@ const Attribute = () => {
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> */}
 
-							{/* {isLoading ? (
+							{isLoading ? (
 								<div className='d-flex justify-content-center'>
 									<div className='spinner-border' role='status'>
 										<span className='visually-hidden'>Loading...</span>
@@ -193,7 +192,7 @@ const Attribute = () => {
 												<th>Action</th>
 											</tr>
 										</thead>
-										<tbody>
+										{/* <tbody>
 											{Object.keys(attributes).length > 0 ? (
 												attributes.map((supplier, index) => (
 													<tr key={index}>
@@ -271,28 +270,27 @@ const Attribute = () => {
 													</td>
 												</tr>
 											)}
-										</tbody>
+										</tbody> */}
 									</table>
-									<PhotoModals
+									{/* <PhotoModals
 										show={photoModalShow}
 										onHide={() => setPhotoModalShow(false)}
 										title='Suppliers Logo'
 										size=''
 										photo={modalPhoto}
-									/>
-									<SupplierDetailsModals
-										show={supplierModalShow}
-										onHide={() => setSupplierModalShow(false)}
+									/> */}
+									<AttributeModal
+										show={attributeModalShow}
+										onHide={() => setAttributeModalShow(false)}
 										title='Suppliers Details'
 										size=''
-										details={modalDetails}
 									/>
 								</div>
-							)} */}
+							)}
 						</div>
 						<div className='card-footer'>
 							<nav className='paginate mt-3'>
-								<Pagination
+								{/* <Pagination
 									activePage={activePage}
 									itemsCountPerPage={itemsCountPerPage}
 									totalItemsCount={totalItemsCount}
@@ -304,7 +302,7 @@ const Attribute = () => {
 									lastPageText={'Last'}
 									nextPageText={'Next'}
 									onChange={getSuppliers}
-								/>
+								/> */}
 							</nav>
 						</div>
 					</div>

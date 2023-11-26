@@ -11,22 +11,26 @@ const AttributeModal = (props) => {
 					<tbody>
 						<tr>
 							<th>ID</th>
-							<td>{props.details.id}</td>
+							<td></td>
 						</tr>
 						<tr>
 							<th>Name</th>
-							<td>{props.details.company_name}</td>
+							<td></td>
 						</tr>
 						<tr>
 							<th>Phone Number</th>
-							<td>{props.details.phone_number}</td>
+							<td></td>
 						</tr>
 					</tbody>
 				</table>
 			</Modal.Body>
 			<Modal.Footer>
-				<Button variant='secondary'>Close</Button>
-				<Button variant='primary'>Save changes</Button>
+				<button type='button' class='btn btn-secondary'>
+					Close
+				</button>
+				<button type='button' class='btn btn-primary'>
+					Save Changes
+				</button>
 			</Modal.Footer>
 		</Modal>
 	);
