@@ -15,7 +15,7 @@ const AttributeList = () => {
 		direction: 'asc',
 		per_page: '10',
 	});
-	const [attributes, setAttributes] = useState('');
+	const [attributes, setAttributes] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const [attributeModalShow, setAttributeModalShow] = useState(false);
@@ -45,31 +45,31 @@ const AttributeList = () => {
 		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
 
-	// const handleAttributeDelete = (id) => {
-	// 	Swal.fire({
-	// 		title: 'Are you sure?',
-	// 		text: 'Attribute will be deleted!',
-	// 		icon: 'warning',
-	// 		showCancelButton: true,
-	// 		confirmButtonColor: '#3085d6',
-	// 		cancelButtonColor: '#d33',
-	// 		confirmButtonText: 'Yes, delete!',
-	// 	}).then((result) => {
-	// 		if (result.isConfirmed) {
-	// 			axios.delete(`${Constants.BASE_URL}/attribute/${id}`).then((res) => {
-	// 				getAttributes();
-	// 				Swal.fire({
-	// 					position: 'top-end',
-	// 					icon: res.data.cls,
-	// 					title: res.data.msg,
-	// 					showConfirmButton: false,
-	// 					toast: true,
-	// 					timer: 1500,
-	// 				});
-	// 			});
-	// 		}
-	// 	});
-	// };
+	const handleAttributeDelete = (id) => {
+		Swal.fire({
+			title: 'Are you sure?',
+			text: 'Attribute will be deleted!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete!',
+		}).then((result) => {
+			if (result.isConfirmed) {
+				axios.delete(`${Constants.BASE_URL}/attribute/${id}`).then((res) => {
+					getAttributes();
+					Swal.fire({
+						position: 'top-end',
+						icon: res.data.cls,
+						title: res.data.msg,
+						showConfirmButton: false,
+						toast: true,
+						timer: 1500,
+					});
+				});
+			}
+		});
+	};
 
 	useEffect(() => {
 		getAttributes();
@@ -201,19 +201,11 @@ const AttributeList = () => {
 															<p className='text-success'>{attribute.updated_at}</p>
 														</td>
 														<td className='text-center'>
-															<button
-																onClick={() => handleDetailsModal(attribute)}
-																className='btn btn-sm btn-info'
-															>
-																<i className='fa-solid fa-eye' />
+															<button className='btn btn-sm btn-warning mx-1'>
+																<i className='fa-solid fa-edit' />
 															</button>
-															<Link to={`/dashboard/attribute/edit/${attribute.id}`}>
-																<button className='btn btn-sm btn-warning mx-1'>
-																	<i className='fa-solid fa-edit' />
-																</button>
-															</Link>
 															<button
-																onClick={() => handleSupplierDelete(attribute.id)}
+																onClick={() => handleAttributeDelete(attribute.id)}
 																className='btn btn-sm btn-danger'
 															>
 																<i className='fa-solid fa-trash' />

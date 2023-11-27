@@ -35,13 +35,6 @@ class AttributeController extends Controller {
 	}
 
 	/**
-	 * Show the form for editing the specified resource.
-	 */
-	public function edit( Attribute $attribute ) {
-		//
-	}
-
-	/**
 	 * Update the specified resource in storage.
 	 */
 	public function update( UpdateAttributeRequest $request, Attribute $attribute ) {
@@ -52,6 +45,8 @@ class AttributeController extends Controller {
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy( Attribute $attribute ) {
-		//
+		$attribute->delete();
+
+		return response()->json( ['msg' => 'Attribute deleted successfully', 'cls' => 'warning'] );
 	}
 }
