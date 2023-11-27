@@ -25,21 +25,21 @@ const AttributeList = () => {
 	const [startFrom, setStartFrom] = useState(1);
 	const [activePage, setActivePage] = useState(1);
 
-	// const getAttributes = (pageNumber = 1) => {
-	// 	setIsLoading(true);
-	// 	axios
-	// 		.get(
-	// 			`${Constants.BASE_URL}/attribute?page=${pageNumber}&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
-	// 		)
-	// 		.then((res) => {
-	// 			setAttributes(res.data.data);
-	// 			setItemsCountPerPage(res.data.meta.per_page);
-	// 			setTotalItemsCount(res.data.meta.total);
-	// 			setStartFrom(res.data.meta.from);
-	// 			setActivePage(res.data.meta.current_page);
-	// 			setIsLoading(false);
-	// 		});
-	// };
+	const getAttributes = (pageNumber = 1) => {
+		setIsLoading(true);
+		axios
+			.get(
+				`${Constants.BASE_URL}/attribute?page=${pageNumber}&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
+			)
+			.then((res) => {
+				setAttributes(res.data.data);
+				setItemsCountPerPage(res.data.meta.per_page);
+				setTotalItemsCount(res.data.meta.total);
+				setStartFrom(res.data.meta.from);
+				setActivePage(res.data.meta.current_page);
+				setIsLoading(false);
+			});
+	};
 
 	const handleInput = (e) => {
 		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
@@ -72,7 +72,7 @@ const AttributeList = () => {
 	// };
 
 	useEffect(() => {
-		// getAttributes();
+		getAttributes();
 	}, []);
 
 	return (
@@ -182,70 +182,38 @@ const AttributeList = () => {
 												<th>Action</th>
 											</tr>
 										</thead>
-										{/* <tbody>
+										<tbody>
 											{Object.keys(attributes).length > 0 ? (
-												attributes.map((supplier, index) => (
+												attributes.map((attribute, index) => (
 													<tr key={index}>
 														<td>{startFrom + index}</td>
 														<td>
-															<p className='text-primary'>
-																Name: {supplier.company_name}
-															</p>
-															<p className='text-success'>Status: {supplier.status}</p>
+															<p>{attribute.name}</p>
 														</td>
 														<td>
-															<p className='text-primary'>
-																Phone: {supplier.phone_number}
-															</p>
-															<p className='text-success'>
-																Email: {supplier.email_address}
-															</p>
+															<p>{attribute.status}</p>
 														</td>
 														<td>
-															<p className='text-primary'>
-																Address: {supplier.address?.address}
-															</p>
-															<p className='text-success'>
-																Division: {supplier.address?.division}
-															</p>
+															<p>{attribute.created_by}</p>
 														</td>
 														<td>
-															<p className='text-primary'>
-																District: {supplier.address?.district}
-															</p>
-															<p className='text-success'>
-																Area: {supplier.address?.area}
-															</p>
-														</td>
-														<td>
-															<img
-																onClick={() => handlePhotoModal(supplier.logo)}
-																src={supplier.logo_thumb}
-																alt={supplier.name}
-																className='img-thumbnail mx-auto d-block category-photo'
-															/>
-														</td>
-														<td>
-															<p>{supplier.created_by}</p>
-														</td>
-														<td>
-															<p className='text-primary'>{supplier.created_at}</p>
-															<p className='text-success'>{supplier.updated_at}</p>
+															<p className='text-primary'>{attribute.created_at}</p>
+															<p className='text-success'>{attribute.updated_at}</p>
 														</td>
 														<td className='text-center'>
 															<button
-																onClick={() => handleDetailsModal(supplier)}
+																onClick={() => handleDetailsModal(attribute)}
 																className='btn btn-sm btn-info'
 															>
 																<i className='fa-solid fa-eye' />
 															</button>
-															<Link to={`/dashboard/supplier/edit/${supplier.id}`}>
+															<Link to={`/dashboard/attribute/edit/${attribute.id}`}>
 																<button className='btn btn-sm btn-warning mx-1'>
 																	<i className='fa-solid fa-edit' />
 																</button>
 															</Link>
 															<button
-																onClick={() => handleSupplierDelete(supplier.id)}
+																onClick={() => handleSupplierDelete(attribute.id)}
 																className='btn btn-sm btn-danger'
 															>
 																<i className='fa-solid fa-trash' />
@@ -260,7 +228,7 @@ const AttributeList = () => {
 													</td>
 												</tr>
 											)}
-										</tbody> */}
+										</tbody>
 									</table>
 									<AddAttributeModal
 										show={attributeModalShow}

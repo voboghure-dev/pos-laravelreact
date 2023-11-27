@@ -3,14 +3,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAttributeRequest;
 use App\Http\Requests\UpdateAttributeRequest;
+use App\Http\Resources\AttributeListResource;
 use App\Models\Attribute;
+use Illuminate\Http\Request;
 
 class AttributeController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
-		//
+	public function index( Request $request ) {
+		$attributes = ( new Attribute() )->getAllAttributes( $request->all() );
+
+		return AttributeListResource::collection( $attributes );
 	}
 
 	/**
