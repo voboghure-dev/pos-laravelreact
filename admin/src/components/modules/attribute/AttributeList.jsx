@@ -233,6 +233,7 @@ const AttributeList = () => {
 									<AddAttributeModal
 										show={attributeModalShow}
 										onHide={() => setAttributeModalShow(false)}
+										reload={() => getAttributes()}
 										// size='lg'
 									/>
 								</div>

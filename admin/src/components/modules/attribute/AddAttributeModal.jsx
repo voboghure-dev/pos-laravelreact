@@ -1,9 +1,12 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import Swal from 'sweetalert2';
 import Modal from 'react-bootstrap/Modal';
 import Constants from '../../../Constants';
 
 const AddAttributeModal = (props) => {
+	const { reload, ...others } = props;
+	const nameRef = useRef();
 	const [input, setInput] = useState({ status: 1 });
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +29,8 @@ const AddAttributeModal = (props) => {
 					toast: true,
 					timer: 1500,
 				});
-				// props.onHide();
+				props.onHide();
+				reload();
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -38,10 +42,12 @@ const AddAttributeModal = (props) => {
 
 	const handleResetAttribute = () => {
 		setInput({ name: '', status: 1 });
+		setErrors([]);
+		nameRef.current.focus();
 	};
 
 	return (
-		<Modal {...props} size={props.size} aria-labelledby='brand-details-modal' centered>
+		<Modal {...others} aria-labelledby='brand-details-modal' centered>
 			<Modal.Header closeButton>
 				<Modal.Title id='brand-details-modal'>{props.title}</Modal.Title>
 			</Modal.Header>
@@ -55,7 +61,8 @@ const AddAttributeModal = (props) => {
 							className={errors.name != undefined ? 'form-control is-invalid' : 'form-control'}
 							name='name'
 							id='name'
-							value={input.name}
+							ref={nameRef}
+							value={input.name || ''}
 							onChange={handleInput}
 							type='text'
 							placeholder='Enter supplier company name'
@@ -71,7 +78,7 @@ const AddAttributeModal = (props) => {
 							className={errors.status != undefined ? 'form-select is-invalid' : 'form-select'}
 							name='status'
 							id='status'
-							value={input.status}
+							value={input.status || 1}
 							onChange={handleInput}
 						>
 							<option value={1}>Active</option>
