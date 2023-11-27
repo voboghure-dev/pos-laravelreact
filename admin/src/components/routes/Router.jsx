@@ -18,7 +18,7 @@ import BrandEdit from '../modules/brand/BrandEdit';
 import SupplierAdd from '../modules/supplier/SupplierAdd';
 import SupplierList from '../modules/supplier/SupplierList';
 import SupplierEdit from '../modules/supplier/SupplierEdit';
-import Attribute from '../modules/attribute/Attribute';
+import AttributeList from '../modules/attribute/AttributeList';
 
 const Router = createBrowserRouter([
 	{
@@ -83,7 +83,7 @@ const Router = createBrowserRouter([
 			},
 			{
 				path: '/dashboard/attribute',
-				element: <Attribute />,
+				element: <AttributeList />,
 			},
 			{
 				path: '/dashboard/error-500',

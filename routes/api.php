@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
@@ -32,4 +33,5 @@ Route::group( ['middleware' => 'auth:sanctum'], static function () {
 	Route::apiResource( 'sub-category', SubCategoryController::class );
 	Route::apiResource( 'brand', BrandController::class );
 	Route::apiResource( 'supplier', SupplierController::class );
+	Route::apiResource( 'attribute', AttributeController::class );
 } );
