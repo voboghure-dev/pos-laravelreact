@@ -19,6 +19,7 @@ import SupplierAdd from '../modules/supplier/SupplierAdd';
 import SupplierList from '../modules/supplier/SupplierList';
 import SupplierEdit from '../modules/supplier/SupplierEdit';
 import AttributeList from '../modules/attribute/AttributeList';
+import AttributeContextProvider from '../../context/AttributeContextProvider';
 
 const Router = createBrowserRouter([
 	{
@@ -83,7 +84,11 @@ const Router = createBrowserRouter([
 			},
 			{
 				path: '/dashboard/attribute',
-				element: <AttributeList />,
+				element: (
+					<AttributeContextProvider>
+						<AttributeList />
+					</AttributeContextProvider>
+				),
 			},
 			{
 				path: '/dashboard/error-500',

@@ -24,21 +24,17 @@ class AttributeController extends Controller {
 		$attribute_data = ( new Attribute() )->prepareData( $request->all(), auth() );
 		Attribute::create( $attribute_data );
 
-		return response()->json( ['msg' => 'Attribute create successfully', 'cls' => 'success'] );
-	}
-
-	/**
-	 * Display the specified resource.
-	 */
-	public function show( Attribute $attribute ) {
-		//
+		return response()->json( ['msg' => 'Attribute created successfully', 'cls' => 'success'] );
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
 	public function update( UpdateAttributeRequest $request, Attribute $attribute ) {
-		//
+		$attribute_data = ( new Attribute() )->prepareData( $request->all(), auth() );
+		$attribute->update( $attribute_data );
+
+		return response()->json( ['msg' => 'Attribute updated successfully', 'cls' => 'success'] );
 	}
 
 	/**

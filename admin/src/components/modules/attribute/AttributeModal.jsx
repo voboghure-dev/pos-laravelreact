@@ -1,24 +1,50 @@
 import axios from 'axios';
-import { useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
 import Modal from 'react-bootstrap/Modal';
 import Constants from '../../../Constants';
+import AttributeContext from '../../../context/AttributeContext';
 
-const AddAttributeModal = (props) => {
+const AttributeModal = (props) => {
 	const { reload, ...others } = props;
+	const { modalInput, setModalInput, isEditMode } = useContext(AttributeContext);
 	const nameRef = useRef();
-	const [input, setInput] = useState({ status: 1 });
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleInput = (e) => {
-		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
+		setModalInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
 
 	const handleAttributeAdd = () => {
 		setIsLoading(true);
 		axios
-			.post(`${Constants.BASE_URL}/attribute`, input)
+			.post(`${Constants.BASE_URL}/attribute`, modalInput)
+			.then((response) => {
+				setIsLoading(false);
+				Swal.fire({
+					position: 'top-end',
+					icon: response.data.cls,
+					title: response.data.msg,
+					showConfirmButton: false,
+					toast: true,
+					timer: 1500,
+				});
+				props.onHide();
+				reload();
+			})
+			.catch((errors) => {
+				setIsLoading(false);
+				if (errors.response.status == 422) {
+					setErrors(errors.response.data.errors);
+				}
+			});
+	};
+
+	const handleAttributeEdit = (id) => {
+		setIsLoading(true);
+		axios
+			.put(`${Constants.BASE_URL}/attribute/${id}`, modalInput)
 			.then((response) => {
 				setIsLoading(false);
 				Swal.fire({
@@ -41,7 +67,7 @@ const AddAttributeModal = (props) => {
 	};
 
 	const handleResetAttribute = () => {
-		setInput({ name: '', status: 1 });
+		setModalInput({ name: '', status: 1 });
 		setErrors([]);
 		nameRef.current.focus();
 	};
@@ -62,7 +88,7 @@ const AddAttributeModal = (props) => {
 							name='name'
 							id='name'
 							ref={nameRef}
-							value={input.name || ''}
+							value={modalInput.name || ''}
 							onChange={handleInput}
 							type='text'
 							placeholder='Enter supplier company name'
@@ -78,7 +104,7 @@ const AddAttributeModal = (props) => {
 							className={errors.status != undefined ? 'form-select is-invalid' : 'form-select'}
 							name='status'
 							id='status'
-							value={input.status || 1}
+							value={modalInput.status || 1}
 							onChange={handleInput}
 						>
 							<option value={1}>Active</option>
@@ -93,7 +119,7 @@ const AddAttributeModal = (props) => {
 					Reset
 				</button>
 				<button
-					onClick={handleAttributeAdd}
+					onClick={isEditMode ? () => handleAttributeEdit(modalInput.id) : handleAttributeAdd}
 					type='button'
 					className='btn btn-primary'
 					dangerouslySetInnerHTML={{
@@ -107,4 +133,4 @@ const AddAttributeModal = (props) => {
 	);
 };
 
-export default AddAttributeModal;
+export default AttributeModal;

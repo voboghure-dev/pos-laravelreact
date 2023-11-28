@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Breadcrumb from '../../partials/Breadcrumb';
 import Constants from '../../../Constants';
@@ -6,9 +6,11 @@ import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import Swal from 'sweetalert2';
 import NoDataFound from '../../partials/NoDataFound';
-import AddAttributeModal from './AddAttributeModal';
+import AttributeModal from './AttributeModal';
+import AttributeContext from '../../../context/AttributeContext';
 
 const AttributeList = () => {
+	const { setModalInput, setIsEditMode } = useContext(AttributeContext);
 	const [input, setInput] = useState({
 		search: '',
 		order_by: 'name',
@@ -16,6 +18,7 @@ const AttributeList = () => {
 		per_page: '10',
 	});
 	const [attributes, setAttributes] = useState([]);
+	const [modalTitle, setModalTitle] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 
 	const [attributeModalShow, setAttributeModalShow] = useState(false);
@@ -43,6 +46,23 @@ const AttributeList = () => {
 
 	const handleInput = (e) => {
 		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
+	};
+
+	const handleAttributeModalOpen = (attr) => {
+		if (attr != null) {
+			setModalTitle('Edit');
+			setIsEditMode(true);
+			setModalInput({ id: attr.id, name: attr.name, status: attr.original_status });
+		} else {
+			setModalTitle('Add');
+			setIsEditMode(false);
+		}
+		setAttributeModalShow(true);
+	};
+
+	const handleAttributeModalClose = () => {
+		setModalInput({ status: 1 });
+		setAttributeModalShow(false);
 	};
 
 	const handleAttributeDelete = (id) => {
@@ -84,7 +104,7 @@ const AttributeList = () => {
 					<div className='card mb-4'>
 						<div className='card-header d-flex justify-content-between align-items-center'>
 							<h4>Attribute List</h4>
-							<button onClick={() => setAttributeModalShow(true)} className='btn btn-primary'>
+							<button onClick={() => handleAttributeModalOpen(null)} className='btn btn-primary'>
 								<i className='fa-solid fa-plus'></i> Add Attribute
 							</button>
 						</div>
@@ -184,28 +204,31 @@ const AttributeList = () => {
 										</thead>
 										<tbody>
 											{Object.keys(attributes).length > 0 ? (
-												attributes.map((attribute, index) => (
+												attributes.map((attr, index) => (
 													<tr key={index}>
 														<td>{startFrom + index}</td>
 														<td>
-															<p>{attribute.name}</p>
+															<p>{attr.name}</p>
 														</td>
 														<td>
-															<p>{attribute.status}</p>
+															<p>{attr.status}</p>
 														</td>
 														<td>
-															<p>{attribute.created_by}</p>
+															<p>{attr.created_by}</p>
 														</td>
 														<td>
-															<p className='text-primary'>{attribute.created_at}</p>
-															<p className='text-success'>{attribute.updated_at}</p>
+															<p className='text-primary'>{attr.created_at}</p>
+															<p className='text-success'>{attr.updated_at}</p>
 														</td>
 														<td className='text-center'>
-															<button className='btn btn-sm btn-warning mx-1'>
+															<button
+																onClick={() => handleAttributeModalOpen(attr)}
+																className='btn btn-sm btn-warning mx-1'
+															>
 																<i className='fa-solid fa-edit' />
 															</button>
 															<button
-																onClick={() => handleAttributeDelete(attribute.id)}
+																onClick={() => handleAttributeDelete(attr.id)}
 																className='btn btn-sm btn-danger'
 															>
 																<i className='fa-solid fa-trash' />
@@ -222,10 +245,11 @@ const AttributeList = () => {
 											)}
 										</tbody>
 									</table>
-									<AddAttributeModal
+									<AttributeModal
 										show={attributeModalShow}
-										onHide={() => setAttributeModalShow(false)}
+										onHide={handleAttributeModalClose}
 										reload={() => getAttributes()}
+										title={`${modalTitle} Attribute`}
 										// size='lg'
 									/>
 								</div>
