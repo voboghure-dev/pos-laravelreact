@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import Breadcrumb from '../../partials/Breadcrumb';
 import Constants from '../../../Constants';
 import axios from 'axios';
@@ -109,7 +108,7 @@ const AttributeList = () => {
 							</button>
 						</div>
 						<div className='card-body'>
-							{/* <div className='search-area mb-4'>
+							<div className='search-area mb-4'>
 								<div className='row'>
 									<div className='col-md-3'>
 										<label htmlFor='search'>Search</label>
@@ -131,9 +130,7 @@ const AttributeList = () => {
 											value={input.order_by}
 											onChange={handleInput}
 										>
-											<option value={'company_name'}>Company Name</option>
-											<option value={'phone_email'}>Phone Number</option>
-											<option value={'email_address'}>Email Address</option>
+											<option value={'name'}>Name</option>
 											<option value={'status'}>Status</option>
 											<option value={'created_at'}>Created at</option>
 											<option value={'updated_at'}>Updated at</option>
@@ -170,7 +167,7 @@ const AttributeList = () => {
 									<div className='col-md-2'>
 										<div className='d-grid mt-4'>
 											<button
-												onClick={() => getSuppliers(1)}
+												onClick={() => getAttributes(1)}
 												className='btn btn-sm btn-primary'
 												dangerouslySetInnerHTML={{
 													__html: isLoading
@@ -181,7 +178,7 @@ const AttributeList = () => {
 										</div>
 									</div>
 								</div>
-							</div> */}
+							</div>
 
 							{isLoading ? (
 								<div className='d-flex justify-content-center'>
@@ -196,6 +193,7 @@ const AttributeList = () => {
 											<tr>
 												<th>Sl</th>
 												<th>Name</th>
+												<th>Value</th>
 												<th>Status</th>
 												<th>Created By</th>
 												<th>Date & Time</th>
@@ -209,6 +207,9 @@ const AttributeList = () => {
 														<td>{startFrom + index}</td>
 														<td>
 															<p>{attr.name}</p>
+														</td>
+														<td>
+															<p>Value</p>
 														</td>
 														<td>
 															<p>{attr.status}</p>
@@ -238,7 +239,7 @@ const AttributeList = () => {
 												))
 											) : (
 												<tr>
-													<td colSpan={9}>
+													<td colSpan={7}>
 														<NoDataFound />
 													</td>
 												</tr>
@@ -257,7 +258,7 @@ const AttributeList = () => {
 						</div>
 						<div className='card-footer'>
 							<nav className='paginate mt-3'>
-								{/* <Pagination
+								<Pagination
 									activePage={activePage}
 									itemsCountPerPage={itemsCountPerPage}
 									totalItemsCount={totalItemsCount}
@@ -268,8 +269,8 @@ const AttributeList = () => {
 									firstPageText={'First'}
 									lastPageText={'Last'}
 									nextPageText={'Next'}
-									onChange={getSuppliers}
-								/> */}
+									onChange={getAttributes}
+								/>
 							</nav>
 						</div>
 					</div>
