@@ -7,25 +7,31 @@ import Swal from 'sweetalert2';
 import NoDataFound from '../../partials/NoDataFound';
 import AttributeModal from './AttributeModal';
 import AttributeContext from '../../../context/AttributeContext';
+import ValueModal from './ValueModal';
 
 const AttributeList = () => {
-	const { setModalInput, setIsEditMode } = useContext(AttributeContext);
+	const { setAttributeModalInput, setValueModalInput, setIsEditMode } = useContext(AttributeContext);
+
 	const [input, setInput] = useState({
 		search: '',
 		order_by: 'name',
 		direction: 'asc',
 		per_page: '10',
 	});
-	const [attributes, setAttributes] = useState([]);
-	const [modalTitle, setModalTitle] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
-
-	const [attributeModalShow, setAttributeModalShow] = useState(false);
-
 	const [itemsCountPerPage, setItemsCountPerPage] = useState(0);
 	const [totalItemsCount, setTotalItemsCount] = useState(1);
 	const [startFrom, setStartFrom] = useState(1);
 	const [activePage, setActivePage] = useState(1);
+
+	const [attributes, setAttributes] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+
+	const [attributeModalShow, setAttributeModalShow] = useState(false);
+	const [attributeModalTitle, setAttributeModalTitle] = useState('');
+
+	const [valueModalShow, setValueModalShow] = useState(false);
+	const [valueModalTitle, setValueModalTitle] = useState('');
+	const [valueModalName, setValueModalName] = useState('');
 
 	const getAttributes = (pageNumber = 1) => {
 		setIsLoading(true);
@@ -49,18 +55,18 @@ const AttributeList = () => {
 
 	const handleAttributeModalOpen = (attr) => {
 		if (attr != null) {
-			setModalTitle('Edit');
+			setAttributeModalTitle('Edit');
 			setIsEditMode(true);
-			setModalInput({ id: attr.id, name: attr.name, status: attr.original_status });
+			setAttributeModalInput({ id: attr.id, name: attr.name, status: attr.original_status });
 		} else {
-			setModalTitle('Add');
+			setAttributeModalTitle('Add');
 			setIsEditMode(false);
 		}
 		setAttributeModalShow(true);
 	};
 
 	const handleAttributeModalClose = () => {
-		setModalInput({ status: 1 });
+		setAttributeModalInput({ status: 1 });
 		setAttributeModalShow(false);
 	};
 
@@ -88,6 +94,18 @@ const AttributeList = () => {
 				});
 			}
 		});
+	};
+
+	const handleValueModalOpen = (id, name) => {
+		setValueModalTitle('Add');
+		setValueModalName(name);
+		setValueModalInput({attribute_id: id})
+		setValueModalShow(true);
+	};
+
+	const handleValueModalClose = () => {
+		// setValueModalInput({status: 1});
+		setValueModalShow(false);
 	};
 
 	useEffect(() => {
@@ -209,7 +227,12 @@ const AttributeList = () => {
 															<p>{attr.name}</p>
 														</td>
 														<td>
-															<p>Value</p>
+															<button
+																onClick={() => handleValueModalOpen(attr.id, attr.name)}
+																className='btn btn-sm btn-primary'
+															>
+																<i className='fa-solid fa-add'></i>
+															</button>
 														</td>
 														<td>
 															<p>{attr.status}</p>
@@ -250,8 +273,14 @@ const AttributeList = () => {
 										show={attributeModalShow}
 										onHide={handleAttributeModalClose}
 										reload={() => getAttributes()}
-										title={`${modalTitle} Attribute`}
+										title={`${attributeModalTitle} Attribute`}
 										// size='lg'
+									/>
+									<ValueModal
+										show={valueModalShow}
+										onHide={handleValueModalClose}
+										reload={() => getAttributes()}
+										title={`${valueModalTitle} Attribute Value of ${valueModalName}`}
 									/>
 								</div>
 							)}

@@ -5,21 +5,21 @@ import Modal from 'react-bootstrap/Modal';
 import Constants from '../../../Constants';
 import AttributeContext from '../../../context/AttributeContext';
 
-const AttributeModal = (props) => {
+const ValueModal = (props) => {
 	const { reload, ...others } = props;
-	const { attributeModalInput, setAttributeModalInput, isEditMode } = useContext(AttributeContext);
+	const { valueModalInput, setValueModalInput, isEditMode } = useContext(AttributeContext);
 	const nameRef = useRef();
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleInput = (e) => {
-		setAttributeModalInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
+		setValueModalInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
 
-	const handleAttributeAdd = () => {
+	const handleAttributeValueAdd = () => {
 		setIsLoading(true);
 		axios
-			.post(`${Constants.BASE_URL}/attribute`, attributeModalInput)
+			.post(`${Constants.BASE_URL}/attribute-value`, valueModalInput)
 			.then((response) => {
 				setIsLoading(false);
 				Swal.fire({
@@ -41,10 +41,10 @@ const AttributeModal = (props) => {
 			});
 	};
 
-	const handleAttributeEdit = (id) => {
+	const handleAttributeValueEdit = (id) => {
 		setIsLoading(true);
 		axios
-			.put(`${Constants.BASE_URL}/attribute/${id}`, attributeModalInput)
+			.put(`${Constants.BASE_URL}/attribute-value/${id}`, valueModalInput)
 			.then((response) => {
 				setIsLoading(false);
 				Swal.fire({
@@ -66,8 +66,8 @@ const AttributeModal = (props) => {
 			});
 	};
 
-	const handleResetAttribute = () => {
-		setAttributeModalInput({ name: '', status: 1 });
+	const handleResetAttributeValue = (id) => {
+		setValueModalInput({ attribute_id: id, name: '', status: 1 });
 		setErrors([]);
 		nameRef.current.focus();
 	};
@@ -88,7 +88,7 @@ const AttributeModal = (props) => {
 							name='name'
 							id='name'
 							ref={nameRef}
-							value={attributeModalInput.name || ''}
+							value={valueModalInput.name || ''}
 							onChange={handleInput}
 							type='text'
 							placeholder='Enter supplier company name'
@@ -104,7 +104,7 @@ const AttributeModal = (props) => {
 							className={errors.status != undefined ? 'form-select is-invalid' : 'form-select'}
 							name='status'
 							id='status'
-							value={attributeModalInput.status || 1}
+							value={valueModalInput.status || 1}
 							onChange={handleInput}
 						>
 							<option value={1}>Active</option>
@@ -115,11 +115,15 @@ const AttributeModal = (props) => {
 				</div>
 			</Modal.Body>
 			<Modal.Footer className='d-flex justify-content-between'>
-				<button onClick={handleResetAttribute} type='button' className='btn btn-danger'>
+				<button
+					onClick={() => handleResetAttributeValue(valueModalInput.attribute_id)}
+					type='button'
+					className='btn btn-danger'
+				>
 					Reset
 				</button>
 				<button
-					onClick={isEditMode ? () => handleAttributeEdit(attributeModalInput.id) : handleAttributeAdd}
+					onClick={isEditMode ? () => handleAttributeValueEdit(valueModalInput.id) : handleAttributeValueAdd}
 					type='button'
 					className='btn btn-primary'
 					dangerouslySetInnerHTML={{
@@ -133,4 +137,4 @@ const AttributeModal = (props) => {
 	);
 };
 
-export default AttributeModal;
+export default ValueModal;
