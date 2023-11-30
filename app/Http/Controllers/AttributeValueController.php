@@ -42,6 +42,8 @@ class AttributeValueController extends Controller {
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy( AttributeValue $attributeValue ) {
-		//
+		$attributeValue->delete();
+
+		return response()->json( ['msg' => 'Attribute deleted successfully', 'cls' => 'warning'] );
 	}
 }

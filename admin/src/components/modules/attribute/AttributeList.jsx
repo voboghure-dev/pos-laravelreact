@@ -11,7 +11,7 @@ import ValueModal from './ValueModal';
 import AttributeValue from './AttributeValue';
 
 const AttributeList = () => {
-	const { setAttributeModalInput, setValueModalInput, setIsEditMode } = useContext(AttributeContext);
+	const { valueUpdate, setAttributeModalInput, setValueModalInput, setIsEditMode } = useContext(AttributeContext);
 
 	const [input, setInput] = useState({
 		search: '',
@@ -111,7 +111,7 @@ const AttributeList = () => {
 
 	useEffect(() => {
 		getAttributes();
-	}, []);
+	}, [valueUpdate]);
 
 	return (
 		<>
