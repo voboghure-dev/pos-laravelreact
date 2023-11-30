@@ -6,7 +6,6 @@ const AttributeValue = (props) => {
 	const [valueModalShow, setValueModalShow] = useState(false);
 
 	const handleAttrValueDetailsOpen = (value) => {
-		console.log(value);
 		setAttrValue(value);
 		setValueModalShow(true);
 	};
