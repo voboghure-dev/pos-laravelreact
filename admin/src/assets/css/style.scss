@@ -1,5 +1,7 @@
+@import 'mixin';
+
 a {
-    text-decoration: none;
+	text-decoration: none;
 }
 h1,
 h2,
@@ -8,34 +10,71 @@ h4,
 h5,
 h6,
 p {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 .my-table {
-    font-size: 14px;
-    th,
-    td {
-        vertical-align: middle;
-    }
+	font-size: 14px;
+	th,
+	td {
+		vertical-align: middle;
+	}
 }
 .category-photo {
-    width: 75px;
-    cursor: pointer;
+	width: 75px;
+	cursor: pointer;
 }
 .search-area {
-    label {
-        font-size: 14px;
-    }
+	label {
+		font-size: 14px;
+	}
 }
 .no-data-found-container {
-    width: 100%;
-    min-height: 40px;
-    .no-data-found {
-        position: absolute;
-    }
+	width: 100%;
+	min-height: 40px;
+	.no-data-found {
+		position: absolute;
+	}
 }
 
 .bg-gray {
-    background-color: #d4dae3 !important;
+	background-color: #d4dae3 !important;
+}
+
+.value-container-parent {
+	display: flex;
+    flex-wrap: wrap;
+	width: 500px;
+	.value-container {
+		position: relative;
+		line-height: 25px;
+		width: 100px;
+		background: #7936a7;
+		margin: 2px;
+		border-radius: 5px;
+		text-align: center;
+		color: white;
+		font-weight: bold;
+		cursor: pointer;
+		&:hover .value-buttons {
+			display: block;
+		}
+		.value-buttons {
+			display: none;
+			width: 100px;
+			@include center;
+			button {
+				border: 0;
+				padding: 0 6px;
+				margin: 1px;
+				font-size: 12px;
+				color: white;
+				@include transition;
+				&:hover {
+					color: black;
+				}
+			}
+		}
+	}
 }

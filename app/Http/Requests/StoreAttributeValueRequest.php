@@ -18,9 +18,9 @@ class StoreAttributeValueRequest extends FormRequest {
 	 */
 	public function rules(): array {
 		return [
+			'attribute_id' => 'required|numeric',
 			'name'         => 'required|string|min:3|max:255|unique:attribute_values',
 			'status'       => 'required|numeric',
-			'attribute_id' => 'required|numeric',
 		];
 	}
 }

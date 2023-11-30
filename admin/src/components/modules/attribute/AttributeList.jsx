@@ -227,6 +227,26 @@ const AttributeList = () => {
 															<p>{attr.name}</p>
 														</td>
 														<td>
+															<div className='value-container-parent'>
+																{attr.value != undefined
+																	? attr.value.map((value, valIndex) => (
+																			<div className='value-container'>
+																				{value.name}
+																				<div className='value-buttons'>
+																					<button className='btn btn-info'>
+																						<i className='fa-solid fa-eye'></i>
+																					</button>
+																					<button className='btn btn-warning'>
+																						<i className='fa-solid fa-edit'></i>
+																					</button>
+																					<button className='btn btn-danger'>
+																						<i className='fa-solid fa-trash'></i>
+																					</button>
+																				</div>
+																			</div>
+																	  ))
+																	: null}
+															</div>
 															<button
 																onClick={() => handleValueModalOpen(attr.id, attr.name)}
 																className='btn btn-sm btn-primary'

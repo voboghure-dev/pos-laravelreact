@@ -44,7 +44,7 @@ class Attribute extends Model {
 		}
 		$per_page = $input['per_page'] ?? 10;
 
-		return $query->with( ['user:id,name'] )->paginate( $per_page );
+		return $query->with( ['user:id,name', 'value', 'value.user:id,name'] )->paginate( $per_page );
 	}
 
 	/**
@@ -54,5 +54,14 @@ class Attribute extends Model {
 	 */
 	public function user() {
 		return $this->belongsTo( User::class );
+	}
+
+	/**
+	 * Relation with attribute_values table
+	 *
+	 * @return void
+	 */
+	public function value() {
+		return $this->hasMany( AttributeValue::class );
 	}
 }

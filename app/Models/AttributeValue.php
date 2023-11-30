@@ -14,5 +14,13 @@ class AttributeValue extends Model {
 		'status',
 	];
 
+	/**
+	 * Relation with user table
+	 *
+	 * @return void
+	 */
+	public function user() {
+		return $this->belongsTo( User::class );
+	}
 
 }
