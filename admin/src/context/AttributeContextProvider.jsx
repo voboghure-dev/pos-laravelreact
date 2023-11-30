@@ -5,6 +5,7 @@ const AttributeContextProvider = ({ children }) => {
 	const [attributeModalInput, setAttributeModalInput] = useState({ status: 1 });
 	const [valueModalInput, setValueModalInput] = useState({ status: 1 });
 	const [isEditMode, setIsEditMode] = useState(false);
+	const [attrValue, setAttrValue] = useState([]);
 
 	return (
 		<AttributeContext.Provider
@@ -15,6 +16,8 @@ const AttributeContextProvider = ({ children }) => {
 				setValueModalInput,
 				isEditMode,
 				setIsEditMode,
+				attrValue,
+				setAttrValue,
 			}}
 		>
 			{children}

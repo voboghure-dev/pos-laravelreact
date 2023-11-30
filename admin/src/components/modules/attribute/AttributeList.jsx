@@ -8,6 +8,7 @@ import NoDataFound from '../../partials/NoDataFound';
 import AttributeModal from './AttributeModal';
 import AttributeContext from '../../../context/AttributeContext';
 import ValueModal from './ValueModal';
+import AttributeValue from './AttributeValue';
 
 const AttributeList = () => {
 	const { setAttributeModalInput, setValueModalInput, setIsEditMode } = useContext(AttributeContext);
@@ -227,26 +228,8 @@ const AttributeList = () => {
 															<p>{attr.name}</p>
 														</td>
 														<td>
-															<div className='value-container-parent'>
-																{attr.value != undefined
-																	? attr.value.map((value, valIndex) => (
-																			<div className='value-container'>
-																				{value.name}
-																				<div className='value-buttons'>
-																					<button className='btn btn-info'>
-																						<i className='fa-solid fa-eye'></i>
-																					</button>
-																					<button className='btn btn-warning'>
-																						<i className='fa-solid fa-edit'></i>
-																					</button>
-																					<button className='btn btn-danger'>
-																						<i className='fa-solid fa-trash'></i>
-																					</button>
-																				</div>
-																			</div>
-																	  ))
-																	: null}
-															</div>
+															<AttributeValue value={attr.value} />
+
 															<button
 																onClick={() => handleValueModalOpen(attr.id, attr.name)}
 																className='btn btn-sm btn-primary'

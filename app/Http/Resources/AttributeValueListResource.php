@@ -17,6 +17,8 @@ class AttributeValueListResource extends JsonResource {
 			'status'          => $this->status != 0 ? 'Active' : 'Inactive',
 			'original_status' => $this->status,
 			'created_by'      => $this->user?->name,
+			'created_at'      => $this->created_at->toDayDateTimeString(),
+			'updated_at'      => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not yet updated',
 		];
 	}
 }
