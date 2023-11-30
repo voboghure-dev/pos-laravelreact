@@ -99,12 +99,12 @@ const AttributeList = () => {
 	const handleValueModalOpen = (id, name) => {
 		setValueModalTitle('Add');
 		setValueModalName(name);
-		setValueModalInput({attribute_id: id})
+		setValueModalInput({ attribute_id: id, status: 1 });
 		setValueModalShow(true);
 	};
 
 	const handleValueModalClose = () => {
-		// setValueModalInput({status: 1});
+		setValueModalInput({ status: 1 });
 		setValueModalShow(false);
 	};
 
