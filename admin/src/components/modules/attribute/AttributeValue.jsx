@@ -4,16 +4,24 @@ import Swal from 'sweetalert2';
 import ValueDetailsModals from './ValueDetailsModals';
 import Constants from '../../../Constants';
 import AttributeContext from '../../../context/AttributeContext';
+import ValueModal from './ValueModal';
 
 const AttributeValue = (props) => {
-	const { setValueUpdate } = useContext(AttributeContext);
+	const { setValueUpdate, setValueModalInput, setIsEditMode } = useContext(AttributeContext);
 
 	const [attrValue, setAttrValue] = useState();
-	const [valueModalShow, setValueModalShow] = useState(false);
+	const [valueModalEditShow, setValueModalEditShow] = useState(false);
+	const [valueModalDetailsShow, setValueModalDetailsShow] = useState(false);
 
 	const handleAttrValueDetailsOpen = (value) => {
 		setAttrValue(value);
-		setValueModalShow(true);
+		setValueModalDetailsShow(true);
+	};
+
+	const handleAttrValueEdit = (value) => {
+		setValueModalInput({ id: value.id, name: value.name, status: value.original_status });
+		setIsEditMode(true);
+		setValueModalEditShow(true);
 	};
 
 	const handleAttrValueDelete = (id) => {
@@ -53,7 +61,7 @@ const AttributeValue = (props) => {
 									<button onClick={() => handleAttrValueDetailsOpen(value)} className='btn btn-info'>
 										<i className='fa-solid fa-eye'></i>
 									</button>
-									<button className='btn btn-warning'>
+									<button onClick={() => handleAttrValueEdit(value)} className='btn btn-warning'>
 										<i className='fa-solid fa-edit'></i>
 									</button>
 									<button onClick={() => handleAttrValueDelete(value.id)} className='btn btn-danger'>
@@ -66,9 +74,15 @@ const AttributeValue = (props) => {
 			</div>
 			<ValueDetailsModals
 				title={'Attribute Value Details'}
-				show={valueModalShow}
-				onHide={() => setValueModalShow(false)}
+				show={valueModalDetailsShow}
+				onHide={() => setValueModalDetailsShow(false)}
 				details={attrValue}
+			/>
+			<ValueModal
+				title='Edit Attribute Value'
+				show={valueModalEditShow}
+				onHide={() => setValueModalEditShow(false)}
+				reload=''
 			/>
 		</>
 	);

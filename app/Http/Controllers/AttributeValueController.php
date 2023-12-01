@@ -7,13 +7,6 @@ use App\Models\AttributeValue;
 
 class AttributeValueController extends Controller {
 	/**
-	 * Display a listing of the resource.
-	 */
-	public function index() {
-		//
-	}
-
-	/**
 	 * Store a newly created resource in storage.
 	 */
 	public function store( StoreAttributeValueRequest $request ) {
@@ -25,17 +18,14 @@ class AttributeValueController extends Controller {
 	}
 
 	/**
-	 * Display the specified resource.
-	 */
-	public function show( AttributeValue $attributeValue ) {
-		//
-	}
-
-	/**
 	 * Update the specified resource in storage.
 	 */
 	public function update( UpdateAttributeValueRequest $request, AttributeValue $attributeValue ) {
-		//
+		$attribute_value            = $request->all();
+		$attribute_value['user_id'] = auth()->id();
+		$attributeValue->update( $attribute_value );
+
+		return response()->json( ['msg' => 'Attribute value updated successfully', 'cls' => 'success'] );
 	}
 
 	/**

@@ -7,7 +7,7 @@ import AttributeContext from '../../../context/AttributeContext';
 
 const ValueModal = (props) => {
 	const { reload, ...others } = props;
-	const { valueModalInput, setValueModalInput, isEditMode } = useContext(AttributeContext);
+	const { valueModalInput, setValueModalInput, setValueUpdate, isEditMode } = useContext(AttributeContext);
 	const nameRef = useRef();
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -55,8 +55,8 @@ const ValueModal = (props) => {
 					toast: true,
 					timer: 1500,
 				});
+				setValueUpdate(valueModalInput.name);
 				props.onHide();
-				reload();
 			})
 			.catch((errors) => {
 				setIsLoading(false);
