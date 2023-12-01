@@ -20,6 +20,7 @@ import SupplierList from '../modules/supplier/SupplierList';
 import SupplierEdit from '../modules/supplier/SupplierEdit';
 import AttributeList from '../modules/attribute/AttributeList';
 import AttributeContextProvider from '../../context/AttributeContextProvider';
+import ProductAdd from '../modules/product/ProductAdd';
 
 const Router = createBrowserRouter([
 	{
@@ -89,6 +90,10 @@ const Router = createBrowserRouter([
 						<AttributeList />
 					</AttributeContextProvider>
 				),
+			},
+			{
+				path: '/dashboard/product/create',
+				element: <ProductAdd />,
 			},
 			{
 				path: '/dashboard/error-500',

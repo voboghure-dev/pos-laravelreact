@@ -13,6 +13,41 @@ const Sidebar = () => {
 							</div>
 							Dashboard
 						</Link>
+
+						<div className='sb-sidenav-menu-heading'>Product</div>
+
+						<a
+							className='nav-link collapsed'
+							href='#'
+							data-bs-toggle='collapse'
+							data-bs-target='#productMenu'
+							aria-expanded='false'
+							aria-controls='productMenu'
+						>
+							<div className='sb-nav-link-icon'>
+								<i className='fas fa-columns'></i>
+							</div>
+							Product
+							<div className='sb-sidenav-collapse-arrow'>
+								<i className='fas fa-angle-down'></i>
+							</div>
+						</a>
+						<div
+							className='collapse'
+							id='productMenu'
+							aria-labelledby='headingOne'
+							data-bs-parent='#sidenavAccordion'
+						>
+							<nav className='sb-sidenav-menu-nested nav'>
+								<Link className='nav-link' to='/dashboard/product/create'>
+									Add Product
+								</Link>
+								<Link className='nav-link' to='/dashboard/product'>
+									Product List
+								</Link>
+							</nav>
+						</div>
+
 						<div className='sb-sidenav-menu-heading'>Management</div>
 
 						<a
@@ -237,19 +272,6 @@ const Sidebar = () => {
 								</div>
 							</nav>
 						</div>
-						<div className='sb-sidenav-menu-heading'>Addons</div>
-						<a className='nav-link' href='charts.html'>
-							<div className='sb-nav-link-icon'>
-								<i className='fas fa-chart-area'></i>
-							</div>
-							Charts
-						</a>
-						<a className='nav-link' href='tables.html'>
-							<div className='sb-nav-link-icon'>
-								<i className='fas fa-table'></i>
-							</div>
-							Tables
-						</a>
 					</div>
 				</div>
 				<div className='sb-sidenav-footer'>
