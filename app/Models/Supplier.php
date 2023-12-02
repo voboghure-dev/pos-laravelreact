@@ -61,6 +61,15 @@ class Supplier extends Model {
 	}
 
 	/**
+	 * Get supplier id and name list
+	 *
+	 * @return void
+	 */
+	public function getSupplierIdAndName() {
+		return self::query()->select( 'id', 'company_name' )->get();
+	}
+
+	/**
 	 * Relation with user table
 	 *
 	 * @return void

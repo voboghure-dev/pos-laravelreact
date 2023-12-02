@@ -111,4 +111,15 @@ class SubCategoryController extends Controller {
 
 		return $photo_name;
 	}
+
+	/**
+	 * Get sub category list with id and name
+	 *
+	 * @return JsonResponse
+	 */
+	public function get_sub_category_list( int $category_id ) {
+		$sub_categories = ( new SubCategory() )->getCategoryIdAndName( $category_id );
+
+		return response()->json( $sub_categories );
+	}
 }

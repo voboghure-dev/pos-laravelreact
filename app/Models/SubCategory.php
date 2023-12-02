@@ -51,6 +51,15 @@ class SubCategory extends Model {
 	}
 
 	/**
+	 * Get sub category id and name for populate select sub category dropdown
+	 *
+	 * @return collection
+	 */
+	public function getCategoryIdAndName( $category_id ) {
+		return self::query()->select( 'id', 'name' )->where( 'category_id', $category_id )->get();
+	}
+
+	/**
 	 * Relation with user table
 	 *
 	 * @return void

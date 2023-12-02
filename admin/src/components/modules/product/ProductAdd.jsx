@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../partials/Breadcrumb';
 import Constants from '../../../Constants';
@@ -11,6 +11,77 @@ const ProductAdd = () => {
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
+	const [categories, setCategories] = useState([]);
+	const [subCategories, setSubCategories] = useState([]);
+	const [brands, setBrands] = useState([]);
+	const [suppliers, setSuppliers] = useState([]);
+	const [countries, setCountries] = useState([]);
+
+	const getCategories = () => {
+		axios
+			.get(`${Constants.BASE_URL}/get-category-list`)
+			.then((res) => {
+				setCategories(res.data);
+			})
+			.catch((errors) => {
+				if (errors.response.status == 422) {
+					setErrors(errors.response.data.errors);
+				}
+			});
+	};
+
+	const getSubCategories = (category_id) => {
+		axios
+			.get(`${Constants.BASE_URL}/get-sub-category-list/${category_id}`)
+			.then((res) => {
+				setSubCategories(res.data);
+			})
+			.catch((errors) => {
+				if (errors.response.status == 422) {
+					setErrors(errors.response.data.errors);
+				}
+			});
+	};
+
+	const getBrands = () => {
+		axios
+			.get(`${Constants.BASE_URL}/get-brand-list`)
+			.then((res) => {
+				setBrands(res.data);
+			})
+			.catch((errors) => {
+				if (errors.response.status == 422) {
+					setErrors(errors.response.data.errors);
+				}
+			});
+	};
+
+	const getCountries = () => {
+		axios
+			.get(`${Constants.BASE_URL}/get-country-list`)
+			.then((res) => {
+				setCountries(res.data);
+			})
+			.catch((errors) => {
+				if (errors.response.status == 422) {
+					setErrors(errors.response.data.errors);
+				}
+			});
+	};
+
+	const getSuppliers = () => {
+		axios
+			.get(`${Constants.BASE_URL}/get-supplier-list`)
+			.then((res) => {
+				setSuppliers(res.data);
+			})
+			.catch((errors) => {
+				if (errors.response.status == 422) {
+					setErrors(errors.response.data.errors);
+				}
+			});
+	};
+
 	const handleInput = (e) => {
 		if (e.target.name == 'name') {
 			let slug = e.target.value;
@@ -20,6 +91,11 @@ const ProductAdd = () => {
 				...prevState,
 				slug: slug,
 			}));
+		} else if (e.target.name == 'category_id') {
+			let category_id = parseInt(e.target.value);
+			if (!Number.isNaN(category_id)) {
+				getSubCategories(e.target.value);
+			}
 		}
 
 		setInput((prevState) => ({
@@ -28,22 +104,22 @@ const ProductAdd = () => {
 		}));
 	};
 
-	const handleLogo = (e) => {
+	const handlePhoto = (e) => {
 		let file = e.target.files[0];
 		let reader = new FileReader();
 		reader.onloadend = () => {
 			setInput((prevState) => ({
 				...prevState,
-				logo: reader.result,
+				photo: reader.result,
 			}));
 		};
 		reader.readAsDataURL(file);
 	};
 
-	const handleSupplierAdd = () => {
+	const handleCategoryAdd = () => {
 		setIsLoading(true);
 		axios
-			.post(`${Constants.BASE_URL}/supplier`, input)
+			.post(`${Constants.BASE_URL}/category`, input)
 			.then((res) => {
 				setIsLoading(false);
 				Swal.fire({
@@ -54,7 +130,7 @@ const ProductAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate('/dashboard/supplier');
+				navigate('/dashboard/category');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -64,21 +140,12 @@ const ProductAdd = () => {
 			});
 	};
 
-	const handleSupplierReset = () => {
-		setInput({
-			company_name: '',
-			phone_number: '',
-			email_address: '',
-			status: '',
-			description: '',
-			logo: undefined,
-			address: '',
-			division: '',
-			district: '',
-			area: '',
-			land_mark: '',
-		});
-	};
+	useEffect(() => {
+		getCategories();
+		getBrands();
+		getCountries();
+		getSuppliers();
+	}, []);
 
 	return (
 		<>
@@ -93,292 +160,237 @@ const ProductAdd = () => {
 						<div className='card-body'>
 							<div className='row'>
 								<div className='col-md-6 mb-3'>
-									<div className='card'>
-										<div className='card-header'>
-											<h6>Personal Details</h6>
-										</div>
-										<div className='card-body'>
-											<div className='row'>
-												<div className='col-md-12'>
-													<label className='small mb-1' htmlFor='company_name'>
-														Company Name
-													</label>
-													<input
-														className={
-															errors.company_name != undefined
-																? 'form-control is-invalid'
-																: 'form-control'
-														}
-														name='company_name'
-														id='company_name'
-														value={input.company_name}
-														onChange={handleInput}
-														type='text'
-														placeholder='Enter supplier company name'
-													/>
-													<div className='invalid-feedback'>
-														{errors.company_name != undefined
-															? errors.company_name[0]
-															: null}
-													</div>
-												</div>
-												<div className='col-md-12'>
-													<label className='small mb-1' htmlFor='phone_number'>
-														Phone Number
-													</label>
-													<input
-														className={
-															errors.phone_number != undefined
-																? 'form-control is-invalid'
-																: 'form-control'
-														}
-														name='phone_number'
-														id='phone_number'
-														value={input.phone_number}
-														onChange={handleInput}
-														type='text'
-														placeholder='Enter supplier phone number'
-													/>
-													<div className='invalid-feedback'>
-														{errors.phone_number != undefined
-															? errors.phone_number[0]
-															: null}
-													</div>
-												</div>
-												<div className='col-md-12'>
-													<label className='small mb-1' htmlFor='email_address'>
-														Email address
-													</label>
-													<input
-														className={
-															errors.email_address != undefined
-																? 'form-control is-invalid'
-																: 'form-control'
-														}
-														name='email_address'
-														id='email_address'
-														value={input.email_address}
-														onChange={handleInput}
-														type='text'
-														placeholder='Enter supplier email address'
-													/>
-													<div className='invalid-feedback'>
-														{errors.email_address != undefined
-															? errors.email_address[0]
-															: null}
-													</div>
-												</div>
-												<div className='col-md-12 mb-3'>
-													<label className='small mb-1' htmlFor='status'>
-														Status
-													</label>
-													<select
-														className={
-															errors.status != undefined
-																? 'form-select is-invalid'
-																: 'form-select'
-														}
-														name='status'
-														id='status'
-														value={input.status}
-														onChange={handleInput}
-													>
-														<option value={1}>Active</option>
-														<option value={0}>Inactive</option>
-													</select>
-													<div className='invalid-feedback'>
-														{errors.status != undefined ? errors.status[0] : null}
-													</div>
-												</div>
-												<div className='col-md-12 mb-3'>
-													<label className='small mb-1' htmlFor='description'>
-														Description
-													</label>
-													<textarea
-														className={
-															errors.description != undefined
-																? 'form-control is-invalid'
-																: 'form-control'
-														}
-														name='description'
-														id='description'
-														value={input.description}
-														onChange={handleInput}
-														placeholder='Enter supplier description'
-														rows='3'
-													/>
-													<div className='invalid-feedback'>
-														{errors.description != undefined ? errors.description[0] : null}
-													</div>
-												</div>
-												<div className='col-md-12 mb-3'>
-													<label className='small mb-1' htmlFor='logo'>
-														Logo
-													</label>
-													<input
-														className={
-															errors.logo != undefined
-																? 'form-control is-invalid'
-																: 'form-control'
-														}
-														id='logo'
-														name='logo'
-														type='file'
-														onChange={handleLogo}
-													/>
-													{input.logo != undefined || input.logo == '' ? (
-														<div className='row'>
-															<div className='col-md-6'>
-																<img
-																	src={input.logo}
-																	alt='Supplier logo'
-																	className='img-thumbnail'
-																/>
-															</div>
-														</div>
-													) : null}
-												</div>
-											</div>
-										</div>
+									<label className='small mb-1' htmlFor='name'>
+										Name
+									</label>
+									<input
+										className={
+											errors.name != undefined ? 'form-control is-invalid' : 'form-control'
+										}
+										name='name'
+										id='name'
+										value={input.name}
+										onChange={handleInput}
+										type='text'
+										placeholder='Enter category name'
+									/>
+									<div className='invalid-feedback'>
+										{errors.name != undefined ? errors.name[0] : null}
 									</div>
 								</div>
 								<div className='col-md-6 mb-3'>
-									<div className='card'>
-										<div className='card-header'>
-											<h6>Contact Address</h6>
-										</div>
-										<div className='card-body'>
-											<div className='row'>
-												<div className='col-md-12'>
-													<label className='small mb-1' htmlFor='address'>
-														Address
-													</label>
-													<textarea
-														className={
-															errors.address != undefined
-																? 'form-control is-invalid'
-																: 'form-control'
-														}
-														name='address'
-														id='address'
-														value={input.address}
-														onChange={handleInput}
-														placeholder='Enter supplier address'
-														rows='3'
-													/>
-													<div className='invalid-feedback'>
-														{errors.address != undefined ? errors.address[0] : null}
-													</div>
-												</div>
-												<div className='col-md-12'>
-													<label className='small mb-1' htmlFor='division'>
-														Division
-													</label>
-													<input
-														className={
-															errors.division != undefined
-																? 'form-control is-invalid'
-																: 'form-control'
-														}
-														name='division'
-														id='division'
-														value={input.division}
-														onChange={handleInput}
-														type='text'
-														placeholder='Enter supplier division name'
-													/>
-													<div className='invalid-feedback'>
-														{errors.division != undefined ? errors.division[0] : null}
-													</div>
-												</div>
-												<div className='col-md-12'>
-													<label className='small mb-1' htmlFor='district'>
-														District
-													</label>
-													<input
-														className={
-															errors.district != undefined
-																? 'form-control is-invalid'
-																: 'form-control'
-														}
-														name='district'
-														id='district'
-														value={input.district}
-														onChange={handleInput}
-														type='text'
-														placeholder='Enter supplier district name'
-													/>
-													<div className='invalid-feedback'>
-														{errors.district != undefined ? errors.district[0] : null}
-													</div>
-												</div>
-												<div className='col-md-12'>
-													<label className='small mb-1' htmlFor='area'>
-														Area
-													</label>
-													<input
-														className={
-															errors.area != undefined
-																? 'form-control is-invalid'
-																: 'form-control'
-														}
-														name='area'
-														id='area'
-														value={input.area}
-														onChange={handleInput}
-														type='text'
-														placeholder='Enter supplier area name'
-													/>
-													<div className='invalid-feedback'>
-														{errors.area != undefined ? errors.area[0] : null}
-													</div>
-												</div>
-												<div className='col-md-12'>
-													<label className='small mb-1' htmlFor='land_mark'>
-														Land Mark
-													</label>
-													<input
-														className={
-															errors.land_mark != undefined
-																? 'form-control is-invalid'
-																: 'form-control'
-														}
-														name='land_mark'
-														id='land_mark'
-														value={input.land_mark}
-														onChange={handleInput}
-														type='text'
-														placeholder='Enter supplier land mark'
-													/>
-													<div className='invalid-feedback'>
-														{errors.land_mark != undefined ? errors.land_mark[0] : null}
-													</div>
-												</div>
+									<label className='small mb-1' htmlFor='slug'>
+										Slug
+									</label>
+									<input
+										className={
+											errors.slug != undefined ? 'form-control is-invalid' : 'form-control'
+										}
+										name='slug'
+										id='slug'
+										value={input.slug}
+										onChange={handleInput}
+										type='text'
+										placeholder='Enter category slug'
+									/>
+									<div className='invalid-feedback'>
+										{errors.slug != undefined ? errors.slug[0] : null}
+									</div>
+								</div>
+								<div className='col-md-6 mb-3'>
+									<label className='small mb-1' htmlFor='category_id'>
+										Category
+									</label>
+									<select
+										className={
+											errors.category_id != undefined ? 'form-select is-invalid' : 'form-select'
+										}
+										name='category_id'
+										id='category_id'
+										value={input.category_id}
+										onChange={handleInput}
+									>
+										<option>Select Category</option>
+										{categories.map((category, index) => (
+											<option value={category.id} key={index}>
+												{category.name}
+											</option>
+										))}
+									</select>
+									<div className='invalid-feedback'>
+										{errors.category_id != undefined ? errors.category_id[0] : null}
+									</div>
+								</div>
+								<div className='col-md-6 mb-3'>
+									<label className='small mb-1' htmlFor='sub_category_id'>
+										Sub Category
+									</label>
+									<select
+										className={
+											errors.sub_category_id != undefined
+												? 'form-select is-invalid'
+												: 'form-select'
+										}
+										name='sub_category_id'
+										id='sub_category_id'
+										value={input.sub_category_id}
+										onChange={handleInput}
+										disabled={input.category_id == undefined}
+									>
+										<option>Select Sub Category</option>
+										{subCategories.map((subCategory, index) => (
+											<option value={subCategory.id} key={index}>
+												{subCategory.name}
+											</option>
+										))}
+									</select>
+									<div className='invalid-feedback'>
+										{errors.sub_category_id != undefined ? errors.sub_category_id[0] : null}
+									</div>
+								</div>
+								<div className='col-md-6 mb-3'>
+									<label className='small mb-1' htmlFor='brand_id'>
+										Brand
+									</label>
+									<select
+										className={
+											errors.brand_id != undefined ? 'form-select is-invalid' : 'form-select'
+										}
+										name='brand_id'
+										id='brand_id'
+										value={input.brand_id}
+										onChange={handleInput}
+									>
+										<option>Select Category</option>
+										{brands.map((brand, index) => (
+											<option value={brand.id} key={index}>
+												{brand.name}
+											</option>
+										))}
+									</select>
+									<div className='invalid-feedback'>
+										{errors.brand_id != undefined ? errors.brand_id[0] : null}
+									</div>
+								</div>
+								<div className='col-md-6 mb-3'>
+									<label className='small mb-1' htmlFor='country_id'>
+										Select product origin
+									</label>
+									<select
+										className={
+											errors.country_id != undefined ? 'form-select is-invalid' : 'form-select'
+										}
+										name='country_id'
+										id='country_id'
+										value={input.country_id}
+										onChange={handleInput}
+									>
+										<option>Select Country</option>
+										{countries.map((country, index) => (
+											<option value={country.id} key={index}>
+												{country.name}
+											</option>
+										))}
+									</select>
+									<div className='invalid-feedback'>
+										{errors.country_id != undefined ? errors.country_id[0] : null}
+									</div>
+								</div>
+								<div className='col-md-6 mb-3'>
+									<label className='small mb-1' htmlFor='supplier_id'>
+										Select supplier
+									</label>
+									<select
+										className={
+											errors.supplier_id != undefined ? 'form-select is-invalid' : 'form-select'
+										}
+										name='supplier_id'
+										id='supplier_id'
+										value={input.supplier_id}
+										onChange={handleInput}
+									>
+										<option>Select Supplier</option>
+										{suppliers.map((supplier, index) => (
+											<option value={supplier.id} key={index}>
+												{supplier.company_name}
+											</option>
+										))}
+									</select>
+									<div className='invalid-feedback'>
+										{errors.supplier_id != undefined ? errors.supplier_id[0] : null}
+									</div>
+								</div>
+								<div className='col-md-6 mb-3'>
+									<label className='small mb-1' htmlFor='status'>
+										Status
+									</label>
+									<select
+										className={
+											errors.status != undefined ? 'form-select is-invalid' : 'form-select'
+										}
+										name='status'
+										id='status'
+										value={input.status}
+										onChange={handleInput}
+									>
+										<option value={1}>Active</option>
+										<option value={0}>Inactive</option>
+									</select>
+									<div className='invalid-feedback'>
+										{errors.status != undefined ? errors.status[0] : null}
+									</div>
+								</div>
+								<div className='col-md-6 mb-3'>
+									<label className='small mb-1' htmlFor='description'>
+										Description
+									</label>
+									<textarea
+										className={
+											errors.description != undefined ? 'form-control is-invalid' : 'form-control'
+										}
+										name='description'
+										id='description'
+										value={input.description}
+										onChange={handleInput}
+										placeholder='Enter category description'
+										rows='3'
+									/>
+									<div className='invalid-feedback'>
+										{errors.description != undefined ? errors.description[0] : null}
+									</div>
+								</div>
+								<div className='col-md-6 mb-3'>
+									<label className='small mb-1' htmlFor='photo'>
+										Photo
+									</label>
+									<input
+										className={
+											errors.photo != undefined ? 'form-control is-invalid' : 'form-control'
+										}
+										id='photo'
+										name='photo'
+										onChange={handlePhoto}
+										type='file'
+									/>
+									{input.photo != undefined ? (
+										<div className='row'>
+											<div className='col-md-6'>
+												<img src={input.photo} alt='Category photo' className='img-thumbnail' />
 											</div>
 										</div>
-									</div>
+									) : null}
 								</div>
 							</div>
 						</div>
-						<div className='card-footer d-flex justify-content-between'>
+						<div className='card-footer'>
 							<button
 								className='btn btn-primary'
 								type='button'
-								onClick={handleSupplierAdd}
+								onClick={handleCategoryAdd}
 								dangerouslySetInnerHTML={{
 									__html: isLoading
 										? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Loading...'
 										: 'Save changes',
-								}}
-							/>
-							<button
-								className='btn btn-danger'
-								type='button'
-								onClick={handleSupplierReset}
-								dangerouslySetInnerHTML={{
-									__html: isLoading
-										? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Loading...'
-										: 'Reset',
 								}}
 							/>
 						</div>

@@ -50,6 +50,15 @@ class Brand extends Model {
 	}
 
 	/**
+	 * Get brand id and name list
+	 *
+	 * @return void
+	 */
+	public function getBrandIdAndName() {
+		return self::query()->select( 'id', 'name' )->get();
+	}
+
+	/**
 	 * Relation with user table
 	 *
 	 * @return void

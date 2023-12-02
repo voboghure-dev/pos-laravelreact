@@ -111,4 +111,15 @@ class BrandController extends Controller {
 
 		return $logo_name;
 	}
+
+	/**
+	 * Get brand list with id and name
+	 *
+	 * @return JsonResponse
+	 */
+	public function get_brand_list() {
+		$brands = ( new Brand() )->getBrandIdAndName();
+
+		return response()->json( $brands );
+	}
 }
