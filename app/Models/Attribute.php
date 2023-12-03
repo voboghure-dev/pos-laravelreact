@@ -48,6 +48,15 @@ class Attribute extends Model {
 	}
 
 	/**
+	 * Get attribute list with value
+	 *
+	 * @return collection
+	 */
+	final public function getAttributeListWithValue() {
+		return self::query()->select( 'id', 'name' )->with( 'value:id,name,attribute_id' )->get();
+	}
+
+	/**
 	 * Relation with user table
 	 *
 	 * @return void

@@ -8,14 +8,18 @@ import Swal from 'sweetalert2';
 const ProductAdd = () => {
 	const navigate = useNavigate();
 	const [input, setInput] = useState({ status: 1 });
+	const [attribute_input, setAttribute_input] = useState({});
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const [categories, setCategories] = useState([]);
 	const [subCategories, setSubCategories] = useState([]);
 	const [brands, setBrands] = useState([]);
-	const [suppliers, setSuppliers] = useState([]);
 	const [countries, setCountries] = useState([]);
+	const [suppliers, setSuppliers] = useState([]);
+	const [attributes, setAttributes] = useState([]);
+	const [attributeField, setAttributeField] = useState([]);
+	const [attributeFieldId, setAttributeFieldId] = useState(1);
 
 	const getCategories = () => {
 		axios
@@ -82,6 +86,48 @@ const ProductAdd = () => {
 			});
 	};
 
+	const getAttributes = () => {
+		axios
+			.get(`${Constants.BASE_URL}/get-attribute-list`)
+			.then((res) => {
+				setAttributes(res.data);
+			})
+			.catch((errors) => {
+				if (errors.response.status == 422) {
+					setErrors(errors.response.data.errors);
+				}
+			});
+	};
+
+	const handleAttributeField = (id) => {
+		if (attributes.length >= attributeFieldId) {
+			setAttributeFieldId(attributeFieldId + 1);
+			setAttributeField((prevState) => [...prevState, attributeFieldId]);
+		}
+	};
+
+	const handleAttributeFieldRemove = (id) => {
+		setAttributeField((oldValues) => {
+			return oldValues.filter((attributeFiled) => attributeFiled !== id);
+		});
+		setAttribute_input((current) => {
+			const copy = { ...current };
+			delete copy[id];
+			return copy;
+		});
+		setAttributeFieldId(attributeFieldId - 1);
+	};
+
+	const handleAttributeInput = (e, id) => {
+		setAttribute_input((prevState) => ({
+			...prevState,
+			[id]: {
+				...prevState[id],
+				[e.target.name]: e.target.value,
+			},
+		}));
+	};
+
 	const handleInput = (e) => {
 		if (e.target.name == 'name') {
 			let slug = e.target.value;
@@ -141,10 +187,15 @@ const ProductAdd = () => {
 	};
 
 	useEffect(() => {
+		setInput((prevState) => ({ ...prevState, attributes: attribute_input }));
+	}, [attribute_input]);
+
+	useEffect(() => {
 		getCategories();
 		getBrands();
 		getCountries();
 		getSuppliers();
+		getAttributes();
 	}, []);
 
 	return (
@@ -318,6 +369,98 @@ const ProductAdd = () => {
 									</select>
 									<div className='invalid-feedback'>
 										{errors.supplier_id != undefined ? errors.supplier_id[0] : null}
+									</div>
+								</div>
+								<div className='col-md-12 mb-3'>
+									<div className='card'>
+										<div className='card-header'>
+											<h5>Select Product Attributes</h5>
+										</div>
+										<div className='card-body'>
+											{attributeField.map((attrFieldId, attrFieldIndex) => (
+												<div key={attrFieldIndex} className='row align-items-end'>
+													<div className='col-md-5'>
+														<label className='small mb-1' htmlFor='attribute_id'>
+															Select Attribute
+														</label>
+														<select
+															className='form-select'
+															name='attribute_id'
+															id='attribute_id'
+															value={
+																attribute_input[attrFieldId] != undefined
+																	? attribute_input[attrFieldId].attribute_id
+																	: ''
+															}
+															onChange={(e) => handleAttributeInput(e, attrFieldId)}
+														>
+															<option>Select Attribute</option>
+															{attributes.map((attr, index) => (
+																<option value={attr.id} key={index}>
+																	{attr.name}
+																</option>
+															))}
+														</select>
+														<div className='invalid-feedback'>
+															{errors.attribute_id != undefined
+																? errors.attribute_id[0]
+																: null}
+														</div>
+													</div>
+													<div className='col-md-5'>
+														<label className='small mb-1' htmlFor='value_id'>
+															Select Attribute Value
+														</label>
+														<select
+															className='form-select'
+															name='value_id'
+															id='value_id'
+															value={input.value_id}
+															onChange={handleInput}
+														>
+															<option>Select Attribute Value</option>
+															{attributes.map((attr, index) => (
+																<>
+																	{attribute_input[attrFieldId] != undefined &&
+																	attr.id == attribute_input[attrFieldId].attribute_id
+																		? attr.value.map((attr_value, value_index) => (
+																				<option
+																					key={value_index}
+																					value={attr_value.id}
+																				>
+																					{attr_value.name}
+																				</option>
+																		  ))
+																		: null}
+																</>
+															))}
+														</select>
+														<div className='invalid-feedback'>
+															{errors.value_id != undefined ? errors.value_id[0] : null}
+														</div>
+													</div>
+													<div className='col-md-2'>
+														<button
+															className='btn btn-sm btn-danger mb-1'
+															onClick={() => handleAttributeFieldRemove(attrFieldId)}
+														>
+															<i className='fa-solid fa-minus' />
+														</button>
+													</div>
+												</div>
+											))}
+
+											<div className='row mt-3'>
+												<div className='col-md-12 text-center'>
+													<button
+														className={'btn btn-success'}
+														onClick={handleAttributeField}
+													>
+														<i className='fa-solid fa-plus' />
+													</button>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div className='col-md-6 mb-3'>
