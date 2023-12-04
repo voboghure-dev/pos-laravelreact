@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../partials/Breadcrumb';
 import Constants from '../../../Constants';
@@ -8,7 +8,8 @@ import Swal from 'sweetalert2';
 const ProductAdd = () => {
 	const navigate = useNavigate();
 	const [input, setInput] = useState({ status: 1 });
-	const [attribute_input, setAttribute_input] = useState({});
+	const [attributeInput, setAttributeInput] = useState({});
+	const [specificationInput, setSpecificationInput] = useState({});
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -20,6 +21,8 @@ const ProductAdd = () => {
 	const [attributes, setAttributes] = useState([]);
 	const [attributeField, setAttributeField] = useState([]);
 	const [attributeFieldId, setAttributeFieldId] = useState(1);
+	const [specificationField, setSpecificationField] = useState([]);
+	const [specificationFieldId, setSpecificationFieldId] = useState(1);
 
 	const getCategories = () => {
 		axios
@@ -99,7 +102,7 @@ const ProductAdd = () => {
 			});
 	};
 
-	const handleAttributeField = (id) => {
+	const handleAttributeField = () => {
 		if (attributes.length >= attributeFieldId) {
 			setAttributeFieldId(attributeFieldId + 1);
 			setAttributeField((prevState) => [...prevState, attributeFieldId]);
@@ -110,16 +113,55 @@ const ProductAdd = () => {
 		setAttributeField((oldValues) => {
 			return oldValues.filter((attributeFiled) => attributeFiled !== id);
 		});
-		setAttribute_input((current) => {
+		setAttributeInput((current) => {
 			const copy = { ...current };
 			delete copy[id];
-			return copy;
+			let copyArray = Object.entries(copy);
+			let newObj = {};
+			for (let i = 0; i < copyArray.length; i++) {
+				let key = i + 1;
+				Object.assign(newObj, { [key]: copyArray[i][1] });
+			}
+			return newObj;
 		});
 		setAttributeFieldId(attributeFieldId - 1);
 	};
 
 	const handleAttributeInput = (e, id) => {
-		setAttribute_input((prevState) => ({
+		setAttributeInput((prevState) => ({
+			...prevState,
+			[id]: {
+				...prevState[id],
+				[e.target.name]: e.target.value,
+			},
+		}));
+	};
+
+	const handleSpecificationField = () => {
+		setSpecificationFieldId(specificationFieldId + 1);
+		setSpecificationField((prevState) => [...prevState, specificationFieldId]);
+	};
+
+	const handleSpecificationFieldRemove = (id) => {
+		setSpecificationField((oldValues) => {
+			return oldValues.filter((specificationField) => specificationField !== id);
+		});
+		setSpecificationInput((current) => {
+			const copy = { ...current };
+			delete copy[id];
+			let copyArray = Object.entries(copy);
+			let newObj = {};
+			for (let i = 0; i < copyArray.length; i++) {
+				let key = i + 1;
+				Object.assign(newObj, { [key]: copyArray[i][1] });
+			}
+			return newObj;
+		});
+		setSpecificationFieldId(specificationFieldId - 1);
+	};
+
+	const handleSpecificationInput = (e, id) => {
+		setSpecificationInput((prevState) => ({
 			...prevState,
 			[id]: {
 				...prevState[id],
@@ -187,8 +229,8 @@ const ProductAdd = () => {
 	};
 
 	useEffect(() => {
-		setInput((prevState) => ({ ...prevState, attributes: attribute_input }));
-	}, [attribute_input]);
+		setInput((prevState) => ({ ...prevState, attributes: attributeInput }));
+	}, [attributeInput]);
 
 	useEffect(() => {
 		getCategories();
@@ -388,8 +430,8 @@ const ProductAdd = () => {
 															name='attribute_id'
 															id='attribute_id'
 															value={
-																attribute_input[attrFieldId] != undefined
-																	? attribute_input[attrFieldId].attribute_id
+																attributeInput[attrFieldId] != undefined
+																	? attributeInput[attrFieldId].attribute_id
 																	: ''
 															}
 															onChange={(e) => handleAttributeInput(e, attrFieldId)}
@@ -415,14 +457,18 @@ const ProductAdd = () => {
 															className='form-select'
 															name='value_id'
 															id='value_id'
-															value={input.value_id}
-															onChange={handleInput}
+															value={
+																attributeInput[attrFieldId] != undefined
+																	? attributeInput[attrFieldId].value_id
+																	: ''
+															}
+															onChange={(e) => handleAttributeInput(e, attrFieldId)}
 														>
 															<option>Select Attribute Value</option>
 															{attributes.map((attr, index) => (
-																<>
-																	{attribute_input[attrFieldId] != undefined &&
-																	attr.id == attribute_input[attrFieldId].attribute_id
+																<Fragment key={index}>
+																	{attributeInput[attrFieldId] != undefined &&
+																	attr.id == attributeInput[attrFieldId].attribute_id
 																		? attr.value.map((attr_value, value_index) => (
 																				<option
 																					key={value_index}
@@ -432,7 +478,7 @@ const ProductAdd = () => {
 																				</option>
 																		  ))
 																		: null}
-																</>
+																</Fragment>
 															))}
 														</select>
 														<div className='invalid-feedback'>
@@ -455,6 +501,82 @@ const ProductAdd = () => {
 													<button
 														className={'btn btn-success'}
 														onClick={handleAttributeField}
+													>
+														<i className='fa-solid fa-plus' />
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className='col-md-12 mb-3'>
+									<div className='card'>
+										<div className='card-header'>
+											<h5>Select Product Specification</h5>
+										</div>
+										<div className='card-body'>
+											{specificationField.map((specFieldId, specFieldIndex) => (
+												<div key={specFieldIndex} className='row align-items-end'>
+													<div className='col-md-5'>
+														<label className='small mb-1' htmlFor='spec_name'>
+															Specification Name
+														</label>
+														<input
+															className='form-control'
+															name='spec_name'
+															id='spec_name'
+															value={
+																specificationInput[specFieldId] != undefined
+																	? specificationInput[specFieldId].spec_name
+																	: ''
+															}
+															onChange={(e) => handleSpecificationInput(e, specFieldId)}
+															type='text'
+															placeholder='Enter specification name'
+														/>
+														<div className='invalid-feedback'>
+															{errors.spec_name != undefined ? errors.spec_name[0] : null}
+														</div>
+													</div>
+													<div className='col-md-5'>
+														<label className='small mb-1' htmlFor='spec_value'>
+															Specification Value
+														</label>
+														<input
+															className='form-control'
+															name='spec_value'
+															id='spec_value'
+															value={
+																specificationInput[specFieldId] != undefined
+																	? specificationInput[specFieldId].spec_value
+																	: ''
+															}
+															onChange={(e) => handleSpecificationInput(e, specFieldId)}
+															type='text'
+															placeholder='Enter specification value'
+														/>
+														<div className='invalid-feedback'>
+															{errors.spec_value != undefined
+																? errors.spec_value[0]
+																: null}
+														</div>
+													</div>
+													<div className='col-md-2'>
+														<button
+															className='btn btn-sm btn-danger mb-1'
+															onClick={() => handleSpecificationFieldRemove(specFieldId)}
+														>
+															<i className='fa-solid fa-minus' />
+														</button>
+													</div>
+												</div>
+											))}
+
+											<div className='row mt-3'>
+												<div className='col-md-12 text-center'>
+													<button
+														className={'btn btn-success'}
+														onClick={handleSpecificationField}
 													>
 														<i className='fa-solid fa-plus' />
 													</button>
