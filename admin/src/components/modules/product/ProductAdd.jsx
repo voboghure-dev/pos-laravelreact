@@ -102,7 +102,7 @@ const ProductAdd = () => {
 			});
 	};
 
-	const handleAttributeField = () => {
+	const handleAttributeFieldAdd = () => {
 		if (attributes.length >= attributeFieldId) {
 			setAttributeFieldId(attributeFieldId + 1);
 			setAttributeField((prevState) => [...prevState, attributeFieldId]);
@@ -125,6 +125,11 @@ const ProductAdd = () => {
 			return newObj;
 		});
 		setAttributeFieldId(attributeFieldId - 1);
+
+		setInput((prevState) => ({
+			...prevState,
+			attributes: attributeInput,
+		}));
 	};
 
 	const handleAttributeInput = (e, id) => {
@@ -135,16 +140,21 @@ const ProductAdd = () => {
 				[e.target.name]: e.target.value,
 			},
 		}));
+
+		setInput((prevState) => ({
+			...prevState,
+			attributes: attributeInput,
+		}));
 	};
 
-	const handleSpecificationField = () => {
+	const handleSpecificationFieldAdd = () => {
 		setSpecificationFieldId(specificationFieldId + 1);
 		setSpecificationField((prevState) => [...prevState, specificationFieldId]);
 	};
 
 	const handleSpecificationFieldRemove = (id) => {
 		setSpecificationField((oldValues) => {
-			return oldValues.filter((specificationField) => specificationField !== id);
+			return oldValues.slice(0, -1);
 		});
 		setSpecificationInput((current) => {
 			const copy = { ...current };
@@ -158,6 +168,11 @@ const ProductAdd = () => {
 			return newObj;
 		});
 		setSpecificationFieldId(specificationFieldId - 1);
+
+		setInput((prevState) => ({
+			...prevState,
+			specifications: specificationInput,
+		}));
 	};
 
 	const handleSpecificationInput = (e, id) => {
@@ -167,6 +182,11 @@ const ProductAdd = () => {
 				...prevState[id],
 				[e.target.name]: e.target.value,
 			},
+		}));
+
+		setInput((prevState) => ({
+			...prevState,
+			specifications: specificationInput,
 		}));
 	};
 
@@ -262,7 +282,7 @@ const ProductAdd = () => {
 										}
 										name='name'
 										id='name'
-										value={input.name}
+										value={input.name || ''}
 										onChange={handleInput}
 										type='text'
 										placeholder='Enter category name'
@@ -281,7 +301,7 @@ const ProductAdd = () => {
 										}
 										name='slug'
 										id='slug'
-										value={input.slug}
+										value={input.slug || ''}
 										onChange={handleInput}
 										type='text'
 										placeholder='Enter category slug'
@@ -413,6 +433,26 @@ const ProductAdd = () => {
 										{errors.supplier_id != undefined ? errors.supplier_id[0] : null}
 									</div>
 								</div>
+								<div className='col-md-6 mb-3'>
+									<label className='small mb-1' htmlFor='status'>
+										Status
+									</label>
+									<select
+										className={
+											errors.status != undefined ? 'form-select is-invalid' : 'form-select'
+										}
+										name='status'
+										id='status'
+										value={input.status}
+										onChange={handleInput}
+									>
+										<option value={1}>Active</option>
+										<option value={0}>Inactive</option>
+									</select>
+									<div className='invalid-feedback'>
+										{errors.status != undefined ? errors.status[0] : null}
+									</div>
+								</div>
 								<div className='col-md-12 mb-3'>
 									<div className='card'>
 										<div className='card-header'>
@@ -500,7 +540,7 @@ const ProductAdd = () => {
 												<div className='col-md-12 text-center'>
 													<button
 														className={'btn btn-success'}
-														onClick={handleAttributeField}
+														onClick={handleAttributeFieldAdd}
 													>
 														<i className='fa-solid fa-plus' />
 													</button>
@@ -576,7 +616,7 @@ const ProductAdd = () => {
 												<div className='col-md-12 text-center'>
 													<button
 														className={'btn btn-success'}
-														onClick={handleSpecificationField}
+														onClick={handleSpecificationFieldAdd}
 													>
 														<i className='fa-solid fa-plus' />
 													</button>
@@ -585,27 +625,194 @@ const ProductAdd = () => {
 										</div>
 									</div>
 								</div>
-								<div className='col-md-6 mb-3'>
-									<label className='small mb-1' htmlFor='status'>
-										Status
-									</label>
-									<select
-										className={
-											errors.status != undefined ? 'form-select is-invalid' : 'form-select'
-										}
-										name='status'
-										id='status'
-										value={input.status}
-										onChange={handleInput}
-									>
-										<option value={1}>Active</option>
-										<option value={0}>Inactive</option>
-									</select>
-									<div className='invalid-feedback'>
-										{errors.status != undefined ? errors.status[0] : null}
+								<div className='col-md-12 mb-3'>
+									<div className='card'>
+										<div className='card-header'>
+											<h5>Product Price & Stock</h5>
+										</div>
+										<div className='card-body'>
+											<div className='row'>
+												<div className='col-md-6 mb-3'>
+													<label className='small mb-1' htmlFor='sku'>
+														Product SKU
+													</label>
+													<input
+														className={
+															errors.sku != undefined
+																? 'form-control is-invalid'
+																: 'form-control'
+														}
+														name='sku'
+														id='sku'
+														value={input.sku}
+														onChange={handleInput}
+														type='text'
+														placeholder='Enter product SKU'
+													/>
+													<div className='invalid-feedback'>
+														{errors.sku != undefined ? errors.sku[0] : null}
+													</div>
+												</div>
+												<div className='col-md-6 mb-3'>
+													<label className='small mb-1' htmlFor='stock'>
+														Product Stock
+													</label>
+													<input
+														className={
+															errors.stock != undefined
+																? 'form-control is-invalid'
+																: 'form-control'
+														}
+														name='stock'
+														id='stock'
+														value={input.stock}
+														onChange={handleInput}
+														type='number'
+														placeholder='Enter product stock'
+													/>
+													<div className='invalid-feedback'>
+														{errors.stock != undefined ? errors.stock[0] : null}
+													</div>
+												</div>
+												<div className='col-md-6 mb-3'>
+													<label className='small mb-1' htmlFor='cost'>
+														Product Cost Price
+													</label>
+													<input
+														className={
+															errors.cost != undefined
+																? 'form-control is-invalid'
+																: 'form-control'
+														}
+														name='cost'
+														id='cost'
+														value={input.cost}
+														onChange={handleInput}
+														type='number'
+														placeholder='Enter cost price'
+													/>
+													<div className='invalid-feedback'>
+														{errors.cost != undefined ? errors.cost[0] : null}
+													</div>
+												</div>
+												<div className='col-md-6 mb-3'>
+													<label className='small mb-1' htmlFor='price'>
+														Product Selling Price
+													</label>
+													<input
+														className={
+															errors.price != undefined
+																? 'form-control is-invalid'
+																: 'form-control'
+														}
+														name='price'
+														id='price'
+														value={input.price}
+														onChange={handleInput}
+														type='number'
+														placeholder='Enter selling price'
+													/>
+													<div className='invalid-feedback'>
+														{errors.price != undefined ? errors.price[0] : null}
+													</div>
+												</div>
+												<div className='col-md-6 mb-3'>
+													<label className='small mb-1' htmlFor='discount_percent'>
+														Discount Percent
+													</label>
+													<input
+														className={
+															errors.discount_percent != undefined
+																? 'form-control is-invalid'
+																: 'form-control'
+														}
+														name='discount_percent'
+														id='discount_percent'
+														value={input.discount_percent}
+														onChange={handleInput}
+														type='number'
+														placeholder='Enter discount percent'
+													/>
+													<div className='invalid-feedback'>
+														{errors.discount_percent != undefined
+															? errors.discount_percent[0]
+															: null}
+													</div>
+												</div>
+												<div className='col-md-6 mb-3'>
+													<label className='small mb-1' htmlFor='discount_fixed'>
+														Discount Fixed Amount
+													</label>
+													<input
+														className={
+															errors.discount_fixed != undefined
+																? 'form-control is-invalid'
+																: 'form-control'
+														}
+														name='discount_fixed'
+														id='discount_fixed'
+														value={input.discount_fixed}
+														onChange={handleInput}
+														type='number'
+														placeholder='Enter discount fixed'
+													/>
+													<div className='invalid-feedback'>
+														{errors.discount_fixed != undefined
+															? errors.discount_fixed[0]
+															: null}
+													</div>
+												</div>
+												<div className='col-md-6 mb-3'>
+													<label className='small mb-1' htmlFor='discount_start'>
+														Discount Start Date
+													</label>
+													<input
+														className={
+															errors.discount_start != undefined
+																? 'form-control is-invalid'
+																: 'form-control'
+														}
+														name='discount_start'
+														id='discount_start'
+														value={input.discount_start}
+														onChange={handleInput}
+														type='datetime-local'
+														placeholder='Enter discount start'
+													/>
+													<div className='invalid-feedback'>
+														{errors.discount_start != undefined
+															? errors.discount_start[0]
+															: null}
+													</div>
+												</div>
+												<div className='col-md-6 mb-3'>
+													<label className='small mb-1' htmlFor='discount_end'>
+														Discount End Date
+													</label>
+													<input
+														className={
+															errors.discount_end != undefined
+																? 'form-control is-invalid'
+																: 'form-control'
+														}
+														name='discount_end'
+														id='discount_end'
+														value={input.discount_end}
+														onChange={handleInput}
+														type='datetime-local'
+														placeholder='Enter discount end'
+													/>
+													<div className='invalid-feedback'>
+														{errors.discount_end != undefined
+															? errors.discount_end[0]
+															: null}
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-								<div className='col-md-6 mb-3'>
+								<div className='col-md-12 mb-3'>
 									<label className='small mb-1' htmlFor='description'>
 										Description
 									</label>
@@ -617,33 +824,12 @@ const ProductAdd = () => {
 										id='description'
 										value={input.description}
 										onChange={handleInput}
-										placeholder='Enter category description'
+										placeholder='Enter product description'
 										rows='3'
 									/>
 									<div className='invalid-feedback'>
 										{errors.description != undefined ? errors.description[0] : null}
 									</div>
-								</div>
-								<div className='col-md-6 mb-3'>
-									<label className='small mb-1' htmlFor='photo'>
-										Photo
-									</label>
-									<input
-										className={
-											errors.photo != undefined ? 'form-control is-invalid' : 'form-control'
-										}
-										id='photo'
-										name='photo'
-										onChange={handlePhoto}
-										type='file'
-									/>
-									{input.photo != undefined ? (
-										<div className='row'>
-											<div className='col-md-6'>
-												<img src={input.photo} alt='Category photo' className='img-thumbnail' />
-											</div>
-										</div>
-									) : null}
 								</div>
 							</div>
 						</div>
