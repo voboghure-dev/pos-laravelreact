@@ -113,6 +113,7 @@ const ProductAdd = () => {
 		setAttributeField((oldValues) => {
 			return oldValues.filter((attributeFiled) => attributeFiled !== id);
 		});
+
 		setAttributeInput((current) => {
 			const copy = { ...current };
 			delete copy[id];
@@ -124,26 +125,14 @@ const ProductAdd = () => {
 			}
 			return newObj;
 		});
-		setAttributeFieldId(attributeFieldId - 1);
 
-		setInput((prevState) => ({
-			...prevState,
-			attributes: attributeInput,
-		}));
+		setAttributeFieldId(attributeFieldId - 1);
 	};
 
 	const handleAttributeInput = (e, id) => {
 		setAttributeInput((prevState) => ({
 			...prevState,
-			[id]: {
-				...prevState[id],
-				[e.target.name]: e.target.value,
-			},
-		}));
-
-		setInput((prevState) => ({
-			...prevState,
-			attributes: attributeInput,
+			[id]: { ...prevState[id], [e.target.name]: e.target.value },
 		}));
 	};
 
@@ -156,6 +145,7 @@ const ProductAdd = () => {
 		setSpecificationField((oldValues) => {
 			return oldValues.slice(0, -1);
 		});
+
 		setSpecificationInput((current) => {
 			const copy = { ...current };
 			delete copy[id];
@@ -167,26 +157,14 @@ const ProductAdd = () => {
 			}
 			return newObj;
 		});
-		setSpecificationFieldId(specificationFieldId - 1);
 
-		setInput((prevState) => ({
-			...prevState,
-			specifications: specificationInput,
-		}));
+		setSpecificationFieldId(specificationFieldId - 1);
 	};
 
 	const handleSpecificationInput = (e, id) => {
 		setSpecificationInput((prevState) => ({
 			...prevState,
-			[id]: {
-				...prevState[id],
-				[e.target.name]: e.target.value,
-			},
-		}));
-
-		setInput((prevState) => ({
-			...prevState,
-			specifications: specificationInput,
+			[id]: { ...prevState[id], [e.target.name]: e.target.value },
 		}));
 	};
 
@@ -195,10 +173,7 @@ const ProductAdd = () => {
 			let slug = e.target.value;
 			slug = slug.toLowerCase();
 			slug = slug.replaceAll(' ', '-');
-			setInput((prevState) => ({
-				...prevState,
-				slug: slug,
-			}));
+			setInput((prevState) => ({ ...prevState, slug: slug }));
 		} else if (e.target.name == 'category_id') {
 			let category_id = parseInt(e.target.value);
 			if (!Number.isNaN(category_id)) {
@@ -206,10 +181,7 @@ const ProductAdd = () => {
 			}
 		}
 
-		setInput((prevState) => ({
-			...prevState,
-			[e.target.name]: e.target.value,
-		}));
+		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
 
 	const handlePhoto = (e) => {
@@ -224,10 +196,10 @@ const ProductAdd = () => {
 		reader.readAsDataURL(file);
 	};
 
-	const handleCategoryAdd = () => {
+	const handleProductAdd = () => {
 		setIsLoading(true);
 		axios
-			.post(`${Constants.BASE_URL}/category`, input)
+			.post(`${Constants.BASE_URL}/product`, input)
 			.then((res) => {
 				setIsLoading(false);
 				Swal.fire({
@@ -238,7 +210,7 @@ const ProductAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate('/dashboard/category');
+				// navigate('/dashboard/product');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -251,6 +223,10 @@ const ProductAdd = () => {
 	useEffect(() => {
 		setInput((prevState) => ({ ...prevState, attributes: attributeInput }));
 	}, [attributeInput]);
+
+	useEffect(() => {
+		setInput((prevState) => ({ ...prevState, specifications: specificationInput }));
+	}, [specificationInput]);
 
 	useEffect(() => {
 		getCategories();
@@ -837,7 +813,7 @@ const ProductAdd = () => {
 							<button
 								className='btn btn-primary'
 								type='button'
-								onClick={handleCategoryAdd}
+								onClick={handleProductAdd}
 								dangerouslySetInnerHTML={{
 									__html: isLoading
 										? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Loading...'
