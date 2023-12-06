@@ -210,7 +210,7 @@ const ProductAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				// navigate('/dashboard/product');
+				navigate(`/dashboard/product/${res.data.product_id}`);
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -811,13 +811,13 @@ const ProductAdd = () => {
 						</div>
 						<div className='card-footer'>
 							<button
-								className='btn btn-primary'
+								className='btn btn-primary float-end'
 								type='button'
 								onClick={handleProductAdd}
 								dangerouslySetInnerHTML={{
 									__html: isLoading
 										? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Loading...'
-										: 'Save changes',
+										: 'Next >',
 								}}
 							/>
 						</div>

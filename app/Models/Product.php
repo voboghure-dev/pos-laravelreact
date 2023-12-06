@@ -3,11 +3,32 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model {
 	use HasFactory;
 
-	protected $guarded = [];
+	protected $fillable = [
+		'category_id',
+		'sub_category_id',
+		'brand_id',
+		'country_id',
+		'supplier_id',
+		'created_by',
+		'updated_by',
+		'name',
+		'slug',
+		'status',
+		'sku',
+		'stock',
+		'cost',
+		'price',
+		'discount_percent',
+		'discount_fixed',
+		'discount_start',
+		'discount_end',
+		'description',
+	];
 	/**
 	 * Store product data
 	 *
@@ -36,7 +57,7 @@ class Product extends Model {
 			'created_by'       => $auth_id ?? '',
 			'updated_by'       => $auth_id ?? '',
 			'name'             => $input['name'] ?? '',
-			'slug'             => $input['slug'] ?? '',
+			'slug'             => $input['slug'] ? Str::slug( $input['slug'] ) : '',
 			'status'           => $input['status'] ?? '',
 			'sku'              => $input['sku'] ?? '',
 			'stock'            => $input['stock'] ?? '',

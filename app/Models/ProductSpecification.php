@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class ProductSpecification extends Model {
 	use HasFactory;
 
-    protected $guarded = [];
+	protected $fillable = [
+		'product_id',
+		'name',
+		'value',
+	];
 	/**
 	 * Store product specification data
 	 *

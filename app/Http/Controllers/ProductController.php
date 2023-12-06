@@ -33,7 +33,7 @@ class ProductController extends Controller {
 			}
 			DB::commit();
 
-			return response()->json( ['msg' => 'Product created successfully', 'cls' => 'success'] );
+			return response()->json( ['msg' => 'Product created successfully', 'cls' => 'success', 'product_id' => $product->id] );
 		} catch ( Error $error ) {
 			DB::rollBack();
 
