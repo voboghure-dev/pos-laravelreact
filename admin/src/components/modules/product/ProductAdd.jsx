@@ -210,7 +210,7 @@ const ProductAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate(`/dashboard/product/${res.data.product_id}`);
+				navigate(`/dashboard/product/photo/${res.data.product_id}`);
 			})
 			.catch((errors) => {
 				setIsLoading(false);

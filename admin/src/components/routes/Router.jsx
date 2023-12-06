@@ -21,6 +21,7 @@ import SupplierEdit from '../modules/supplier/SupplierEdit';
 import AttributeList from '../modules/attribute/AttributeList';
 import AttributeContextProvider from '../../context/AttributeContextProvider';
 import ProductAdd from '../modules/product/ProductAdd';
+import ProductPhotoAdd from '../modules/product/ProductPhotoAdd';
 
 const Router = createBrowserRouter([
 	{
@@ -94,6 +95,10 @@ const Router = createBrowserRouter([
 			{
 				path: '/dashboard/product/create',
 				element: <ProductAdd />,
+			},
+			{
+				path: '/dashboard/product/photo/:id',
+				element: <ProductPhotoAdd />,
 			},
 			{
 				path: '/dashboard/error-500',
