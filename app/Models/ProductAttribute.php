@@ -7,15 +7,32 @@ use Illuminate\Database\Eloquent\Model;
 class ProductAttribute extends Model {
 	use HasFactory;
 
+    protected $guarded = [];
+	/**
+	 * Store product attributes
+	 *
+	 * @param array $attributes
+	 * @param Product $product
+	 * @return void
+	 */
+	public function storeProductAttribute( array $attributes, Product $product ): void {
+		$attributes = $this->prepareData( $attributes, $product );
+		foreach ( $attributes as $attribute ) {
+			self::create( $attribute );
+		}
+	}
+
 	/**
 	 * Prepare attributre data
 	 *
-	 * @param array $input
+	 * @param array $attributes
+	 * @param Product $product
 	 * @return array
 	 */
-	public function prepareData( array $input ): array {
+	private function prepareData( array $attributes, Product $product ): array {
 		$attribute_data = [];
-		foreach ( $input as $value ) {
+		foreach ( $attributes as $value ) {
+			$data['product_id']         = $product->id;
 			$data['attribute_id']       = $value['attribute_id'];
 			$data['attribute_value_id'] = $value['value_id'];
 			$attribute_data[]           = $data;

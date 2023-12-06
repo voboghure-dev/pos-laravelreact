@@ -6,6 +6,8 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductSpecification;
+use Error;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller {
 	/**
@@ -19,15 +21,25 @@ class ProductController extends Controller {
 	 * Store a newly created resource in storage.
 	 */
 	public function store( StoreProductRequest $request ) {
-		$product = ( new Product() )->prepareData( $request->all(), auth()->id() );
-		if ( $request->has( 'attributes' ) ) {
-			$product_attributes = ( new ProductAttribute() )->prepareData( $request->input( 'attributes' ) );
-		}
-		if ( $request->has( 'specifications' ) ) {
-			$product_specifications = ( new ProductSpecification() )->prepareData( $request->input( 'specifications' ) );
+		try {
+			DB::beginTransaction();
+			$product = ( new Product() )->storeProduct( $request->all(), auth()->id() );
+
+			if ( $request->has( 'attributes' ) ) {
+				( new ProductAttribute() )->storeProductAttribute( $request->input( 'attributes' ), $product );
+			}
+			if ( $request->has( 'specifications' ) ) {
+				( new ProductSpecification() )->storeProductSpecification( $request->input( 'specifications' ), $product );
+			}
+			DB::commit();
+
+			return response()->json( ['msg' => 'Product created successfully', 'cls' => 'success'] );
+		} catch ( Error $error ) {
+			DB::rollBack();
+
+			return response()->json( ['msg' => 'Unable to create product', 'cls' => 'error'] );
 		}
 
-		return $request->all();
 	}
 
 	/**

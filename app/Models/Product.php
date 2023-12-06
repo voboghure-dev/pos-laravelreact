@@ -7,10 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model {
 	use HasFactory;
 
-	public function storeProduct( array $input, int $auth_id ) {
-		return $this->prepareData( $input, $auth_id );
-		// self::create($product_data);
-
+	protected $guarded = [];
+	/**
+	 * Store product data
+	 *
+	 * @param array $input
+	 * @param integer $auth_id
+	 * @return mixed
+	 */
+	public function storeProduct( array $input, int $auth_id ): mixed {
+		return self::create( $this->prepareData( $input, $auth_id ) );
 	}
 
 	/**
@@ -20,7 +26,7 @@ class Product extends Model {
 	 * @param integer $auth_id
 	 * @return array
 	 */
-	public function prepareData( array $input, int $auth_id ): array {
+	private function prepareData( array $input, int $auth_id ): array {
 		return [
 			'category_id'      => $input['category_id'] ?? '',
 			'sub_category_id'  => $input['sub_category_id'] ?? '',
