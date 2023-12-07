@@ -77,10 +77,6 @@ const ProductPhotoAdd = () => {
 			});
 	};
 
-	useEffect(() => {
-		console.log(photos);
-	}, [photos]);
-
 	return (
 		<>
 			<Breadcrumb title={'Add Product Photo'} />

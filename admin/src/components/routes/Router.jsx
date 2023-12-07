@@ -22,6 +22,7 @@ import AttributeList from '../modules/attribute/AttributeList';
 import AttributeContextProvider from '../../context/AttributeContextProvider';
 import ProductAdd from '../modules/product/ProductAdd';
 import ProductPhotoAdd from '../modules/product/ProductPhotoAdd';
+import ProductList from '../modules/product/ProductList';
 
 const Router = createBrowserRouter([
 	{
@@ -99,6 +100,10 @@ const Router = createBrowserRouter([
 			{
 				path: '/dashboard/product/photo/:id',
 				element: <ProductPhotoAdd />,
+			},
+			{
+				path: '/dashboard/product',
+				element: <ProductList />,
 			},
 			{
 				path: '/dashboard/error-500',
