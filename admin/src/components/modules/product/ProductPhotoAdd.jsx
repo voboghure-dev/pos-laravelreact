@@ -43,7 +43,7 @@ const ProductPhotoAdd = () => {
 	const handlePhotoUpload = () => {
 		setIsLoading(true);
 		axios
-			.post(`${Constants.BASE_URL}/photo`, photos, {
+			.post(`${Constants.BASE_URL}/photo`, {photos}, {
 				onUploadProgress: (progressEvent) => {
 					const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
 					setProgress(progress);

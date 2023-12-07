@@ -184,18 +184,6 @@ const ProductAdd = () => {
 		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
 
-	const handlePhoto = (e) => {
-		let file = e.target.files[0];
-		let reader = new FileReader();
-		reader.onloadend = () => {
-			setInput((prevState) => ({
-				...prevState,
-				photo: reader.result,
-			}));
-		};
-		reader.readAsDataURL(file);
-	};
-
 	const handleProductAdd = () => {
 		setIsLoading(true);
 		axios
