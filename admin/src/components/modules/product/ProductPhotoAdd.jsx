@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../partials/Breadcrumb';
 import Constants from '../../../Constants';
@@ -7,43 +7,48 @@ import Swal from 'sweetalert2';
 
 const ProductPhotoAdd = () => {
 	const navigate = useNavigate();
-	const [input, setInput] = useState({ status: 1 });
+	const fileInput = useRef(null);
+	const [photos, setPhotos] = useState({});
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [progress, setProgress] = useState(false);
 
-	const handleInput = (e) => {
-		if (e.target.name == 'name') {
-			let slug = e.target.value;
-			slug = slug.toLowerCase();
-			slug = slug.replaceAll(' ', '-');
-			setInput((prevState) => ({
+	const handleFileUpload = (e) => {
+		let files = e.target.files;
+		for (let i = 0; i < files.length; i++) {
+			let reader = new FileReader();
+			reader.onloadend = () => {
+				setPhotos((prevState) => ({
+					...prevState,
+					[i]: { ...prevState[i], photo: reader.result, ...prevState[i], is_primary: i == 0 ? 1 : 0 },
+				}));
+			};
+			reader.readAsDataURL(files[i]);
+		}
+	};
+
+	const handleFileUploadField = () => {
+		fileInput.current.click();
+	};
+
+	const handlePrimaryPhoto = (key) => {
+		for (let i = 0; i < Object.keys(photos).length; i++) {
+			setPhotos((prevState) => ({
 				...prevState,
-				slug: slug,
+				[i]: { ...prevState[i], is_primary: key == i ? 1 : 0 },
 			}));
 		}
-
-		setInput((prevState) => ({
-			...prevState,
-			[e.target.name]: e.target.value,
-		}));
 	};
 
-	const handleLogo = (e) => {
-		let file = e.target.files[0];
-		let reader = new FileReader();
-		reader.onloadend = () => {
-			setInput((prevState) => ({
-				...prevState,
-				logo: reader.result,
-			}));
-		};
-		reader.readAsDataURL(file);
-	};
-
-	const handleBrandAdd = () => {
+	const handlePhotoUpload = () => {
 		setIsLoading(true);
 		axios
-			.post(`${Constants.BASE_URL}/brand`, input)
+			.post(`${Constants.BASE_URL}/photo`, photos, {
+				onUploadProgress: (progressEvent) => {
+					const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+					setProgress(progress);
+				},
+			})
 			.then((res) => {
 				setIsLoading(false);
 				Swal.fire({
@@ -54,7 +59,7 @@ const ProductPhotoAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate('/dashboard/brand');
+				// navigate('/dashboard/brand');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -63,6 +68,10 @@ const ProductPhotoAdd = () => {
 				}
 			});
 	};
+
+	useEffect(() => {
+		console.log(photos);
+	}, [photos]);
 
 	return (
 		<>
@@ -76,135 +85,57 @@ const ProductPhotoAdd = () => {
 						</div>
 						<div className='card-body'>
 							<div className='row'>
-								{/* <div className='col-md-6 mb-3'>
-									<label className='small mb-1' htmlFor='name'>
-										Name
-									</label>
-									<input
-										className={
-											errors.name != undefined ? 'form-control is-invalid' : 'form-control'
-										}
-										name='name'
-										id='name'
-										value={input.name}
-										onChange={handleInput}
-										type='text'
-										placeholder='Enter brand name'
-									/>
-									<div className='invalid-feedback'>
-										{errors.name != undefined ? errors.name[0] : null}
+								<div className='photo-upload-container'>
+									<div className='icon' onClick={handleFileUploadField}>
+										<i className='fa-solid fa-camera fa-2x'></i>
 									</div>
 								</div>
-								<div className='col-md-6 mb-3'>
-									<label className='small mb-1' htmlFor='slug'>
-										Slug
-									</label>
-									<input
-										className={
-											errors.slug != undefined ? 'form-control is-invalid' : 'form-control'
-										}
-										name='slug'
-										id='slug'
-										value={input.slug}
-										onChange={handleInput}
-										type='text'
-										placeholder='Enter brand slug'
-									/>
-									<div className='invalid-feedback'>
-										{errors.slug != undefined ? errors.slug[0] : null}
+								<input
+									ref={fileInput}
+									id='photo_input'
+									type='file'
+									multiple={true}
+									accept='image/gif, image/jpg, image/jpeg, image/webp'
+									className='d-none'
+									onChange={handleFileUpload}
+								/>
+							</div>
+							<div className='row'>
+								{Object.keys(photos).map((key) => (
+									<div className='col-md-2 my-2' key={key}>
+										<img
+											onClick={() => handlePrimaryPhoto(key)}
+											src={photos[key].photo}
+											className={
+												photos[key].is_primary == 1
+													? 'img-thumbnail preview-photo primary-photo'
+													: 'img-thumbnail preview-photo'
+											}
+											alt='photo preview'
+										/>
 									</div>
-								</div>
-								<div className='col-md-6 mb-3'>
-									<label className='small mb-1' htmlFor='serial'>
-										Serial
-									</label>
-									<input
-										className={
-											errors.serial != undefined ? 'form-control is-invalid' : 'form-control'
-										}
-										name='serial'
-										id='serial'
-										value={input.serial}
-										onChange={handleInput}
-										type='number'
-										placeholder='Enter brand serial'
-									/>
-									<div className='invalid-feedback'>
-										{errors.serial != undefined ? errors.serial[0] : null}
-									</div>
-								</div>
-								<div className='col-md-6 mb-3'>
-									<label className='small mb-1' htmlFor='status'>
-										Status
-									</label>
-									<select
-										className={
-											errors.status != undefined ? 'form-select is-invalid' : 'form-select'
-										}
-										name='status'
-										id='status'
-										value={input.status}
-										onChange={handleInput}
-										placeholder='Enter brand status'
-									>
-										<option value={1}>Active</option>
-										<option value={0}>Inactive</option>
-									</select>
-									<div className='invalid-feedback'>
-										{errors.status != undefined ? errors.status[0] : null}
-									</div>
-								</div>
-								<div className='col-md-6 mb-3'>
-									<label className='small mb-1' htmlFor='description'>
-										Description
-									</label>
-									<textarea
-										className={
-											errors.description != undefined ? 'form-control is-invalid' : 'form-control'
-										}
-										name='description'
-										id='description'
-										value={input.description}
-										onChange={handleInput}
-										placeholder='Enter brand description'
-										rows='3'
-									/>
-									<div className='invalid-feedback'>
-										{errors.description != undefined ? errors.description[0] : null}
-									</div>
-								</div>
-								<div className='col-md-6 mb-3'>
-									<label className='small mb-1' htmlFor='logo'>
-										Logo
-									</label>
-									<input
-										className={
-											errors.logo != undefined ? 'form-control is-invalid' : 'form-control'
-										}
-										id='logo'
-										name='logo'
-										type='file'
-										onChange={handleLogo}
-									/>
-									{input.logo != undefined ? (
-										<div className='row'>
-											<div className='col-md-6'>
-												<img src={input.logo} alt='Brand logo' className='img-thumbnail' />
-											</div>
-										</div>
-									) : null}
-								</div> */}
+								))}
 							</div>
 						</div>
-						<div className='card-footer'>
+						<div className='card-footer text-end'>
+							<div
+								className='progress col-md-12'
+								style={{ display: `${progress < 1 ? 'none' : 'block'}` }}
+							>
+								<div
+									className='progress-bar progress-bar-striped progress-bar-animated bg-info'
+									style={{ width: `${progress}%` }}
+								>{`${progress}%`}</div>
+							</div>
 							<button
-								className='btn btn-primary'
+								className='btn btn-primary col-md-2 mt-2'
+								disabled={isLoading}
 								type='button'
-								onClick={handleBrandAdd}
+								onClick={handlePhotoUpload}
 								dangerouslySetInnerHTML={{
 									__html: isLoading
 										? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Loading...'
-										: 'Save changes',
+										: 'Upload Photo',
 								}}
 							/>
 						</div>
