@@ -29,6 +29,17 @@ class Product extends Model {
 		'discount_end',
 		'description',
 	];
+
+	/**
+	 * Get product by id
+	 *
+	 * @param integer $id
+	 * @return Model | null
+	 */
+	public function getProductById( int $id ): Model | null {
+		return self::query()->findOrFail( $id );
+	}
+
 	/**
 	 * Store product data
 	 *

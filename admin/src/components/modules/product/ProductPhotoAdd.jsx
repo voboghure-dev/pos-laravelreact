@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Breadcrumb from '../../partials/Breadcrumb';
 import Constants from '../../../Constants';
 import axios from 'axios';
@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 const ProductPhotoAdd = () => {
 	const navigate = useNavigate();
 	const fileInput = useRef(null);
+	const params = useParams();
 	const [photos, setPhotos] = useState({});
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -43,12 +44,19 @@ const ProductPhotoAdd = () => {
 	const handlePhotoUpload = () => {
 		setIsLoading(true);
 		axios
-			.post(`${Constants.BASE_URL}/photo`, {photos}, {
-				onUploadProgress: (progressEvent) => {
-					const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-					setProgress(progress);
-				},
-			})
+			.post(
+				`${Constants.BASE_URL}/photo`,
+				{ photos },
+				{
+					onUploadProgress: (progressEvent) => {
+						const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+						setProgress(progress);
+					},
+					params: {
+						productId: params.id,
+					},
+				}
+			)
 			.then((res) => {
 				setIsLoading(false);
 				Swal.fire({
@@ -59,7 +67,7 @@ const ProductPhotoAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				// navigate('/dashboard/brand');
+				navigate('/dashboard/product');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
