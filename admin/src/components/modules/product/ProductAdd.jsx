@@ -198,7 +198,9 @@ const ProductAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate(`/dashboard/product/photo/${res.data.product_id}`);
+				if (res.data.product_id != undefined) {
+					navigate(`/dashboard/product/photo/${res.data.product_id}`);
+				}
 			})
 			.catch((errors) => {
 				setIsLoading(false);
