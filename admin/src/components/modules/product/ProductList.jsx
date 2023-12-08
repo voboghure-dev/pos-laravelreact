@@ -170,9 +170,10 @@ const ProductList = () => {
 											<tr>
 												<th>Sl</th>
 												<th>Name / Slug</th>
-												<th>Serial / Status</th>
+												<th>Price details</th>
+												<th>Status</th>
 												<th>Logo</th>
-												<th>Created By</th>
+												<th>Category & Others</th>
 												<th>Date & Time</th>
 												<th>Action</th>
 											</tr>
@@ -185,24 +186,61 @@ const ProductList = () => {
 														<td>
 															<p className='text-primary'>Name: {product.name}</p>
 															<p className='text-success'>Slug: {product.slug}</p>
+															<p className='text-primary'>
+																{product.attributes != undefined &&
+																Object.keys(product.attributes).length > 0
+																	? product.attributes.map((attribute, index) => (
+																			<p>
+																				<small>
+																					{attribute.name}: {attribute.value}
+																				</small>
+																			</p>
+																	  ))
+																	: null}
+															</p>
 														</td>
 														<td>
-															<p className='text-primary'>Serial: {product.serial}</p>
-															<p className='text-success'>Status: {product.status}</p>
+															<p className='text-primary'>Cost: {product.cost}</p>
+															<p className='text-success'>Price: {product.price}</p>
+															<p className='text-secondary'>
+																Discount: {product.discount_percent} +{' '}
+																{product.discount_fixed}
+															</p>
+															<p className='text-primary'>
+																Discount start: {product.discount_start}
+															</p>
+															<p className='text-primary'>
+																Discount end: {product.discount_end}
+															</p>
+														</td>
+														<td>
+															<p className='text-primary'>Status: {product.status}</p>
+															<p className='text-success'>SKU: {product.sku}</p>
+															<p className='text-secondary'>Stock: {product.stock}</p>
 														</td>
 														<td>
 															<img
-																src={product.logo_thumb}
+																src={product.primary_photo}
 																alt={product.name}
 																className='img-thumbnail mx-auto d-block list-photo'
 															/>
 														</td>
 														<td>
-															<p>{product.created_by}</p>
+															<p className='text-primary'>Category: {product.category}</p>
+															<p className='text-success'>
+																Sub Category: {product.sub_category}
+															</p>
+															<p className='text-primary'>Brand: {product.brand}</p>
+															<p className='text-primary'>
+																Supplier: {product.supplier}
+															</p>
+															<p className='text-primary'>Country: {product.country}</p>
 														</td>
 														<td>
 															<p className='text-primary'>{product.created_at}</p>
+															<p className='text-primary'>{product.created_by_user}</p>
 															<p className='text-success'>{product.updated_at}</p>
+															<p className='text-success'>{product.updated_by_user}</p>
 														</td>
 														<td className='text-center'>
 															<button className='btn btn-sm btn-info'>
