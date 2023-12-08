@@ -40,10 +40,7 @@ const ProductList = () => {
 	};
 
 	const handleInput = (e) => {
-		setInput((prevState) => ({
-			...prevState,
-			[e.target.name]: e.target.value,
-		}));
+		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
 
 	const handleProductDelete = (id) => {

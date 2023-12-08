@@ -90,20 +90,20 @@ class Product extends Model {
 			'brand:id,name',
 			'country:id,name',
 			'supplier:id,company_name,phone_number',
-			'created_by:id,name',
-			'updated_by:id,name',
+			'created_user:id,name',
+			'updated_user:id,name',
 			'primary_photo',
 			'product_attributes',
 			'product_attributes.attribute:id,name',
 			'product_attributes.attribute_value:id,name',
 		] );
-		// if (  ! empty( $input['search'] ) ) {
-		// 	$query->where( 'name', 'LIKE', '%' . $input['search'] . '%' )
-		// 		->orWhere( 'sku', 'LIKE', '%' . $input['search'] . '%' );
-		// }
-		// if (  ! empty( $input['order_by'] ) ) {
-		// 	$query->orderBy( $input['order_by'], $input['direction'] ?? 'asc' );
-		// }
+		if (  ! empty( $input['search'] ) ) {
+			$query->where( 'name', 'LIKE', '%' . $input['search'] . '%' )
+				->orWhere( 'sku', 'LIKE', '%' . $input['search'] . '%' );
+		}
+		if (  ! empty( $input['order_by'] ) ) {
+			$query->orderBy( $input['order_by'], $input['direction'] ?? 'asc' );
+		}
 
 		return $query->paginate( $per_page );
 	}
@@ -128,12 +128,12 @@ class Product extends Model {
 		return $this->belongsTo( Supplier::class, 'supplier_id' );
 	}
 
-	public function created_by() {
-		return $this->belongsTo( User::class, 'created_by_id' );
+	public function created_user() {
+		return $this->belongsTo( User::class, 'created_by' );
 	}
 
-	public function updated_by() {
-		return $this->belongsTo( User::class, 'updated_by_id' );
+	public function updated_user() {
+		return $this->belongsTo( User::class, 'updated_by' );
 	}
 
 	public function primary_photo() {

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductListResource;
 use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductSpecification;
@@ -15,7 +16,9 @@ class ProductController extends Controller {
 	 * Display a listing of the resource.
 	 */
 	public function index( Request $request ) {
-		return $products = ( new Product() )->getAllProducts( $request->all() );
+		$products = ( new Product() )->getAllProducts( $request->all() );
+
+		return ProductListResource::collection( $products );
 	}
 
 	/**
