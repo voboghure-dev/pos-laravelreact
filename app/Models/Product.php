@@ -81,4 +81,66 @@ class Product extends Model {
 			'description'      => $input['description'] ?? '',
 		];
 	}
+
+	public function getAllProducts( array $input ) {
+		$per_page = $input['per_page'] ?? 10;
+		$query    = self::query()->with( [
+			'category:id,name',
+			'sub_category:id,name',
+			'brand:id,name',
+			'country:id,name',
+			'supplier:id,company_name,phone_number',
+			'created_by:id,name',
+			'updated_by:id,name',
+			'primary_photo',
+			'product_attributes',
+			'product_attributes.attribute:id,name',
+			'product_attributes.attribute_value:id,name',
+		] );
+		// if (  ! empty( $input['search'] ) ) {
+		// 	$query->where( 'name', 'LIKE', '%' . $input['search'] . '%' )
+		// 		->orWhere( 'sku', 'LIKE', '%' . $input['search'] . '%' );
+		// }
+		// if (  ! empty( $input['order_by'] ) ) {
+		// 	$query->orderBy( $input['order_by'], $input['direction'] ?? 'asc' );
+		// }
+
+		return $query->paginate( $per_page );
+	}
+
+	public function category() {
+		return $this->belongsTo( Category::class );
+	}
+
+	public function sub_category() {
+		return $this->belongsTo( SubCategory::class, 'sub_category_id' );
+	}
+
+	public function brand() {
+		return $this->belongsTo( Brand::class, 'brand_id' );
+	}
+
+	public function country() {
+		return $this->belongsTo( Country::class, 'country_id' );
+	}
+
+	public function supplier() {
+		return $this->belongsTo( Supplier::class, 'supplier_id' );
+	}
+
+	public function created_by() {
+		return $this->belongsTo( User::class, 'created_by_id' );
+	}
+
+	public function updated_by() {
+		return $this->belongsTo( User::class, 'updated_by_id' );
+	}
+
+	public function primary_photo() {
+		return $this->hasOne( ProductPhoto::class )->where( 'is_primary', 1 );
+	}
+
+	public function product_attributes() {
+		return $this->hasMany( ProductAttribute::class );
+	}
 }

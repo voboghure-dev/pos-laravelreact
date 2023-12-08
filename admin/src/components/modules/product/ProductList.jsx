@@ -6,55 +6,37 @@ import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import Swal from 'sweetalert2';
 import NoDataFound from '../../partials/NoDataFound';
-// import BrandDetailsModals from './BrandDetailsModals';
-import PhotoModals from '../../partials/PhotoModals';
 
 const ProductList = () => {
 	const [input, setInput] = useState({
 		search: '',
-		order_by: 'serial',
-		direction: 'asc',
+		order_by: 'created_at',
+		direction: 'desc',
 		per_page: '10',
 	});
 	const [isLoading, setIsLoading] = useState(false);
 
-	const [photoModalShow, setPhotoModalShow] = useState(false);
-	const [modalPhoto, setModalPhoto] = useState('');
-
-	const [brandModalShow, setBrandsModalShow] = useState(false);
-	const [modalDetails, setModalDetails] = useState('');
-
-	const [brands, setBrands] = useState([]);
+	const [products, setProducts] = useState([]);
 
 	const [itemsCountPerPage, setItemsCountPerPage] = useState(0);
 	const [totalItemsCount, setTotalItemsCount] = useState(1);
 	const [startFrom, setStartFrom] = useState(1);
 	const [activePage, setActivePage] = useState(1);
 
-	const getBrands = (pageNumber = 1) => {
+	const getProducts = (pageNumber = 1) => {
 		setIsLoading(true);
 		axios
 			.get(
-				`${Constants.BASE_URL}/brand?page=${pageNumber}&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
+				`${Constants.BASE_URL}/product?page=${pageNumber}&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
 			)
 			.then((res) => {
-				setBrands(res.data.data);
+				setProducts(res.data.data);
 				setItemsCountPerPage(res.data.meta.per_page);
 				setTotalItemsCount(res.data.meta.total);
 				setStartFrom(res.data.meta.from);
 				setActivePage(res.data.meta.current_page);
 				setIsLoading(false);
 			});
-	};
-
-	const handlePhotoModal = (photo) => {
-		setPhotoModalShow(true);
-		setModalPhoto(photo);
-	};
-
-	const handleDetailsModal = (brand) => {
-		setBrandsModalShow(true);
-		setModalDetails(brand);
 	};
 
 	const handleInput = (e) => {
@@ -64,10 +46,10 @@ const ProductList = () => {
 		}));
 	};
 
-	const handleBrandsDelete = (id) => {
+	const handleProductDelete = (id) => {
 		Swal.fire({
 			title: 'Are you sure?',
-			text: 'Brands will be deleted!',
+			text: 'Product will be deleted!',
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
@@ -75,8 +57,8 @@ const ProductList = () => {
 			confirmButtonText: 'Yes, delete!',
 		}).then((result) => {
 			if (result.isConfirmed) {
-				axios.delete(`${Constants.BASE_URL}/brand/${id}`).then((res) => {
-					getBrands();
+				axios.delete(`${Constants.BASE_URL}/product/${id}`).then((res) => {
+					getProducts();
 					Swal.fire({
 						position: 'top-end',
 						icon: res.data.cls,
@@ -91,7 +73,7 @@ const ProductList = () => {
 	};
 
 	useEffect(() => {
-		getBrands();
+		getProducts();
 	}, []);
 
 	return (
@@ -165,7 +147,7 @@ const ProductList = () => {
 									<div className='col-md-2'>
 										<div className='d-grid mt-4'>
 											<button
-												onClick={() => getBrands(1)}
+												onClick={() => getProducts(1)}
 												className='btn btn-sm btn-primary'
 												dangerouslySetInnerHTML={{
 													__html: isLoading
@@ -199,47 +181,43 @@ const ProductList = () => {
 											</tr>
 										</thead>
 										<tbody>
-											{Object.keys(brands).length > 0 ? (
-												brands.map((brand, index) => (
+											{Object.keys(products).length > 0 ? (
+												products.map((product, index) => (
 													<tr key={index}>
 														<td>{startFrom + index}</td>
 														<td>
-															<p className='text-primary'>Name: {brand.name}</p>
-															<p className='text-success'>Slug: {brand.slug}</p>
+															<p className='text-primary'>Name: {product.name}</p>
+															<p className='text-success'>Slug: {product.slug}</p>
 														</td>
 														<td>
-															<p className='text-primary'>Serial: {brand.serial}</p>
-															<p className='text-success'>Status: {brand.status}</p>
+															<p className='text-primary'>Serial: {product.serial}</p>
+															<p className='text-success'>Status: {product.status}</p>
 														</td>
 														<td>
 															<img
-																onClick={() => handlePhotoModal(brand.logo)}
-																src={brand.logo_thumb}
-																alt={brand.name}
-																className='img-thumbnail mx-auto d-block category-photo'
+																src={product.logo_thumb}
+																alt={product.name}
+																className='img-thumbnail mx-auto d-block list-photo'
 															/>
 														</td>
 														<td>
-															<p>{brand.created_by}</p>
+															<p>{product.created_by}</p>
 														</td>
 														<td>
-															<p className='text-primary'>{brand.created_at}</p>
-															<p className='text-success'>{brand.updated_at}</p>
+															<p className='text-primary'>{product.created_at}</p>
+															<p className='text-success'>{product.updated_at}</p>
 														</td>
 														<td className='text-center'>
-															<button
-																onClick={() => handleDetailsModal(brand)}
-																className='btn btn-sm btn-info'
-															>
+															<button className='btn btn-sm btn-info'>
 																<i className='fa-solid fa-eye' />
 															</button>
-															<Link to={`/dashboard/brand/edit/${brand.id}`}>
+															<Link to={`/dashboard/product/edit/${product.id}`}>
 																<button className='btn btn-sm btn-warning mx-1'>
 																	<i className='fa-solid fa-edit' />
 																</button>
 															</Link>
 															<button
-																onClick={() => handleBrandsDelete(brand.id)}
+																onClick={() => handleProductDelete(product.id)}
 																className='btn btn-sm btn-danger'
 															>
 																<i className='fa-solid fa-trash' />
@@ -256,20 +234,6 @@ const ProductList = () => {
 											)}
 										</tbody>
 									</table>
-									<PhotoModals
-										show={photoModalShow}
-										onHide={() => setPhotoModalShow(false)}
-										title='Brands Logo'
-										size=''
-										photo={modalPhoto}
-									/>
-									{/* <BrandDetailsModals
-										show={brandModalShow}
-										onHide={() => setBrandsModalShow(false)}
-										title='Brands Details'
-										size=''
-										details={modalDetails}
-									/> */}
 								</div>
 							)}
 						</div>
@@ -286,7 +250,7 @@ const ProductList = () => {
 									firstPageText={'First'}
 									lastPageText={'Last'}
 									nextPageText={'Next'}
-									onChange={getBrands}
+									onChange={getProducts}
 								/>
 							</nav>
 						</div>

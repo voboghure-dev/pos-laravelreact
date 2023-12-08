@@ -7,14 +7,15 @@ use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductSpecification;
 use Error;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
-		//
+	public function index( Request $request ) {
+		return $products = ( new Product() )->getAllProducts( $request->all() );
 	}
 
 	/**
