@@ -45,7 +45,7 @@ const StoreAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate('/dashboard/store');
+				// navigate('/dashboard/store');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -57,9 +57,9 @@ const StoreAdd = () => {
 
 	const handleStoreReset = () => {
 		setInput({
-			company_name: '',
-			phone_number: '',
-			email_address: '',
+			name: '',
+			phone: '',
+			email: '',
 			status: '',
 			description: '',
 			logo: undefined,
