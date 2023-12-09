@@ -54,6 +54,38 @@ const Sidebar = () => {
 							className='nav-link collapsed'
 							href='#'
 							data-bs-toggle='collapse'
+							data-bs-target='#storeMenu'
+							aria-expanded='false'
+							aria-controls='storeMenu'
+						>
+							<div className='sb-nav-link-icon'>
+								<i className='fas fa-columns'></i>
+							</div>
+							Store
+							<div className='sb-sidenav-collapse-arrow'>
+								<i className='fas fa-angle-down'></i>
+							</div>
+						</a>
+						<div
+							className='collapse'
+							id='storeMenu'
+							aria-labelledby='headingOne'
+							data-bs-parent='#sidenavAccordion'
+						>
+							<nav className='sb-sidenav-menu-nested nav'>
+								<Link className='nav-link' to='/dashboard/store/create'>
+									Add Store
+								</Link>
+								<Link className='nav-link' to='/dashboard/store'>
+									Store List
+								</Link>
+							</nav>
+						</div>
+
+						<a
+							className='nav-link collapsed'
+							href='#'
+							data-bs-toggle='collapse'
 							data-bs-target='#categoryMenu'
 							aria-expanded='false'
 							aria-controls='categoryMenu'
