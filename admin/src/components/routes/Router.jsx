@@ -25,6 +25,7 @@ import ProductPhotoAdd from '../modules/product/ProductPhotoAdd';
 import ProductList from '../modules/product/ProductList';
 import StoreAdd from '../modules/store/StoreAdd';
 import StoreList from '../modules/store/StoreList';
+import StoreEdit from '../modules/store/StoreEdit';
 
 const Router = createBrowserRouter([
 	{
@@ -114,6 +115,10 @@ const Router = createBrowserRouter([
 			{
 				path: '/dashboard/store',
 				element: <StoreList />,
+			},
+			{
+				path: '/dashboard/store/edit/:id',
+				element: <StoreEdit />,
 			},
 			{
 				path: '/dashboard/error-500',

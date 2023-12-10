@@ -21,10 +21,7 @@ const SupplierEdit = () => {
 		let file = e.target.files[0];
 		let reader = new FileReader();
 		reader.onloadend = () => {
-			setInput((prevState) => ({
-				...prevState,
-				logo: reader.result,
-			}));
+			setInput((prevState) => ({ ...prevState, logo: reader.result }));
 		};
 		reader.readAsDataURL(file);
 	};

@@ -12,30 +12,14 @@ const SupplierAdd = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleInput = (e) => {
-		if (e.target.name == 'name') {
-			let slug = e.target.value;
-			slug = slug.toLowerCase();
-			slug = slug.replaceAll(' ', '-');
-			setInput((prevState) => ({
-				...prevState,
-				slug: slug,
-			}));
-		}
-
-		setInput((prevState) => ({
-			...prevState,
-			[e.target.name]: e.target.value,
-		}));
+		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
 
 	const handleLogo = (e) => {
 		let file = e.target.files[0];
 		let reader = new FileReader();
 		reader.onloadend = () => {
-			setInput((prevState) => ({
-				...prevState,
-				logo: reader.result,
-			}));
+			setInput((prevState) => ({ ...prevState, logo: reader.result }));
 		};
 		reader.readAsDataURL(file);
 	};

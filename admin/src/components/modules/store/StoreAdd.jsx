@@ -12,13 +12,6 @@ const StoreAdd = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleInput = (e) => {
-		if (e.target.name == 'name') {
-			let slug = e.target.value;
-			slug = slug.toLowerCase();
-			slug = slug.replaceAll(' ', '-');
-			setInput((prevState) => ({ ...prevState, slug: slug }));
-		}
-
 		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
 

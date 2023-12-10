@@ -5,7 +5,7 @@ import Constants from '../../../Constants';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const SupplierEdit = () => {
+const StoreEdit = () => {
 	const params = useParams();
 	const navigate = useNavigate();
 
@@ -21,18 +21,15 @@ const SupplierEdit = () => {
 		let file = e.target.files[0];
 		let reader = new FileReader();
 		reader.onloadend = () => {
-			setInput((prevState) => ({
-				...prevState,
-				logo: reader.result,
-			}));
+			setInput((prevState) => ({ ...prevState, logo: reader.result }));
 		};
 		reader.readAsDataURL(file);
 	};
 
-	const handleSupplierEdit = () => {
+	const handleStoreEdit = () => {
 		setIsLoading(true);
 		axios
-			.put(`${Constants.BASE_URL}/supplier/${params.id}`, input)
+			.put(`${Constants.BASE_URL}/store/${params.id}`, input)
 			.then((res) => {
 				setIsLoading(false);
 				Swal.fire({
@@ -43,7 +40,7 @@ const SupplierEdit = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate('/dashboard/supplier');
+				navigate('/dashboard/store');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -54,20 +51,20 @@ const SupplierEdit = () => {
 	};
 
 	useEffect(() => {
-		axios.get(`${Constants.BASE_URL}/supplier/${params.id}`).then((res) => {
+		axios.get(`${Constants.BASE_URL}/store/${params.id}`).then((res) => {
 			setInput(res.data.data);
 		});
 	}, []);
 
 	return (
 		<>
-			<Breadcrumb title={'Edit Supplier'} />
+			<Breadcrumb title={'Edit Store'} />
 
 			<div className='row'>
 				<div className='col-md-12'>
 					<div className='card'>
 						<div className='card-header'>
-							<h4>Edit Supplier</h4>
+							<h4>Edit Store</h4>
 						</div>
 						<div className='card-body'>
 							<div className='row'>
@@ -79,72 +76,66 @@ const SupplierEdit = () => {
 										<div className='card-body'>
 											<div className='row'>
 												<div className='col-md-12'>
-													<label className='small mb-1' htmlFor='company_name'>
+													<label className='small mb-1' htmlFor='name'>
 														Company Name
 													</label>
 													<input
 														className={
-															errors.company_name != undefined
+															errors.name != undefined
 																? 'form-control is-invalid'
 																: 'form-control'
 														}
-														name='company_name'
-														id='company_name'
-														value={input.company_name || ''}
+														name='name'
+														id='name'
+														value={input.name || ''}
 														onChange={handleInput}
 														type='text'
-														placeholder='Enter supplier company name'
+														placeholder='Enter store company name'
 													/>
 													<div className='invalid-feedback'>
-														{errors.company_name != undefined
-															? errors.company_name[0]
-															: null}
+														{errors.name != undefined ? errors.name[0] : null}
 													</div>
 												</div>
 												<div className='col-md-12'>
-													<label className='small mb-1' htmlFor='phone_number'>
+													<label className='small mb-1' htmlFor='phone'>
 														Phone Number
 													</label>
 													<input
 														className={
-															errors.phone_number != undefined
+															errors.phone != undefined
 																? 'form-control is-invalid'
 																: 'form-control'
 														}
-														name='phone_number'
-														id='phone_number'
-														value={input.phone_number || ''}
+														name='phone'
+														id='phone'
+														value={input.phone || ''}
 														onChange={handleInput}
 														type='text'
-														placeholder='Enter supplier phone number'
+														placeholder='Enter store phone number'
 													/>
 													<div className='invalid-feedback'>
-														{errors.phone_number != undefined
-															? errors.phone_number[0]
-															: null}
+														{errors.phone != undefined ? errors.phone[0] : null}
 													</div>
 												</div>
 												<div className='col-md-12'>
-													<label className='small mb-1' htmlFor='email_address'>
+													<label className='small mb-1' htmlFor='email'>
 														Email address
 													</label>
 													<input
 														className={
-															errors.email_address != undefined
+															errors.email != undefined
 																? 'form-control is-invalid'
 																: 'form-control'
 														}
-														name='email_address'
-														id='email_address'
-														value={input.email_address || ''}
+														name='email'
+														id='email'
+														value={input.email || ''}
 														onChange={handleInput}
 														type='text'
-														placeholder='Enter supplier email address'
+														placeholder='Enter store email address'
 													/>
 													<div className='invalid-feedback'>
-														{errors.email_address != undefined
-															? errors.email_address[0]
-															: null}
+														{errors.email != undefined ? errors.email[0] : null}
 													</div>
 												</div>
 												<div className='col-md-12 mb-3'>
@@ -183,7 +174,7 @@ const SupplierEdit = () => {
 														id='description'
 														value={input.description || ''}
 														onChange={handleInput}
-														placeholder='Enter supplier description'
+														placeholder='Enter store description'
 														rows='3'
 													/>
 													<div className='invalid-feedback'>
@@ -216,7 +207,7 @@ const SupplierEdit = () => {
 																			? input.logo
 																			: input.existing_logo
 																	}
-																	alt='Supplier logo'
+																	alt='Store logo'
 																	className='img-thumbnail'
 																/>
 															</div>
@@ -248,7 +239,7 @@ const SupplierEdit = () => {
 														id='address'
 														value={input.address || ''}
 														onChange={handleInput}
-														placeholder='Enter supplier address'
+														placeholder='Enter store address'
 														rows='3'
 													/>
 													<div className='invalid-feedback'>
@@ -270,7 +261,7 @@ const SupplierEdit = () => {
 														value={input.division || ''}
 														onChange={handleInput}
 														type='text'
-														placeholder='Enter supplier division name'
+														placeholder='Enter store division name'
 													/>
 													<div className='invalid-feedback'>
 														{errors.division != undefined ? errors.division[0] : null}
@@ -291,7 +282,7 @@ const SupplierEdit = () => {
 														value={input.district || ''}
 														onChange={handleInput}
 														type='text'
-														placeholder='Enter supplier district name'
+														placeholder='Enter store district name'
 													/>
 													<div className='invalid-feedback'>
 														{errors.district != undefined ? errors.district[0] : null}
@@ -312,7 +303,7 @@ const SupplierEdit = () => {
 														value={input.area || ''}
 														onChange={handleInput}
 														type='text'
-														placeholder='Enter supplier area name'
+														placeholder='Enter store area name'
 													/>
 													<div className='invalid-feedback'>
 														{errors.area != undefined ? errors.area[0] : null}
@@ -333,7 +324,7 @@ const SupplierEdit = () => {
 														value={input.land_mark || ''}
 														onChange={handleInput}
 														type='text'
-														placeholder='Enter supplier land mark'
+														placeholder='Enter store land mark'
 													/>
 													<div className='invalid-feedback'>
 														{errors.land_mark != undefined ? errors.land_mark[0] : null}
@@ -347,9 +338,9 @@ const SupplierEdit = () => {
 						</div>
 						<div className='card-footer'>
 							<button
-								className='btn btn-primary'
+								className='btn btn-primary float-end'
 								type='button'
-								onClick={handleSupplierEdit}
+								onClick={handleStoreEdit}
 								dangerouslySetInnerHTML={{
 									__html: isLoading
 										? '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Loading...'
@@ -364,4 +355,4 @@ const SupplierEdit = () => {
 	);
 };
 
-export default SupplierEdit;
+export default StoreEdit;
