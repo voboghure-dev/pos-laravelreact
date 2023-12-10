@@ -190,6 +190,27 @@ const SalesManagerAdd = () => {
 													</div>
 												</div>
 												<div className='col-md-12'>
+													<label className='small mb-1' htmlFor='password'>
+														Password
+													</label>
+													<input
+														className={
+															errors.password != undefined
+																? 'form-control is-invalid'
+																: 'form-control'
+														}
+														name='password'
+														id='password'
+														value={input.password}
+														onChange={handleInput}
+														type='password'
+														placeholder='Enter password'
+													/>
+													<div className='invalid-feedback'>
+														{errors.password != undefined ? errors.password[0] : null}
+													</div>
+												</div>
+												<div className='col-md-12'>
 													<label className='small mb-1' htmlFor='govt_id_number'>
 														Govt. Photo ID Number
 													</label>
