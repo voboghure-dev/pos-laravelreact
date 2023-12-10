@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../partials/Breadcrumb';
 import Constants from '../../../Constants';
@@ -10,7 +10,20 @@ const SalesManagerAdd = () => {
 	const [input, setInput] = useState({ status: 1 });
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [stores, setStores] = useState([]);
 
+	const getStores = () => {
+		axios
+			.get(`${Constants.BASE_URL}/get-store-list`)
+			.then((res) => {
+				setStores(res.data);
+			})
+			.catch((errors) => {
+				if (errors.response.status == 422) {
+					setErrors(errors.response.data.errors);
+				}
+			});
+	};
 	const handleInput = (e) => {
 		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
@@ -38,7 +51,7 @@ const SalesManagerAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				navigate('/dashboard/sales-manager');
+				// navigate('/dashboard/sales-manager');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -64,6 +77,10 @@ const SalesManagerAdd = () => {
 		});
 	};
 
+	useEffect(() => {
+		getStores();
+	}, []);
+
 	return (
 		<>
 			<Breadcrumb title={'Add Sales Manager'} />
@@ -83,6 +100,32 @@ const SalesManagerAdd = () => {
 										</div>
 										<div className='card-body'>
 											<div className='row'>
+												<div className='col-md-12 mb-3'>
+													<label className='small mb-1' htmlFor='store_id'>
+														Store
+													</label>
+													<select
+														className={
+															errors.store_id != undefined
+																? 'form-select is-invalid'
+																: 'form-select'
+														}
+														name='store_id'
+														id='store_id'
+														value={input.store_id}
+														onChange={handleInput}
+													>
+														<option>Select Store</option>
+														{stores.map((store, index) => (
+															<option key={index} value={store.id}>
+																{store.name}
+															</option>
+														))}
+													</select>
+													<div className='invalid-feedback'>
+														{errors.store_id != undefined ? errors.store_id[0] : null}
+													</div>
+												</div>
 												<div className='col-md-12'>
 													<label className='small mb-1' htmlFor='name'>
 														Sales Manager Name

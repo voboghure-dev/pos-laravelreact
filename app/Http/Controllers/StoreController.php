@@ -106,4 +106,10 @@ class StoreController extends Controller {
 
 		return response()->json( ['msg' => 'Store deleted successfully!', 'cls' => 'warning'] );
 	}
+
+	public function get_store_list() {
+		$stores = ( new Store() )->getStoreIdAndName();
+
+		return response()->json( $stores );
+	}
 }

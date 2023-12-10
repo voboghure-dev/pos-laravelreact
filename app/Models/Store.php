@@ -60,6 +60,10 @@ class Store extends Model {
 		return $query->with( ['user:id,name', 'address'] )->paginate( $per_page );
 	}
 
+	final public function getStoreIdAndName() {
+		return self::query()->select( 'id', 'name' )->get();
+	}
+
 	/**
 	 * Relation with user table
 	 *
