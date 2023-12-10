@@ -48,7 +48,7 @@ const Sidebar = () => {
 							</nav>
 						</div>
 
-						<div className='sb-sidenav-menu-heading'>Management</div>
+						<div className='sb-sidenav-menu-heading'>Store</div>
 
 						<a
 							className='nav-link collapsed'
@@ -81,6 +81,40 @@ const Sidebar = () => {
 								</Link>
 							</nav>
 						</div>
+
+						<a
+							className='nav-link collapsed'
+							href='#'
+							data-bs-toggle='collapse'
+							data-bs-target='#salesManagerMenu'
+							aria-expanded='false'
+							aria-controls='salesManagerMenu'
+						>
+							<div className='sb-nav-link-icon'>
+								<i className='fas fa-columns'></i>
+							</div>
+							Sales Manager
+							<div className='sb-sidenav-collapse-arrow'>
+								<i className='fas fa-angle-down'></i>
+							</div>
+						</a>
+						<div
+							className='collapse'
+							id='salesManagerMenu'
+							aria-labelledby='headingOne'
+							data-bs-parent='#sidenavAccordion'
+						>
+							<nav className='sb-sidenav-menu-nested nav'>
+								<Link className='nav-link' to='/dashboard/sales-manager/create'>
+									Add Sales Manager
+								</Link>
+								<Link className='nav-link' to='/dashboard/sales-manager'>
+									Sales Manager List
+								</Link>
+							</nav>
+						</div>
+
+						<div className='sb-sidenav-menu-heading'>Management</div>
 
 						<a
 							className='nav-link collapsed'
