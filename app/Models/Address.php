@@ -49,6 +49,16 @@ class Address extends Model {
 	}
 
 	/**
+	 * Delete store address
+	 *
+	 * @param object $store
+	 * @return void
+	 */
+	final public function deleteByStore( $store ) {
+		return $store->address()->delete();
+	}
+
+	/**
 	 * Get the parent addressable model
 	 *
 	 * @return MorphTo

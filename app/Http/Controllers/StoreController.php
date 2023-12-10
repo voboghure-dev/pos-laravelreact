@@ -96,6 +96,14 @@ class StoreController extends Controller {
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy( Store $store ) {
-		//
+		if (  ! empty( $store->logo ) ) {
+			ImageManager::deleteImage( Store::IMAGE_UPLOAD_PATH, $store->logo );
+			ImageManager::deleteImage( Store::THUMB_IMAGE_UPLOAD_PATH, $store->logo );
+		}
+
+		( new Address() )->deleteByStore( $store );
+		$store->delete();
+
+		return response()->json( ['msg' => 'Store deleted successfully!', 'cls' => 'warning'] );
 	}
 }
