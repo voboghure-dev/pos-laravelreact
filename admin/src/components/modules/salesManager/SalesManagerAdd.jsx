@@ -304,7 +304,7 @@ const SalesManagerAdd = () => {
 													) : null}
 												</div>
 												<div className='col-md-12 mb-3'>
-													<label className='small mb-1' htmlFor='govt_id'>
+													<label className='small mb-1' htmlFor='govt_id_photo'>
 														Govt. Photo ID
 													</label>
 													<input
@@ -313,16 +313,16 @@ const SalesManagerAdd = () => {
 																? 'form-control is-invalid'
 																: 'form-control'
 														}
-														id='govt_id'
-														name='govt_id'
+														id='govt_id_photo'
+														name='govt_id_photo'
 														type='file'
 														onChange={handleLogo}
 													/>
-													{input.govt_id != undefined || input.govt_id == '' ? (
+													{input.govt_id_photo != undefined || input.govt_id_photo == '' ? (
 														<div className='row'>
 															<div className='col-md-6'>
 																<img
-																	src={input.govt_id}
+																	src={input.govt_id_photo}
 																	alt='Govt. ID Photo'
 																	className='img-thumbnail'
 																/>
