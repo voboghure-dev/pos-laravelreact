@@ -18,7 +18,16 @@ class StoreStoreRequest extends FormRequest {
 	 */
 	public function rules(): array {
 		return [
-			//
+			'name'        => 'required|min:3|max:255|string',
+			'phone'       => 'required|numeric',
+			'email'       => 'email',
+			'status'      => 'required|numeric',
+			'description' => 'max:1000|string',
+			'address'     => 'required|min:3|max:1000|string',
+			'division'    => 'required|min:3|max:255|string',
+			'district'    => 'required|min:3|max:255|string',
+			'area'        => 'required|min:3|max:255|string',
+			'land_mark'   => 'min:3|max:255|string',
 		];
 	}
 }
