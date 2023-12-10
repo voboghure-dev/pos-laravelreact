@@ -125,7 +125,7 @@ const SupplierList = () => {
 											onChange={handleInput}
 										>
 											<option value={'company_name'}>Company Name</option>
-											<option value={'phone_email'}>Phone Number</option>
+											<option value={'phone_number'}>Phone Number</option>
 											<option value={'email_address'}>Email Address</option>
 											<option value={'status'}>Status</option>
 											<option value={'created_at'}>Created at</option>

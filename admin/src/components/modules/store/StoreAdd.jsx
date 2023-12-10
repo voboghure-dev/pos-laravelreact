@@ -45,7 +45,7 @@ const StoreAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				// navigate('/dashboard/store');
+				navigate('/dashboard/store');
 			})
 			.catch((errors) => {
 				setIsLoading(false);

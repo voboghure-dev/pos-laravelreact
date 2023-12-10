@@ -3,16 +3,23 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStoreRequest;
 use App\Http\Requests\UpdateStoreRequest;
+use App\Http\Resources\StoreListResource;
+use App\Manager\ImageManager;
 use App\Models\Address;
 use App\Models\Store;
+use Error;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class StoreController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
-		//
+	public function index( Request $request ) {
+		$store = ( new Store() )->getAllStores( $request->all() );
+
+		return StoreListResource::collection( $store );
 	}
 
 	/**
@@ -30,13 +37,27 @@ class StoreController extends Controller {
 		$address_data = ( new Address() )->prepareData( $request->all() );
 
 		if ( $request->has( 'logo' ) ) {
-			$name = Str::slug( $store_data['name'] . '-' . time() );
-
+			$file               = $request->logo;
+			$name               = Str::slug( $store_data['name'] . '-' . time() );
+			$path               = Store::IMAGE_UPLOAD_PATH;
+			$path_thumb         = Store::THUMB_IMAGE_UPLOAD_PATH;
+			$store_data['logo'] = ImageManager::imageUpload( $file, $name, $path, $path_thumb );
 		}
 
-		return $store_data;
+		try {
+			DB::beginTransaction();
+			$store = Store::create( $store_data );
+			$store->address()->create( $address_data );
+			DB::commit();
 
-		// return $request->all();
+			return response()->json( ['msg' => 'Store created successfully!', 'cls' => 'success'] );
+		} catch ( Error $error ) {
+			ImageManager::deleteImage( $path, $store_data['logo'] );
+			ImageManager::deleteImage( $path_thumb, $store_data['logo'] );
+			DB::rollBack();
+
+			return response()->json( ['msg' => 'Unable to create Store!', 'cls' => 'error'] );
+		}
 	}
 
 	/**

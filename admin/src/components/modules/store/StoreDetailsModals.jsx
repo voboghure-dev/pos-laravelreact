@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal';
 
-const SupplierDetailsModals = (props) => {
+const StoreDetailsModals = (props) => {
 	return (
 		<Modal {...props} size={props.size} aria-labelledby='brand-details-modal' centered>
 			<Modal.Header closeButton>
@@ -15,15 +15,15 @@ const SupplierDetailsModals = (props) => {
 						</tr>
 						<tr>
 							<th>Name</th>
-							<td>{props.details.company_name}</td>
+							<td>{props.details.name}</td>
 						</tr>
 						<tr>
 							<th>Phone Number</th>
-							<td>{props.details.phone_number}</td>
+							<td>{props.details.phone}</td>
 						</tr>
 						<tr>
 							<th>Email Address</th>
-							<td>{props.details.email_address}</td>
+							<td>{props.details.email}</td>
 						</tr>
 						<tr>
 							<th>Description</th>
@@ -82,4 +82,4 @@ const SupplierDetailsModals = (props) => {
 	);
 };
 
-export default SupplierDetailsModals;
+export default StoreDetailsModals;
