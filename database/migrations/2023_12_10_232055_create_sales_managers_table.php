@@ -19,7 +19,7 @@ return new class extends Migration {
 			$table->string( 'password' )->nullable();
 			$table->string( 'govt_id_number' )->nullable();
 			$table->tinyInteger( 'status' )->nullable();
-			$table->text( 'description' )->nullable();
+			$table->text( 'bio' )->nullable();
 			$table->string( 'photo' )->nullable();
 			$table->string( 'govt_id_photo' )->nullable();
 			$table->timestamps();

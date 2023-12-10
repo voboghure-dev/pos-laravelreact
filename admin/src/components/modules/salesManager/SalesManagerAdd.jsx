@@ -24,6 +24,7 @@ const SalesManagerAdd = () => {
 				}
 			});
 	};
+
 	const handleInput = (e) => {
 		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
@@ -51,7 +52,7 @@ const SalesManagerAdd = () => {
 					toast: true,
 					timer: 1500,
 				});
-				// navigate('/dashboard/sales-manager');
+				navigate('/dashboard/sales-manager');
 			})
 			.catch((errors) => {
 				setIsLoading(false);
@@ -63,9 +64,9 @@ const SalesManagerAdd = () => {
 
 	const handleSalesManagerReset = () => {
 		setInput({
-			company_name: '',
-			phone_number: '',
-			email_address: '',
+			name: '',
+			phone: '',
+			email: '',
 			status: '',
 			description: '',
 			logo: undefined,

@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductPhotoController;
+use App\Http\Controllers\SalesManagerController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SupplierController;
@@ -50,4 +51,5 @@ Route::group( ['middleware' => 'auth:sanctum'], static function () {
 	Route::apiResource( 'product', ProductController::class );
 	Route::apiResource( 'photo', ProductPhotoController::class );
 	Route::apiResource( 'store', StoreController::class );
+	Route::apiResource( 'sales-manager', SalesManagerController::class );
 } );
