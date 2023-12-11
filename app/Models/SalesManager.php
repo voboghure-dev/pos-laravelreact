@@ -29,7 +29,7 @@ class SalesManager extends Model {
 		'govt_id_photo',
 	];
 
-	public function prepareData( array $input, $auth ): array {
+	final public function prepareData( array $input, $auth ): array {
 		$manager['name']           = $input['name'] ?? '';
 		$manager['phone']          = $input['phone'] ?? '';
 		$manager['email']          = $input['email'] ?? '';
@@ -43,12 +43,27 @@ class SalesManager extends Model {
 		return $manager;
 	}
 
+	final public function getAllSalesManagers( array $input ) {
+		$query = self::query();
+		if ( $input['search'] ) {
+			$query->where( 'name', 'LIKE', '%' . $input['search'] . '%' )
+				->orWhere( 'phone', 'LIKE', '%' . $input['search'] . '%' )
+				->orWhere( 'email', 'LIKE', '%' . $input['search'] . '%' );
+		}
+		if ( $input['order_by'] ) {
+			$query->orderBy( $input['order_by'], $input['direction'] ?? 'asc' );
+		}
+		$per_page = $input['per_page'] ?? 10;
+
+		return $query->with( ['user:id,name', 'address'] )->paginate( $per_page );
+	}
+
 	/**
 	 * Relation with user
 	 *
 	 * @return BelongsTo
 	 */
-	public function user(): BelongsTo {
+	final public function user(): BelongsTo {
 		return $this->belongsTo( User::class );
 	}
 
@@ -57,7 +72,7 @@ class SalesManager extends Model {
 	 *
 	 * @return MorphOne
 	 */
-	public function address(): MorphOne {
+	final public function address(): MorphOne {
 		return $this->morphOne( Address::class, 'addressable' );
 	}
 }

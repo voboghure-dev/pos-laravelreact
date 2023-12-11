@@ -6,13 +6,13 @@ import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import Swal from 'sweetalert2';
 import NoDataFound from '../../partials/NoDataFound';
-import SupplierDetailsModals from './SalesManagerDetailsModals';
+import SalesManagerDetailsModals from './SalesManagerDetailsModals';
 import PhotoModals from '../../partials/PhotoModals';
 
-const SupplierList = () => {
+const SalesManagerList = () => {
 	const [input, setInput] = useState({
 		search: '',
-		order_by: 'company_name',
+		order_by: 'name',
 		direction: 'asc',
 		per_page: '10',
 	});
@@ -21,24 +21,24 @@ const SupplierList = () => {
 	const [photoModalShow, setPhotoModalShow] = useState(false);
 	const [modalPhoto, setModalPhoto] = useState('');
 
-	const [supplierModalShow, setSupplierModalShow] = useState(false);
+	const [salesManagerModalShow, setSalesManagerModalShow] = useState(false);
 	const [modalDetails, setModalDetails] = useState('');
 
-	const [suppliers, setSuppliers] = useState([]);
+	const [salesManagers, setSalesManagers] = useState([]);
 
 	const [itemsCountPerPage, setItemsCountPerPage] = useState(0);
 	const [totalItemsCount, setTotalItemsCount] = useState(1);
 	const [startFrom, setStartFrom] = useState(1);
 	const [activePage, setActivePage] = useState(1);
 
-	const getSuppliers = (pageNumber = 1) => {
+	const getSalesManagers = (pageNumber = 1) => {
 		setIsLoading(true);
 		axios
 			.get(
-				`${Constants.BASE_URL}/supplier?page=${pageNumber}&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
+				`${Constants.BASE_URL}/sales-manager?page=${pageNumber}&search=${input.search}&order_by=${input.order_by}&per_page=${input.per_page}&direction=${input.direction}`
 			)
 			.then((res) => {
-				setSuppliers(res.data.data);
+				setSalesManagers(res.data.data);
 				setItemsCountPerPage(res.data.meta.per_page);
 				setTotalItemsCount(res.data.meta.total);
 				setStartFrom(res.data.meta.from);
@@ -53,7 +53,7 @@ const SupplierList = () => {
 	};
 
 	const handleDetailsModal = (supplier) => {
-		setSupplierModalShow(true);
+		setSalesManagerModalShow(true);
 		setModalDetails(supplier);
 	};
 
@@ -61,10 +61,10 @@ const SupplierList = () => {
 		setInput((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
 	};
 
-	const handleSupplierDelete = (id) => {
+	const handleSalesManagerDelete = (id) => {
 		Swal.fire({
 			title: 'Are you sure?',
-			text: 'Supplier will be deleted!',
+			text: 'SalesManager will be deleted!',
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
@@ -73,7 +73,7 @@ const SupplierList = () => {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				axios.delete(`${Constants.BASE_URL}/supplier/${id}`).then((res) => {
-					getSuppliers();
+					getSalesManagers();
 					Swal.fire({
 						position: 'top-end',
 						icon: res.data.cls,
@@ -88,18 +88,18 @@ const SupplierList = () => {
 	};
 
 	useEffect(() => {
-		getSuppliers();
+		getSalesManagers();
 	}, []);
 
 	return (
 		<>
-			<Breadcrumb title={'Supplier List'} />
+			<Breadcrumb title={'Sales Manager List'} />
 
 			<div className='row'>
 				<div className='col-md-12'>
 					<div className='card mb-4'>
 						<div className='card-header'>
-							<h4>Supplier List</h4>
+							<h4>Sales Manager List</h4>
 						</div>
 						<div className='card-body'>
 							<div className='search-area mb-4'>
@@ -124,9 +124,9 @@ const SupplierList = () => {
 											value={input.order_by}
 											onChange={handleInput}
 										>
-											<option value={'company_name'}>Company Name</option>
-											<option value={'phone_number'}>Phone Number</option>
-											<option value={'email_address'}>Email Address</option>
+											<option value={'name'}>Manager Name</option>
+											<option value={'phone'}>Phone Number</option>
+											<option value={'email'}>Email Address</option>
 											<option value={'status'}>Status</option>
 											<option value={'created_at'}>Created at</option>
 											<option value={'updated_at'}>Updated at</option>
@@ -163,7 +163,7 @@ const SupplierList = () => {
 									<div className='col-md-2'>
 										<div className='d-grid mt-4'>
 											<button
-												onClick={() => getSuppliers(1)}
+												onClick={() => getSalesManagers(1)}
 												className='btn btn-sm btn-primary'
 												dangerouslySetInnerHTML={{
 													__html: isLoading
@@ -188,7 +188,7 @@ const SupplierList = () => {
 										<thead>
 											<tr>
 												<th>Sl</th>
-												<th>Company Name / Status</th>
+												<th>Manager Name / Status</th>
 												<th>Phone / Email</th>
 												<th>Address / Division</th>
 												<th>District / Area</th>
@@ -199,69 +199,75 @@ const SupplierList = () => {
 											</tr>
 										</thead>
 										<tbody>
-											{Object.keys(suppliers).length > 0 ? (
-												suppliers.map((supplier, index) => (
+											{Object.keys(salesManagers).length > 0 ? (
+												salesManagers.map((salesManager, index) => (
 													<tr key={index}>
 														<td>{startFrom + index}</td>
 														<td>
 															<p className='text-primary'>
-																Name: {supplier.company_name}
-															</p>
-															<p className='text-success'>Status: {supplier.status}</p>
-														</td>
-														<td>
-															<p className='text-primary'>
-																Phone: {supplier.phone_number}
+																Name: {salesManager.name}
 															</p>
 															<p className='text-success'>
-																Email: {supplier.email_address}
+																Status: {salesManager.status}
 															</p>
 														</td>
 														<td>
 															<p className='text-primary'>
-																Address: {supplier.address?.address}
+																Phone: {salesManager.phone}
 															</p>
 															<p className='text-success'>
-																Division: {supplier.address?.division}
+																Email: {salesManager.email}
 															</p>
 														</td>
 														<td>
 															<p className='text-primary'>
-																District: {supplier.address?.district}
+																Address: {salesManager.address?.address}
 															</p>
 															<p className='text-success'>
-																Area: {supplier.address?.area}
+																Division: {salesManager.address?.division}
+															</p>
+														</td>
+														<td>
+															<p className='text-primary'>
+																District: {salesManager.address?.district}
+															</p>
+															<p className='text-success'>
+																Area: {salesManager.address?.area}
 															</p>
 														</td>
 														<td>
 															<img
-																onClick={() => handlePhotoModal(supplier.logo)}
-																src={supplier.logo_thumb}
-																alt={supplier.name}
+																onClick={() => handlePhotoModal(salesManager.photo)}
+																src={salesManager.photo_thumb}
+																alt={salesManager.name}
 																className='img-thumbnail mx-auto d-block category-photo'
 															/>
 														</td>
 														<td>
-															<p>{supplier.created_by}</p>
+															<p>{salesManager.created_by}</p>
 														</td>
 														<td>
-															<p className='text-primary'>{supplier.created_at}</p>
-															<p className='text-success'>{supplier.updated_at}</p>
+															<p className='text-primary'>{salesManager.created_at}</p>
+															<p className='text-success'>{salesManager.updated_at}</p>
 														</td>
 														<td className='text-center'>
 															<button
-																onClick={() => handleDetailsModal(supplier)}
+																onClick={() => handleDetailsModal(salesManager)}
 																className='btn btn-sm btn-info'
 															>
 																<i className='fa-solid fa-eye' />
 															</button>
-															<Link to={`/dashboard/supplier/edit/${supplier.id}`}>
+															<Link
+																to={`/dashboard/sales-manager/edit/${salesManager.id}`}
+															>
 																<button className='btn btn-sm btn-warning mx-1'>
 																	<i className='fa-solid fa-edit' />
 																</button>
 															</Link>
 															<button
-																onClick={() => handleSupplierDelete(supplier.id)}
+																onClick={() =>
+																	handleSalesManagerDelete(salesManager.id)
+																}
 																className='btn btn-sm btn-danger'
 															>
 																<i className='fa-solid fa-trash' />
@@ -281,14 +287,14 @@ const SupplierList = () => {
 									<PhotoModals
 										show={photoModalShow}
 										onHide={() => setPhotoModalShow(false)}
-										title='Suppliers Logo'
+										title='Sales Manager Photo'
 										size=''
 										photo={modalPhoto}
 									/>
-									<SupplierDetailsModals
-										show={supplierModalShow}
-										onHide={() => setSupplierModalShow(false)}
-										title='Suppliers Details'
+									<SalesManagerDetailsModals
+										show={salesManagerModalShow}
+										onHide={() => setSalesManagerModalShow(false)}
+										title='Sales Manager Details'
 										size=''
 										details={modalDetails}
 									/>
@@ -308,7 +314,7 @@ const SupplierList = () => {
 									firstPageText={'First'}
 									lastPageText={'Last'}
 									nextPageText={'Next'}
-									onChange={getSuppliers}
+									onChange={getSalesManagers}
 								/>
 							</nav>
 						</div>
@@ -319,4 +325,4 @@ const SupplierList = () => {
 	);
 };
 
-export default SupplierList;
+export default SalesManagerList;

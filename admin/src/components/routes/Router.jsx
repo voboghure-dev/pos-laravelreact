@@ -27,6 +27,7 @@ import StoreAdd from '../modules/store/StoreAdd';
 import StoreList from '../modules/store/StoreList';
 import StoreEdit from '../modules/store/StoreEdit';
 import SalesManagerAdd from '../modules/salesManager/SalesManagerAdd';
+import SalesManagerList from '../modules/salesManager/SalesManagerList';
 
 const Router = createBrowserRouter([
 	{
@@ -124,6 +125,10 @@ const Router = createBrowserRouter([
 			{
 				path: '/dashboard/sales-manager/create',
 				element: <SalesManagerAdd />,
+			},
+			{
+				path: '/dashboard/sales-manager',
+				element: <SalesManagerList />,
 			},
 			{
 				path: '/dashboard/error-500',

@@ -3,9 +3,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSalesManagerRequest;
 use App\Http\Requests\UpdateSalesManagerRequest;
+use App\Http\Resources\SalesManagerListResource;
 use App\Manager\ImageManager;
 use App\Models\Address;
 use App\Models\SalesManager;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -13,8 +15,10 @@ class SalesManagerController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
-		//
+	public function index( Request $request ) {
+		$sales_mangers = ( new SalesManager() )->getAllSalesManagers( $request->all() );
+
+		return SalesManagerListResource::collection( $sales_mangers );
 	}
 
 	/**
@@ -55,10 +59,14 @@ class SalesManagerController extends Controller {
 
 			return response()->json( ['msg' => 'Store created successfully!', 'cls' => 'success'] );
 		} catch ( \Throwable $th ) {
-			ImageManager::deleteImage( SalesManager::PHOTO_UPLOAD_PATH, $manager_data['photo'] );
-			ImageManager::deleteImage( SalesManager::PHOTO_THUMB_UPLOAD_PATH, $manager_data['photo'] );
-			ImageManager::deleteImage( SalesManager::GOVT_ID_UPLOAD_PATH, $manager_data['govt_id_photo'] );
-			ImageManager::deleteImage( SalesManager::GOVT_ID_THUMB_UPLOAD_PATH, $manager_data['govt_id_photo'] );
+			if (  ! empty( $manager_data['photo'] ) ) {
+				ImageManager::deleteImage( SalesManager::PHOTO_UPLOAD_PATH, $manager_data['photo'] );
+				ImageManager::deleteImage( SalesManager::PHOTO_THUMB_UPLOAD_PATH, $manager_data['photo'] );
+			}
+			if (  ! empty( $manager_data['govt_id_photo'] ) ) {
+				ImageManager::deleteImage( SalesManager::GOVT_ID_UPLOAD_PATH, $manager_data['govt_id_photo'] );
+				ImageManager::deleteImage( SalesManager::GOVT_ID_THUMB_UPLOAD_PATH, $manager_data['govt_id_photo'] );
+			}
 			DB::rollBack();
 
 			return response()->json( ['msg' => 'Unable to create Store!', 'cls' => 'error'] );
