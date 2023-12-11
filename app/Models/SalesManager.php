@@ -55,7 +55,7 @@ class SalesManager extends Model {
 		}
 		$per_page = $input['per_page'] ?? 10;
 
-		return $query->with( ['user:id,name', 'address'] )->paginate( $per_page );
+		return $query->with( ['user:id,name', 'store:id,name', 'address'] )->paginate( $per_page );
 	}
 
 	/**
@@ -65,6 +65,15 @@ class SalesManager extends Model {
 	 */
 	final public function user(): BelongsTo {
 		return $this->belongsTo( User::class );
+	}
+
+	/**
+	 * Relation with store
+	 *
+	 * @return BelongsTo
+	 */
+	final public function store(): BelongsTo {
+		return $this->belongsTo( Store::class );
 	}
 
 	/**

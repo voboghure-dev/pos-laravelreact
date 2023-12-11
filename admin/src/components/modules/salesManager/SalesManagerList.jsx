@@ -188,11 +188,11 @@ const SalesManagerList = () => {
 										<thead>
 											<tr>
 												<th>Sl</th>
-												<th>Manager Name / Status</th>
-												<th>Phone / Email</th>
+												<th>Manager Name / Status / Store</th>
+												<th>Phone / Email / Govt. ID</th>
 												<th>Address / Division</th>
 												<th>District / Area</th>
-												<th>Logo</th>
+												<th>Photo</th>
 												<th>Created By</th>
 												<th>Date & Time</th>
 												<th>Action</th>
@@ -204,19 +204,17 @@ const SalesManagerList = () => {
 													<tr key={index}>
 														<td>{startFrom + index}</td>
 														<td>
-															<p className='text-primary'>
-																Name: {salesManager.name}
-															</p>
+															<p className='text-primary'>Name: {salesManager.name}</p>
 															<p className='text-success'>
 																Status: {salesManager.status}
 															</p>
+															<p className='text-primary'>Store: {salesManager.store}</p>
 														</td>
 														<td>
+															<p className='text-primary'>Phone: {salesManager.phone}</p>
+															<p className='text-success'>Email: {salesManager.email}</p>
 															<p className='text-primary'>
-																Phone: {salesManager.phone}
-															</p>
-															<p className='text-success'>
-																Email: {salesManager.email}
+																ID: {salesManager.govt_id_number}
 															</p>
 														</td>
 														<td>

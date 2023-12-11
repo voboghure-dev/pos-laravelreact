@@ -14,18 +14,20 @@ class SalesManagerListResource extends JsonResource {
 	 */
 	public function toArray( Request $request ): array {
 		return [
-			'id'          => $this->id,
-			'name'        => $this->name,
-			'phone'       => $this->phone,
-			'email'       => $this->email,
-			'bio'         => $this->bio,
-			'status'      => $this->status == 1 ? 'Active' : 'Inactive',
-			'photo'       => ImageManager::prepareImage( SalesManager::PHOTO_UPLOAD_PATH, $this->photo ),
-			'photo_thumb' => ImageManager::prepareImage( SalesManager::PHOTO_THUMB_UPLOAD_PATH, $this->photo ),
-			'created_by'  => $this->user?->name,
-			'created_at'  => $this->created_at->toDayDateTimeString(),
-			'updated_at'  => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not yet updated',
-			'address'     => new AddressListResource( $this->address ),
+			'id'             => $this->id,
+			'name'           => $this->name,
+			'store'          => $this->store?->name,
+			'phone'          => $this->phone,
+			'email'          => $this->email,
+			'govt_id_number' => $this->govt_id_number,
+			'bio'            => $this->bio,
+			'status'         => $this->status == 1 ? 'Active' : 'Inactive',
+			'photo'          => ImageManager::prepareImage( SalesManager::PHOTO_UPLOAD_PATH, $this->photo ),
+			'photo_thumb'    => ImageManager::prepareImage( SalesManager::PHOTO_THUMB_UPLOAD_PATH, $this->photo ),
+			'created_by'     => $this->user?->name,
+			'created_at'     => $this->created_at->toDayDateTimeString(),
+			'updated_at'     => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not yet updated',
+			'address'        => new AddressListResource( $this->address ),
 		];
 	}
 }
