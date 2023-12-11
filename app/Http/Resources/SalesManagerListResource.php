@@ -24,6 +24,8 @@ class SalesManagerListResource extends JsonResource {
 			'status'         => $this->status == 1 ? 'Active' : 'Inactive',
 			'photo'          => ImageManager::prepareImage( SalesManager::PHOTO_UPLOAD_PATH, $this->photo ),
 			'photo_thumb'    => ImageManager::prepareImage( SalesManager::PHOTO_THUMB_UPLOAD_PATH, $this->photo ),
+			'govt_id'        => ImageManager::prepareImage( SalesManager::GOVT_ID_UPLOAD_PATH, $this->govt_id_photo ),
+			'govt_id_thumb'  => ImageManager::prepareImage( SalesManager::GOVT_ID_THUMB_UPLOAD_PATH, $this->govt_id_photo ),
 			'created_by'     => $this->user?->name,
 			'created_at'     => $this->created_at->toDayDateTimeString(),
 			'updated_at'     => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not yet updated',

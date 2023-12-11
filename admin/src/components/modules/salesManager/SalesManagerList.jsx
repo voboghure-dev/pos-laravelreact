@@ -20,6 +20,7 @@ const SalesManagerList = () => {
 
 	const [photoModalShow, setPhotoModalShow] = useState(false);
 	const [modalPhoto, setModalPhoto] = useState('');
+	const [modalPhotoTitle, setModalPhotoTitle] = useState('');
 
 	const [salesManagerModalShow, setSalesManagerModalShow] = useState(false);
 	const [modalDetails, setModalDetails] = useState('');
@@ -47,9 +48,10 @@ const SalesManagerList = () => {
 			});
 	};
 
-	const handlePhotoModal = (photo) => {
+	const handlePhotoModal = (photo, title) => {
 		setPhotoModalShow(true);
 		setModalPhoto(photo);
+		setModalPhotoTitle(title);
 	};
 
 	const handleDetailsModal = (supplier) => {
@@ -64,7 +66,7 @@ const SalesManagerList = () => {
 	const handleSalesManagerDelete = (id) => {
 		Swal.fire({
 			title: 'Are you sure?',
-			text: 'SalesManager will be deleted!',
+			text: 'Sales Manager will be deleted!',
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
@@ -72,7 +74,7 @@ const SalesManagerList = () => {
 			confirmButtonText: 'Yes, delete!',
 		}).then((result) => {
 			if (result.isConfirmed) {
-				axios.delete(`${Constants.BASE_URL}/supplier/${id}`).then((res) => {
+				axios.delete(`${Constants.BASE_URL}/sales-manager/${id}`).then((res) => {
 					getSalesManagers();
 					Swal.fire({
 						position: 'top-end',
@@ -191,7 +193,7 @@ const SalesManagerList = () => {
 												<th>Manager Name / Status / Store</th>
 												<th>Phone / Email / Govt. ID</th>
 												<th>Address / Division</th>
-												<th>District / Area</th>
+												<th>Govt. ID</th>
 												<th>Photo</th>
 												<th>Created By</th>
 												<th>Date & Time</th>
@@ -224,8 +226,6 @@ const SalesManagerList = () => {
 															<p className='text-success'>
 																Division: {salesManager.address?.division}
 															</p>
-														</td>
-														<td>
 															<p className='text-primary'>
 																District: {salesManager.address?.district}
 															</p>
@@ -235,7 +235,25 @@ const SalesManagerList = () => {
 														</td>
 														<td>
 															<img
-																onClick={() => handlePhotoModal(salesManager.photo)}
+																onClick={() =>
+																	handlePhotoModal(
+																		salesManager.govt_id,
+																		'Sales Manager Govt. ID'
+																	)
+																}
+																src={salesManager.govt_id_thumb}
+																alt={salesManager.name}
+																className='img-thumbnail mx-auto d-block category-photo'
+															/>
+														</td>
+														<td>
+															<img
+																onClick={() =>
+																	handlePhotoModal(
+																		salesManager.photo,
+																		'Sales Manager Photo'
+																	)
+																}
 																src={salesManager.photo_thumb}
 																alt={salesManager.name}
 																className='img-thumbnail mx-auto d-block category-photo'
@@ -285,7 +303,7 @@ const SalesManagerList = () => {
 									<PhotoModals
 										show={photoModalShow}
 										onHide={() => setPhotoModalShow(false)}
-										title='Sales Manager Photo'
+										title={modalPhotoTitle}
 										size=''
 										photo={modalPhoto}
 									/>
