@@ -7,7 +7,7 @@ import Constants from '../../Constants';
 
 const Login = () => {
 	const navigate = useNavigate();
-	const [input, setInput] = useState({});
+	const [input, setInput] = useState({ role: 1 });
 	const [errors, setErrors] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -30,7 +30,7 @@ const Login = () => {
 				localStorage.name = res.data.name;
 				localStorage.phone = res.data.phone;
 				localStorage.photo = res.data.photo;
-				localStorage.role_id = res.data.role_id;
+				localStorage.role = res.data.role;
 				localStorage.token = res.data.token;
 				setIsLoading(false);
 				navigate('/dashboard');
@@ -65,20 +65,22 @@ const Login = () => {
 											<div className='form-floating mb-3'>
 												<input
 													className={
-														errors.email != undefined
+														errors.email_or_phone != undefined
 															? 'form-control is-invalid'
 															: 'form-control'
 													}
 													id='email_or_phone'
 													type='text'
-													name='email'
-													value={input.email || ''}
+													name='email_or_phone'
+													value={input.email_or_phone || ''}
 													onChange={handleInput}
 													placeholder=''
 												/>
 												<label htmlFor='email_or_phone'>Email or Phone Number</label>
 												<div className='invalid-feedback'>
-													{errors.email != undefined ? errors.email[0] : null}
+													{errors.email_or_phone != undefined
+														? errors.email_or_phone[0]
+														: null}
 												</div>
 											</div>
 											<div className='form-floating mb-3'>

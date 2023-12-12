@@ -47,6 +47,6 @@ class User extends Authenticatable {
 	 * Get User
 	 */
 	public function getUserByEmailOrPhone( array $input ) {
-		return $this->query()->where( 'email', $input['email'] )->orWhere( 'phone', $input['email'] )->first();
+		return self::query()->where( 'email', $input['email_or_phone'] )->orWhere( 'phone', $input['email_or_phone'] )->first();
 	}
 }

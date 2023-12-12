@@ -5,10 +5,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
 
 class SalesManager extends Model {
-	use HasFactory;
+	use HasFactory, HasApiTokens, Notifiable;
 
 	public const PHOTO_UPLOAD_PATH         = 'images/uploads/manager/';
 	public const PHOTO_THUMB_UPLOAD_PATH   = 'images/uploads/manager_thumb/';
@@ -56,6 +58,13 @@ class SalesManager extends Model {
 		$per_page = $input['per_page'] ?? 10;
 
 		return $query->with( ['user:id,name', 'store:id,name', 'address'] )->paginate( $per_page );
+	}
+
+	/**
+	 * Get User
+	 */
+	final public function getUserByEmailOrPhone( array $input ) {
+		return self::query()->where( 'email', $input['email_or_phone'] )->orWhere( 'phone', $input['email_or_phone'] )->first();
 	}
 
 	/**
