@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post( 'login', [AuthController::class, 'login'] );
 
-Route::group( ['middleware' => 'auth:sanctum'], static function () {
+Route::group( ['middleware' => ['auth:sanctum,', 'auth:admin']], static function () {
 	Route::post( 'logout', [AuthController::class, 'logout'] );
 
 	Route::get( 'get-category-list', [CategoryController::class, 'get_category_list'] );
@@ -52,4 +52,8 @@ Route::group( ['middleware' => 'auth:sanctum'], static function () {
 	Route::apiResource( 'photo', ProductPhotoController::class );
 	Route::apiResource( 'store', StoreController::class );
 	Route::apiResource( 'sales-manager', SalesManagerController::class );
+} );
+
+Route::group( ['middleware' => ['auth:sanctum,sales_managers']], static function () {
+	Route::apiResource( 'product', ProductController::class )->only( 'index', 'show' );
 } );

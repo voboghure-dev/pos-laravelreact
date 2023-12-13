@@ -35,6 +35,7 @@ class AuthController extends Controller {
 
 			return response()->json( $user_data );
 		}
+
 		throw ValidationException::withMessages( [
 			'email_or_phone' => ['The provided credentials are incorrect'],
 		] );
