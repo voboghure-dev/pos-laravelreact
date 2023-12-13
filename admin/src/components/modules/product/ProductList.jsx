@@ -186,18 +186,18 @@ const ProductList = () => {
 														<td>
 															<p className='text-primary'>Name: {product.name}</p>
 															<p className='text-success'>Slug: {product.slug}</p>
-															<p className='text-primary'>
+															<div className='text-primary'>
 																{product.attributes != undefined &&
 																Object.keys(product.attributes).length > 0
 																	? product.attributes.map((attribute, index) => (
-																			<p>
+																			<p key={index}>
 																				<small>
 																					{attribute.name}: {attribute.value}
 																				</small>
 																			</p>
 																	  ))
 																	: null}
-															</p>
+															</div>
 														</td>
 														<td>
 															<p className='text-primary'>Cost: {product.cost}</p>
@@ -231,9 +231,7 @@ const ProductList = () => {
 																Sub Category: {product.sub_category}
 															</p>
 															<p className='text-primary'>Brand: {product.brand}</p>
-															<p className='text-primary'>
-																Supplier: {product.supplier}
-															</p>
+															<p className='text-primary'>Supplier: {product.supplier}</p>
 															<p className='text-primary'>Country: {product.country}</p>
 														</td>
 														<td>
